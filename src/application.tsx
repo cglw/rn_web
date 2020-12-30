@@ -17,14 +17,14 @@ const HeaderNull = function (): React.ReactNode {
 
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'app/index'}>
+    <Stack.Navigator initialRouteName={'index'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map((name) => (
         <Stack.Screen
           key={name}
           name={name}
           component={routes[name].screen}
           options={{
-            header: (props) => HeaderNull(),
+            header: () => HeaderNull(),
           }}
         />
       ))}

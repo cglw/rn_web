@@ -1,5 +1,5 @@
-import {CallApiInterceptor, LogInterceptor} from './Interceptors';
-import {HttpResponse, Interceptor} from './ResponseChain';
+import {RequestApiInterceptor, LogInterceptor} from './Interceptors';
+import {Interceptor} from './ResponseChain';
 import {getResponseWithInterceptorChain} from './RealCall';
 
 interface ApiInterface {
@@ -10,7 +10,7 @@ export class HttpClient implements ApiInterface {
   private constructor() {}
   interceptors: Array<Interceptor> = [
     new LogInterceptor(),
-    new CallApiInterceptor(),
+    new RequestApiInterceptor(),
   ];
 
   static getInstance() {
@@ -19,6 +19,11 @@ export class HttpClient implements ApiInterface {
     }
     return this.instance;
   }
+  //完全设置自己的拦截器
+  initInterceptors(interceptors: Array<Interceptor> = []) {
+    this.interceptors = interceptors;
+  }
+  //新增拦截器
   addInterceptors(interceptor: Interceptor) {
     this.interceptors.unshift(interceptor);
   }

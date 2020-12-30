@@ -10,7 +10,7 @@ export class CommonInterceptors implements Interceptor {
     }
     let headers = {
       Authorization:
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Rlc3R3eC5iYWlqaWF5dW4uY29tL2FwaS9hcHAvbG9naW4iLCJpYXQiOjE2MDkyMTU1NzYsImV4cCI6MTYwOTUxNzk3NiwibmJmIjoxNjA5MjE1NTc2LCJqdGkiOiJFR3BlMzhjZFhjak5VYVNsIiwic3ViIjoyMjgsInBydiI6IjlmMWZlOWUwZGZmYmU0NDQyZGM3ODMxMDc1MWY1OTFjZjRkMTQwMjAifQ.7wHUlhTr58c-A_11wHxh1UoIy5a5s7EFeAUv9Pr0Q9c',
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Rlc3R3eC5iYWlqaWF5dW4uY29tL2FwaS9hcHAvbG9naW4iLCJpYXQiOjE2MDkyNDk3NTksImV4cCI6MTYwOTU1MjE1OSwibmJmIjoxNjA5MjQ5NzU5LCJqdGkiOiJ5NU9uYldubUMxbTBjUjJyIiwic3ViIjoyMjgsInBydiI6IjlmMWZlOWUwZGZmYmU0NDQyZGM3ODMxMDc1MWY1OTFjZjRkMTQwMjAifQ.5YA2QAx2ook1BqonLn-KdOSQ7kLFKrBWnbRH7sxZlmI',
       DeviceType: 'ANDROID',
       schoolid: '14',
     };

@@ -16,17 +16,7 @@ export class MainScreen extends Component<Props, State> {
     super(props);
   }
   componentDidMount() {
-    Http.get('api/app/banner')
-      .then((res) => {
-        console.info('response======>');
-        console.info(res.code);
-      })
-      .catch((error) => {
-        console.info('error=====>');
-        console.info(error);
-      });
-
-    // Http.get('api/app/getUCenterInfo')
+    // Http.get('api/app/banner')
     //   .then((res) => {
     //     console.info('response======>');
     //     console.info(res.code);
@@ -35,6 +25,26 @@ export class MainScreen extends Component<Props, State> {
     //     console.info('error=====>');
     //     console.info(error);
     //   });
+
+    let body = {
+      id: 21,
+    };
+    Http.load('api/app/courseChapterApp')
+      .body(body)
+      .post()
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((error) => {
+        console.info(error);
+      });
+    Http.post('api/app/courseChapterApp', body)
+      .then((res) => {
+        console.info(res.code);
+      })
+      .catch((error) => {
+        console.info(error);
+      });
   }
 
   render() {
