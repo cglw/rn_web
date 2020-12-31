@@ -1,7 +1,7 @@
-import {HttpClient} from '../sdk/http/HttpClient';
+import {HttpClient} from '../../sdk/http/HttpClient';
 import {CommonInterceptors} from './CommonInterceptors';
-import {HttpResponse} from '../sdk/http/ResponseChain';
-import {HttpUtils} from '../sdk/http/HttpUtils';
+import {HttpResponse} from '../../sdk/http/ResponseChain';
+import {HttpUtils} from '../../sdk/http/HttpUtils';
 interface ReqType<T> {
   get(): Promise<T>;
   post(): Promise<T>;
