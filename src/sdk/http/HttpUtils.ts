@@ -22,4 +22,7 @@ export class HttpUtils {
     });
     return formData;
   }
+  static isEmptyObject(obj) {
+    return JSON.stringify(obj) == '{}';
+  }
 }

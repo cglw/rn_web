@@ -25,6 +25,7 @@ export class HttpClient implements ApiInterface {
   }
   //新增拦截器
   addInterceptors(interceptor: Interceptor) {
+    console.info('addInterceptors');
     this.interceptors.unshift(interceptor);
   }
 

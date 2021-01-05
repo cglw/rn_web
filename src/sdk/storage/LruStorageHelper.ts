@@ -1,5 +1,5 @@
 import {StorageHelper} from './StorageHelper';
-import {checkEmpty} from '../../utils/CheckUtils';
+import {checkEmpty} from '../../utils/CheckUtil';
 
 export class LruStorageHelper {
   static save(key: string, val: any, maxLength = 5) {

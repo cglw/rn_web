@@ -1,11 +1,12 @@
 import React from 'react';
-import './typings/global';
-import './module_common/i18n/string-extensions';
+import './module/module_common/extensions/index';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import routes from './router/config';
-import {isReadyRef, navigationRef} from './router/RootNavigation';
+import routes from './router/router-config';
+import {isReadyRef, navigationRef} from './sdk/router/RootNavigation';
+import {RootStore} from './module/module_common/store/RootStore';
+import {Provider} from 'mobx-react';
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -17,7 +18,7 @@ const HeaderNull = function (): React.ReactNode {
 
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'index'}>
+    <Stack.Navigator initialRouteName={'login'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map((name) => (
         <Stack.Screen
           key={name}
@@ -32,7 +33,7 @@ function MyStack() {
   );
 }
 
-export const MyApp = function () {
+const MyApp = function () {
   const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
   const config = {
     screens: {
@@ -66,5 +67,13 @@ export const MyApp = function () {
       }}>
       {MyStack()}
     </NavigationContainer>
+  );
+};
+
+export const Root = () => {
+  return (
+    <Provider store={new RootStore()}>
+      <MyApp />
+    </Provider>
   );
 };

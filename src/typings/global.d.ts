@@ -2,15 +2,16 @@ declare global {
   interface String {
     //国际化
     itn(params?: object): string;
-    log();
   }
-  interface Number {
-    log();
+  interface Date {
+    format(params?: string): string;
   }
-  interface Object {
-    log();
-  }
-
-  let time: number;
+  let globalStyles: any;
+  let globalColors: any;
+  let globalDimes: any;
+  let globalI18n: any;
+  let globalImages: any;
+  function addTranslations(translations: object);
 }
+
 export {};
