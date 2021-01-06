@@ -7,5 +7,6 @@ module.exports = {
     ['@babel/plugin-proposal-decorators', {legacy: true}],
     ['@babel/plugin-proposal-class-properties', {loose: false}],
     'transform-class-properties',
+    ['import', {libraryName: '@ant-design/react-native'}],
   ],
 };

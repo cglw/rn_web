@@ -1,9 +1,9 @@
 import React from 'react';
-import './module/module_common/extensions/index';
+import './index';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import routes from './router/router-config';
+import routes from './router/RouterConfig';
 import {isReadyRef, navigationRef} from './sdk/router/RootNavigation';
 import {RootStore} from './module/module_common/store/RootStore';
 import {Provider} from 'mobx-react';
@@ -69,10 +69,11 @@ const MyApp = function () {
     </NavigationContainer>
   );
 };
-
+export const rootStore = new RootStore();
+globalStore = rootStore;
 export const Root = () => {
   return (
-    <Provider store={new RootStore()}>
+    <Provider store={rootStore}>
       <MyApp />
     </Provider>
   );

@@ -1,88 +1,56 @@
 // @flow
 'use strict';
-import React, {Component, useState} from 'react';
-import {View, Text, FlatList, RefreshControl} from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {RouterManager} from '../../../sdk/router/RouterManager';
+import AutoSizeSheet from '../../../sdk/AutoSizeSheet';
+import {getWindowWidth} from '../../../utils/ScreenUtil';
+import {TabBar} from '@ant-design/react-native';
+import {TestScreen} from './TestScreen';
 
-type State = {
-  count: number;
-  refreshing: boolean;
-};
-type Props = {
-  navigation: any;
-};
-
-class ItemData {
-  id: number = 0;
-  title: string = '';
-
-  constructor(id: number, title: string) {
-    this.id = id;
-    this.title = title;
-  }
-}
-
-const DATA: Array<any> = [new ItemData(1, '222')];
-class MyFlatList extends FlatList<ItemData> {
-  test() {
-    console.info('test');
-  }
-}
-
-export class MainScreen extends Component<Props, State> {
-  flatList?: React.ElementRef<typeof MyFlatList>;
-
-  constructor(props) {
-    super(props);
-    // this.state.refreshing = false;
-    for (let i = 0; i < 100; i++) {
-      let itemData = new ItemData(i, `First 222Item${i}`);
-      DATA.push(itemData);
-    }
-    // this.flatList=u
-  }
-  componentDidMount() {}
-  _captureRef = (ref) => {
-    // this.flatList = ref;
-    console.info('getScrollableNode');
-    console.info(ref.getScrollableNode());
-    setTimeout(() => {
-      console.info('scrollToIndex');
-      ref.scrollToEnd();
-      ref.test();
-      console.info(ref.getNativeScrollRef());
-    }, 2000);
-  };
-
+export class MainScreen extends Component<any> {
   render() {
     console.info('5555');
     return (
-      <View style={{marginTop: 100}}>
-        <Text>{'login'.itn()}</Text>
-        <MyFlatList
-          refreshControl={
-            <RefreshControl
-              onRefresh={() => {
-                console.info('onRefresh');
-                // this.setState({
-                //   refreshing: true,
-                // });
-                // setTimeout(() => {
-                //   this.setState({
-                //     refreshing: false,
-                //   });
-                // }, 2000);
-              }}
-              refreshing={false}
-            />
-          }
-          ref={this._captureRef}
-          data={DATA}
-          renderItem={({item}) => {
-            return <Text>{item.title}</Text>;
-          }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+      <View style={{marginTop: 100, ...globalStyles.center}}>
+        <Text
+          style={styles.text}
+          onPress={() => {
+            RouterManager.getInstance().push('login');
+          }}>
+          {'login'.itn()}
+        </Text>
+        <Text>{'register'.itn()}</Text>
+        <Text
+          onPress={() => {
+            routeTo('test');
+          }}>
+          {'test'.itn()}
+        </Text>
+        <Image style={styles.img} source={globalImages.ic_lock} />
+        <TextInput />
+        <TabBar>
+          <TabBar.Item title={'1'}>
+            <TestScreen navigation={''} />
+          </TabBar.Item>
+        </TabBar>
       </View>
     );
   }
+
+  loadData() {}
 }
+// 默认StyleSheet  AutoSizeSheet可以自动缩放布局
+const styles = AutoSizeSheet.create(
+  {
+    text: {
+      fontSize: 10,
+    },
+    img: {
+      backgroundColor: 'red',
+      width: 100,
+      height: 100,
+    },
+  },
+  getWindowWidth(),
+);

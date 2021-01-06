@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
-import {Root} from './src/application';
+import {Root} from './src/Application';
 
 AppRegistry.registerComponent(appName, () => Root);

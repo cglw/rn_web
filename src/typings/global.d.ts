@@ -11,7 +11,9 @@ declare global {
   let globalDimes: any;
   let globalI18n: any;
   let globalImages: any;
+  let globalStore: any;
   function addTranslations(translations: object);
+  function routeTo(name: string, params?: object | undefined);
 }
 
 export {};

@@ -1,13 +1,13 @@
 import {TestScreen} from '../module/module_main/screen/TestScreen';
-import LoginScreen from '../module/module_login/screen/login/LoginScreen';
+import LoginScreen from '../module/module_login/screen/LoginScreen';
 
 export default {
-  login: {
-    screen: LoginScreen,
-    path: '/login',
-  },
   test: {
     screen: TestScreen,
     path: '/test',
+  },
+  login: {
+    screen: LoginScreen,
+    path: '/login',
   },
 };

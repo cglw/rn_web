@@ -1,3 +1,3 @@
-export * from './string';
-export * from './window';
-export * from './date';
+export * from './String';
+export * from './Window';
+export * from './Date';

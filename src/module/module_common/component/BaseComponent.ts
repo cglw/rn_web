@@ -1,9 +1,9 @@
 import {Component, PureComponent} from 'react';
 import {RootStore} from '../store/RootStore';
-type Props = {
+export type Props = {
   store: RootStore;
 };
-export abstract class BaseComponent<P, S = {}, SS = any> extends Component<
+export class BaseComponent<P, S = {}, SS = any> extends Component<
   Props & P,
   S,
   SS
@@ -17,5 +17,5 @@ export abstract class BaseComponent<P, S = {}, SS = any> extends Component<
   componentDidMount() {
     this.loadData();
   }
-  abstract loadData();
+  loadData() {}
 }
