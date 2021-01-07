@@ -1,4 +1,4 @@
-import {Component, PureComponent} from 'react';
+import {Component} from 'react';
 import {RootStore} from '../store/RootStore';
 export type Props = {
   store: RootStore;

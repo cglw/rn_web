@@ -1,7 +1,7 @@
 // @flow
 'use strict';
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {View, Text, Image, TextInput} from 'react-native';
 import {RouterManager} from '../../../sdk/router/RouterManager';
 import AutoSizeSheet from '../../../sdk/AutoSizeSheet';
 import {getWindowWidth} from '../../../utils/ScreenUtil';
@@ -37,8 +37,6 @@ export class MainScreen extends Component<any> {
       </View>
     );
   }
-
-  loadData() {}
 }
 // 默认StyleSheet  AutoSizeSheet可以自动缩放布局
 const styles = AutoSizeSheet.create(

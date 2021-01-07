@@ -6,7 +6,7 @@ const ROOT_INDEX_FILE = './src/index.ts';
 const ROOT_ROUTER_FILE = './src/router/RouterConfig.ts';
 const MODULE_INDEX_STR = `import './res/index';\nexport {};`;
 const MODULE_ROOT_REGISTER_FMT = fileUtil.template`import './module/${0}/index';\n`;
-const EXPORT_DEFAULT_STR = `export default {};`;
+const EXPORT_DEFAULT_STR = 'export default {};\n';
 const ROUTER_TEMPLATE_FMT = fileUtil.template`import ${0} from '../module/${1}/router/Router';\n`;
 // const EXPORT_DEFAULT_STR_FMT = fileUtil.template`export default {\n};`;
 

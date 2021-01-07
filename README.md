@@ -27,6 +27,7 @@ style 全局样式
 typings 全局扩展以及全局变量定义
 utils 无关业务的工具类(切记不要加业务代码)
 application app的启动路由注册
+service 各模块互相访问接口，模块间不允许直接通信，只能通过接口
 index app入口
 
 
@@ -38,10 +39,13 @@ module 下的文件夹说明
     helper 统一的业务处理，尽可能不在ui页面直接操作业务，比如根据组合状态值以及逻辑计算返回一个文本。公用逻辑存放处，避免重复代码
     res 资源文件夹 图片资源跟 字符串资源
 
+
     特殊的一些
     store 全部的store，可以拿到全局的变量
     extensions 扩展的一些实现以及全局变量的一些初始化
     native 存放移动端的方法接口
+    service 服务接口的实现，挂载在globalService,需要在当前的index.ts注册，
+
 
 
 

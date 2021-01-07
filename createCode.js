@@ -4,11 +4,11 @@ let languageImport = require('./script/LanguageImport');
 const scanDir = fileUtil.scanDir;
 const scanDirHandle = fileUtil.scanDirHandle;
 const getWaitScanDirs = fileUtil.getWaitScanDirs;
-const getDirNameByPath = fileUtil.getDirNameByPath;
+const getParentDirNameByPath = fileUtil.getParentDirNameByPath;
 const fPath = require('path'); //解析需要遍历的文件夹
 const fs = require('fs'); //解析需要遍历的文件夹
 const filePath = fPath.resolve('./src/module');
-const input = [
+const INPUT_JS = [
   {
     dir: 'res/images',
     handle: imageImport.handleImageCode,
@@ -18,25 +18,19 @@ const input = [
     handle: languageImport.handleLanguageCode,
   },
 ];
-// scanDirHandle(filePath, scanDir(filePath), input);
-
-let waitScanDirs = getWaitScanDirs(filePath, scanDir(filePath), input);
-// console.info(waitScanDirs);
-
+scanDirHandle(filePath, scanDir(filePath), INPUT_JS);
+let waitScanDirs = getWaitScanDirs(filePath, scanDir(filePath), INPUT_JS);
 let watchDirs = [];
 waitScanDirs.forEach((item, index) => {
-  // console.info(item);
   watchDirs.push(...item.dir);
-  // input[i].handle(getDirNameByPath(item),item);
 });
-// console.info(watchDirs);
 console.info('start file change Listener');
 for (let i = 0; i < watchDirs.length; i++) {
-  fs.watchFile(watchDirs[i], (cur, prv) => {
-    console.log(`file change`);
-    scanDirHandle(filePath, scanDir(filePath), input);
+  let watchDir = fs.existsSync(watchDirs[i])
+    ? watchDirs[i]
+    : getParentDirNameByPath(watchDirs[i]);
+  fs.watchFile(watchDir, (cur, prv) => {
+    console.log('file change');
+    scanDirHandle(filePath, scanDir(filePath), INPUT_JS);
   });
 }
-
-//
-// console.info(waitScanDirs);

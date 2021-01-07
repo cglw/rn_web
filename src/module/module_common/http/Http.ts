@@ -3,6 +3,7 @@ import {CommonInterceptors} from './CommonInterceptors';
 import {HttpResponse} from '../../../sdk/http/ResponseChain';
 import {HttpUtils} from '../../../sdk/http/HttpUtils';
 import {DataHandleInterceptors} from './DataHandleInterceptors';
+import {BaseResponse} from '../bean/BaseResponse';
 interface ReqType<T> {
   get(): Promise<T>;
   post(): Promise<T>;

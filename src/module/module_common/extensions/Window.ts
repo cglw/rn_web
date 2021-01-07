@@ -12,7 +12,7 @@ globalI18n = I18n;
 globalImages = {};
 window.addTranslations = (translations = {}) => {
   let res = {};
-  if (JSON.stringify(I18n.translations) == '{}') {
+  if (JSON.stringify(I18n.translations) === '{}') {
     res = translations;
   } else {
     for (let key1 in I18n.translations) {

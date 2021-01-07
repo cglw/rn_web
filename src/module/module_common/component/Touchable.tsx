@@ -55,7 +55,9 @@ type P = {
  * 组件名称：防重复点击触摸组件
  * 注意事项：默认使用TouchableOpacity组件效果
  * */
-class Touchable extends PureComponent<P> {
+export class Touchable extends PureComponent<P> {
+  static propTypes: any;
+  static defaultProps: any;
   constructor(props) {
     super(props);
     this.state = {};
@@ -135,4 +137,6 @@ class Touchable extends PureComponent<P> {
   }
 }
 
+Touchable.propTypes = propTypes;
+Touchable.defaultProps = defaultProps;
 export default Touchable;

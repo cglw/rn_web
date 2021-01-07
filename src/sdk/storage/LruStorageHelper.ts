@@ -2,10 +2,8 @@ import {StorageHelper} from './StorageHelper';
 import {checkEmpty} from '../../utils/CheckUtil';
 
 export class LruStorageHelper {
-  static save(key: string, val: any, maxLength = 5) {
-    this.saveWithPromise(key, val, maxLength)
-      .then((res) => {})
-      .catch((err) => {});
+  static async save(key: string, val: any, maxLength = 5) {
+    await this.saveWithPromise(key, val, maxLength);
   }
   static saveWithPromise(key: string, val: any, maxLength = 5) {
     return this.get(key).then((res) => {
