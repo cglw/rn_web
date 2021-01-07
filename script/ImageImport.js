@@ -11,10 +11,13 @@ exports.handleImageCode = function (filePath, files) {
   let content = '';
   for (let i = 0; i < files.length; i++) {
     let image = files[i];
-    content += imageListFmt(
-      getDirNameByPath(filePath) + '_' + getFileName(image),
-      image,
-    );
+    let fileName = getFileName(image);
+    if (!fileName.endsWith('.ts')) {
+      content += imageListFmt(
+        getDirNameByPath(filePath) + '_' + getFileName(image),
+        image,
+      );
+    }
   }
   fs.writeFile(
     fPath.join(filePath, 'res/Images.ts'),

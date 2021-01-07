@@ -3,13 +3,16 @@
 百家云网校 手机端RN(安卓+iOS+H5)
 
 ### 命名规范
-    1.全局的模型类/ui类/function Ui组件 统一大小开头 驼峰
-      除了例如index js项目通用的 这样的可以小写
-    2.函数名、方法名、参数名、成员变量、局部变量都统一使用 lowerCamelCase 风格   组件function 需要大写开头需要注意
-    3.图片资源  控件描述_控件状态限定词  导出名称：模块名_业务功能描述_控件描述_控件状态限定词 module_login_btn_pressed
-    4.所有页面维度的组件命名xxxScreen 业务逻辑组件xxxView 公共组件不限制
-    5.string 资源 模块名_逻辑名称 module_login_tips
-    6.常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
+1.基本规范
+- 全局的模型类/ui类/function Ui组件 统一大小开头 驼峰
+- 除了例如index js项目通用的 这样的可以小写
+- 函数名、方法名、参数名、成员变量、局部变量都统一使用 lowerCamelCase 风格   组件function 需要大写开头需要注意
+- 图片资源  控件描述_控件状态限定词  导出名称：模块名_业务功能描述_控件描述_控件状态限定词 module_login_btn_pressed
+- 所有页面维度的组件命名xxxScreen 业务逻辑组件xxxView 公共组件不限制
+- string 资源 模块名_逻辑名称 module_login_tips
+- 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
+
+
 
 ### UI库地址
 https://rn.mobile.ant.design/docs/react/introduce-cn
@@ -81,3 +84,12 @@ prettier
 ### 新增模块
 1.注册路由到最外层router
 2.检查最外层index包含新建模块index
+
+### 脚本使用
+1. 注意事项
+createCode //开启后请勿关闭，会监听图片跟字符串ts文件变化 自动导入相关代码，
+createTemplate //脚本每次会重置src/index.js  src/router/index.js 所以这两个文件不要写别的
+               后面跟一个参数模块名称
+2. 使用例子
+node createCode.js
+node createTemplate.js module_test

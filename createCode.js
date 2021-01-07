@@ -30,11 +30,10 @@ waitScanDirs.forEach((item, index) => {
   // input[i].handle(getDirNameByPath(item),item);
 });
 // console.info(watchDirs);
+console.info('start file change Listener');
 for (let i = 0; i < watchDirs.length; i++) {
-  console.info(watchDirs[i]);
   fs.watchFile(watchDirs[i], (cur, prv) => {
-    console.log(`cur.mtime>>${cur.mtime.toLocaleString()}`);
-    console.log(`prv.mtime>>${prv.mtime.toLocaleString()}`);
+    console.log(`file change`);
     scanDirHandle(filePath, scanDir(filePath), input);
   });
 }

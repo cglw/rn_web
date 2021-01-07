@@ -32,8 +32,11 @@ exports.scanDirHandle = function (rootPath, dirs, input = []) {
     for (let i = 0; i < input.length; i++) {
       //拼接等待扫描的文件夹
       let handleFileDir = fPath.join(resRoot, input[i].dir);
-      console.info(resRoot);
-      input[i].handle(resRoot, scanDirFunc(handleFileDir));
+
+      if (fs.existsSync(handleFileDir)) {
+        input[i].handle(resRoot, scanDirFunc(handleFileDir));
+      } else {
+      }
       // fs.watch()
     }
   });

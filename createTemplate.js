@@ -8,12 +8,16 @@ const MODULE_INDEX_STR = `import './res/index';\nexport {};`;
 const MODULE_ROOT_REGISTER_FMT = fileUtil.template`import './module/${0}/index';\n`;
 const EXPORT_DEFAULT_STR = `export default {};`;
 const ROUTER_TEMPLATE_FMT = fileUtil.template`import ${0} from '../module/${1}/router/Router';\n`;
+// const EXPORT_DEFAULT_STR_FMT = fileUtil.template`export default {\n};`;
 
+const DIR_DEFAULT_FILE = fileUtil.template`export class ${0} {}`;
+const AUTO_CREATE_CLASS_END_INDEX = 4;
 const MODULE_CHILD = [
   'api',
   'bean',
   'component',
   'constants',
+  'screen',
   'res',
   'res/images',
   'res/strings',
@@ -21,9 +25,10 @@ const MODULE_CHILD = [
   'res/index.ts',
   'router',
   'router/Router.ts',
-  'screen',
   'index.ts',
 ];
+// const CREATE_TS_ARRAY = ['api', 'bean', 'constants'];
+const CREATE_TSX_ARRAY = ['component', 'screen'];
 
 function upStrFirst(str) {
   str = str.toLowerCase();
@@ -35,7 +40,7 @@ function upStrFirst(str) {
   }
   return result;
 }
-function getModuleName(moduleName) {
+function getModuleRealName(moduleName) {
   return upStrFirst(moduleName.replace('module_', ''));
 }
 
@@ -57,32 +62,49 @@ if (moduleDir.indexOf(moduleName) > -1) {
 
 //创建文件夹
 fs.mkdirSync(path.join(ORIGIN_MODULE, moduleName));
-MODULE_CHILD.forEach((dir) => {
+MODULE_CHILD.forEach((dir, index) => {
+  let targetDir = path.join(ORIGIN_MODULE, moduleName, dir);
   if (dir.indexOf('.') === -1) {
-    fs.mkdirSync(path.join(ORIGIN_MODULE, moduleName, dir));
+    fs.mkdirSync(targetDir);
   } else if (dir === 'index.ts') {
-    fs.writeFileSync(
-      path.join(ORIGIN_MODULE, moduleName, dir),
-      MODULE_INDEX_STR,
-    );
+    fs.writeFileSync(targetDir, MODULE_INDEX_STR);
   } else {
+    fs.writeFileSync(targetDir, EXPORT_DEFAULT_STR);
+  }
+  if (index <= AUTO_CREATE_CLASS_END_INDEX) {
+    let createFileName = `${getModuleRealName(moduleName)}${upStrFirst(dir)}`;
+    const endSuffix = CREATE_TSX_ARRAY.indexOf(dir) > -1 ? '.tsx' : '.ts';
     fs.writeFileSync(
-      path.join(ORIGIN_MODULE, moduleName, dir),
-      EXPORT_DEFAULT_STR,
+      path.join(targetDir, createFileName) + endSuffix,
+      DIR_DEFAULT_FILE(createFileName),
     );
   }
 });
-//导入根的index
-fs.appendFileSync(ROOT_INDEX_FILE, MODULE_ROOT_REGISTER_FMT(moduleName));
 
-//修改Router文件
-let text = fs.readFileSync(ROOT_ROUTER_FILE, 'utf-8');
-let routerResult = text.replace(
-  'export default {',
-  `export default {\n  ...${getModuleName(moduleName)},`,
-);
-routerResult =
-  ROUTER_TEMPLATE_FMT(getModuleName(moduleName), moduleName) + routerResult;
+let newModuleDir = [...moduleDir, moduleName];
+
+fs.writeFileSync(ROOT_ROUTER_FILE, '');
+let routerResult = `export default {\n};`;
+newModuleDir.forEach((moduleName) => {
+  if (
+    fs.existsSync(path.join(ORIGIN_MODULE, moduleName, 'Router', 'Router.ts'))
+  ) {
+    // //修改Router文件
+    routerResult = routerResult.replace(
+      'export default {',
+      `export default {\n  ...${getModuleRealName(moduleName)},`,
+    );
+    routerResult =
+      ROUTER_TEMPLATE_FMT(getModuleRealName(moduleName), moduleName) +
+      routerResult;
+  }
+});
 fs.writeFileSync(ROOT_ROUTER_FILE, routerResult);
+
+fs.writeFileSync(ROOT_INDEX_FILE, '');
+newModuleDir.forEach((moduleName) => {
+  //导入根的index
+  fs.appendFileSync(ROOT_INDEX_FILE, MODULE_ROOT_REGISTER_FMT(moduleName));
+});
 
 console.info('complete');
