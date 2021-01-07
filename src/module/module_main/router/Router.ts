@@ -1,4 +1,4 @@
-import {MainScreen} from '../module/module_main/screen/MainScreen';
+import {MainScreen} from '../screen/MainScreen';
 
 export default {
   index: {

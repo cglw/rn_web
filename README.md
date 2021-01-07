@@ -73,3 +73,11 @@ Http.get<T>(xx,xx,xx).then.catch
   let globalImages: any;
 
 
+代码格式化插件
+prettier
+
+
+
+### 新增模块
+1.注册路由到最外层router
+2.检查最外层index包含新建模块index

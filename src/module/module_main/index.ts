@@ -1,3 +1,2 @@
-// import './res/strings/index';
-// import './res/images/index';
+import './res/index';
 export {};
