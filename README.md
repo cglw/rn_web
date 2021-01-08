@@ -1,6 +1,17 @@
-# bjy_wap
+# 百家云网校 手机端RN(安卓+iOS+H5)
 
-百家云网校 手机端RN(安卓+iOS+H5)
+
+### 相关地址
+- RN中文官网：https://reactnative.cn/
+- RN英文官网：https://reactnative.dev/
+- RN的web端实现：https://github.com/necolas/react-native-web
+- UI组件库Ant Design Mobile RN: https://rn.mobile.ant.design/docs/react/introduce-cn
+- React中文官网：https://zh-hans.reactjs.org/
+- npm第三方库：https://www.npmjs.com/
+
+代码格式化插件
+prettier
+
 
 ### 命名规范
 1.基本规范
@@ -80,8 +91,6 @@ Http.get<T>(xx,xx,xx).then.catch
   let globalImages: any;
 
 
-代码格式化插件
-prettier
 
 
 
@@ -97,3 +106,10 @@ createTemplate //脚本每次会重置src/index.js  src/router/index.js 所以�
 2. 使用例子
 node createCode.js
 node createTemplate.js module_test
+
+
+### 如何运行项目
+1. npm install
+2. 运行
+web端：npm run web
+移动端：npm run android/ios

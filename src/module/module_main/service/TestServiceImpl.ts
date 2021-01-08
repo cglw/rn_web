@@ -3,4 +3,6 @@ class TestServiceImpl implements TestInterface {
     console.info('testPrint');
   }
 }
+
+console.info('testInterface init');
 globalService.testInterface = new TestServiceImpl();

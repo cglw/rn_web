@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 // 让页面的值可以监听
@@ -12,7 +12,7 @@ class LoginScreen extends Component<any, any> {
 
   constructor(props) {
     super(props);
-
+    globalService.testInterface.testPrint();
     console.info('6666');
     console.info('props.rootStore');
     // console.info(props.rootStore.accountStore.time);
@@ -20,13 +20,20 @@ class LoginScreen extends Component<any, any> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{...styles.container, display: 'flex'}}>
         {/*<Hello   sex={}/>*/}
         <Text>{'login'.itn()}</Text>
         <Text>{'count'.itn({count: 9999})}</Text>
         <Text>{globalStore.accountStore.time}</Text>
         <Text onPress={this.handleInc}>{'+'}</Text>
         <Text onPress={this.handleDec}>{'-'}</Text>
+        <Text onPress={this.handleDec}>{'-'}</Text>
+        <View style={{display: 'flex', flex: 1}}>
+          <ScrollView>
+            <View style={{height: 100, backgroundColor: 'blue'}} />
+            <View style={{height: 1000, backgroundColor: 'red'}} />
+          </ScrollView>
+        </View>
       </View>
     );
   }
@@ -51,9 +58,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // flexDirection: 'row',
   },
   btn: {
     // borderWidth: StyleSheet.hairlineWidth,

@@ -1,3 +1,3 @@
 import './res/index';
-import './service_impl/TestServiceImpl';
+import './service/TestServiceImpl';
 export {};
