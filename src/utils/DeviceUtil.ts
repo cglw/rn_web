@@ -1,4 +1,4 @@
-import {Dimensions, Platform} from 'react-native';
+import {Dimensions, Platform, StatusBar} from 'react-native';
 
 export function isIosPad(): boolean {
   return Platform.OS === 'ios' && Platform.isPad;
@@ -47,4 +47,12 @@ export function isAndroid(): boolean {
 }
 export function isWeb(): boolean {
   return Platform.OS === 'web';
+}
+
+// 获取状态栏高度
+export function getStatusBarHeight() {
+  return Platform.select({
+    ios: isIphoneX() ? 44 : 20,
+    android: StatusBar.currentHeight,
+  });
 }

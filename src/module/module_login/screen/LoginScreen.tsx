@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
+import {getWindowHeight} from '../../../utils/ScreenUtil';
+import {wrapWithSafe} from '../../module_common/component/ViewRootContainer';
+import {Button} from '@ant-design/react-native';
 // 让页面的值可以监听
 @observer
 class LoginScreen extends Component<any, any> {
@@ -12,29 +15,24 @@ class LoginScreen extends Component<any, any> {
 
   constructor(props) {
     super(props);
-    globalService.testInterface.testPrint();
+    // globalService.testInterface.testPrint();
     console.info('6666');
     console.info('props.rootStore');
     // console.info(props.rootStore.accountStore.time);
   }
 
   render() {
-    return (
-      <View style={{...styles.container, display: 'flex'}}>
-        {/*<Hello   sex={}/>*/}
-        <Text>{'login'.itn()}</Text>
-        <Text>{'count'.itn({count: 9999})}</Text>
-        <Text>{globalStore.accountStore.time}</Text>
-        <Text onPress={this.handleInc}>{'+'}</Text>
-        <Text onPress={this.handleDec}>{'-'}</Text>
-        <Text onPress={this.handleDec}>{'-'}</Text>
-        <View style={{display: 'flex', flex: 1}}>
-          <ScrollView>
-            <View style={{height: 100, backgroundColor: 'blue'}} />
-            <View style={{height: 1000, backgroundColor: 'red'}} />
-          </ScrollView>
-        </View>
-      </View>
+    console.info('getWindowHeight()');
+    console.info(getWindowHeight());
+    return wrapWithSafe(
+      <>
+        <Text style={{height: 100, position: 'absolute'}}>test</Text>
+        <ScrollView style={{marginTop: 20, flex: 1}}>
+          <View style={{height: 100, backgroundColor: 'blue'}} />
+          <View style={{height: 1000, backgroundColor: 'red'}} />
+        </ScrollView>
+        <Button />
+      </>,
     );
   }
   handleInc = () => {
@@ -54,26 +52,26 @@ class LoginScreen extends Component<any, any> {
 
   loadData() {}
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // flexDirection: 'row',
-  },
-  btn: {
-    // borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'blue',
-    color: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20,
-    textAlign: 'center',
-    padding: 20,
-    fontSize: 100,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#ffffff',
+//     // alignItems: 'center',
+//     // justifyContent: 'center',
+//     flexDirection: 'row',
+//   },
+//   btn: {
+//     // borderWidth: StyleSheet.hairlineWidth,
+//     borderColor: 'blue',
+//     color: 'blue',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     margin: 20,
+//     textAlign: 'center',
+//     padding: 20,
+//     fontSize: 100,
+//   },
+// });
 
 export default LoginScreen;
 
