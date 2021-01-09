@@ -8,6 +8,7 @@ module.exports = {
     'no-extend-native': 0,
     'no-undef': 0,
     'dot-notation': 0,
+    'react-native/no-inline-styles': 0
     // "prettier/prettier": [
     //   2,
     //   {
