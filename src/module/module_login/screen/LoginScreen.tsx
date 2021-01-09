@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { getWindowHeight } from '../../../utils/ScreenUtil';
 import { wrapWithSafe } from '../../module_common/component/ViewRootContainer';
 import { Button } from '@ant-design/react-native';
+
 // 让页面的值可以监听
 @observer
 class LoginScreen extends Component<any, any> {

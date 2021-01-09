@@ -1,18 +1,18 @@
 // @flow
 'use strict';
-import React, {Component} from 'react';
-import {View, Text, Image, TextInput} from 'react-native';
-import {RouterManager} from '../../../sdk/router/RouterManager';
+import React, { Component } from 'react';
+import { View, Text, Image, TextInput } from 'react-native';
+import { RouterManager } from '../../../sdk/router/RouterManager';
 import AutoSizeSheet from '../../../sdk/AutoSizeSheet';
-import {getWindowWidth} from '../../../utils/ScreenUtil';
-import {TabBar} from '@ant-design/react-native';
-import {TestScreen} from './TestScreen';
+import { getWindowWidth } from '../../../utils/ScreenUtil';
+import { TabBar } from '@ant-design/react-native';
+import { TestScreen } from './TestScreen';
 
 export class MainScreen extends Component<any> {
   render() {
     console.info('5555');
     return (
-      <View style={{marginTop: 100, ...globalStyles.center}}>
+      <View style={{ marginTop: 100, ...globalStyles.center }}>
         <Text
           style={styles.text}
           onPress={() => {
