@@ -8,7 +8,7 @@ module.exports = {
   jsxSingleQuote: false, // 在jsx中使用单引号代替双引号
   arrowParens: "avoid", // (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号
   htmlWhitespaceSensitivity: "ignore", // 不让html的>结尾符号换行
-  bracketSpacing: false,
+  bracketSpacing: true,
   jsxBracketSameLine: true,
   singleQuote: true,
   trailingComma: 'all',

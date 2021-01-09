@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import {observable} from 'mobx';
-import {observer} from 'mobx-react';
-import {getWindowHeight} from '../../../utils/ScreenUtil';
-import {wrapWithSafe} from '../../module_common/component/ViewRootContainer';
-import {Button} from '@ant-design/react-native';
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, ScrollView, Image } from 'react-native';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import { getWindowHeight } from '../../../utils/ScreenUtil';
+import { wrapWithSafe } from '../../module_common/component/ViewRootContainer';
+import { Button } from '@ant-design/react-native';
 // 让页面的值可以监听
 @observer
 class LoginScreen extends Component<any, any> {
@@ -26,10 +26,14 @@ class LoginScreen extends Component<any, any> {
     console.info(getWindowHeight());
     return wrapWithSafe(
       <>
-        <Text style={{height: 100, position: 'absolute'}}>test</Text>
-        <ScrollView style={{marginTop: 20, flex: 1}}>
-          <View style={{height: 100, backgroundColor: 'blue'}} />
-          <View style={{height: 1000, backgroundColor: 'red'}} />
+        <Text style={{ height: 100, position: 'absolute' }}>test</Text>
+        <ScrollView style={{ marginTop: 20, flex: 1 }}>
+          <Image
+            style={{ width: 100, height: 100 }}
+            source={globalImages.module_login_course_ic_invalid}
+          />
+          <View style={{ height: 100, backgroundColor: 'blue' }} />
+          <View style={{ height: 1000, backgroundColor: 'red' }} />
         </ScrollView>
         <Button />
       </>,
