@@ -1,4 +1,4 @@
-import {AccountStore} from './AccountStore';
+import { AccountStore } from './AccountStore';
 
 export class RootStore {
   accountStore: AccountStore;

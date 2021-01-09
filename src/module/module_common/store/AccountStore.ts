@@ -1,5 +1,5 @@
-import {RootStore} from './RootStore';
-import {action, computed, makeObservable, observable} from 'mobx';
+import { RootStore } from './RootStore';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 export class AccountStore {
   time = 100;

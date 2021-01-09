@@ -4,7 +4,7 @@ import {
   GLOBAL_STYLES,
 } from '../../../style/GlobleStyle';
 import I18n from 'i18n-js';
-import {RouterManager} from '../../../sdk/router/RouterManager';
+import { RouterManager } from '../../../sdk/router/RouterManager';
 globalStyles = GLOBAL_STYLES;
 globalDimes = GLOBAL_DIMES;
 globalColors = GLOBAL_COLORS;
@@ -18,8 +18,10 @@ window.addTranslations = (translations = {}) => {
     for (let key1 in I18n.translations) {
       for (let key2 in translations) {
         if (key1 === key2) {
+          // @ts-ignore
           res[key1] = {
             ...I18n.translations[key1],
+            // @ts-ignore
             ...translations[key1],
           };
         }
@@ -28,8 +30,6 @@ window.addTranslations = (translations = {}) => {
   }
 
   I18n.translations = res;
-  console.info(' I18n.translations');
-  console.info(I18n.translations);
 };
 window.routeTo = (name: string, params?: object | undefined) => {
   RouterManager.getInstance().push(name, params);

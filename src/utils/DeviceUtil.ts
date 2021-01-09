@@ -1,4 +1,4 @@
-import {Dimensions, Platform, StatusBar} from 'react-native';
+import { Dimensions, Platform, StatusBar } from 'react-native';
 
 export function isIosPad(): boolean {
   return Platform.OS === 'ios' && Platform.isPad;

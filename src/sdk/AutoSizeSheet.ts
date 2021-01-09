@@ -20,7 +20,7 @@ export type AutoSizeSheetStyle<S extends Styles> = {
   [key: string]: number;
 };
 
-type NamedStyles<T> = {[P in keyof T]: ViewStyle | TextStyle | ImageStyle};
+type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
 
 /**
  * Creates a StyleSheet style reference from the given object.
@@ -34,23 +34,24 @@ export default class AutoSizeSheet {
     designWidth: number = 375,
   ): S {
     const platformStyles = {};
-    Object.keys(styles).forEach((name) => {
+    Object.keys(styles).forEach(name => {
       // @ts-ignore
-      const {ios, android, web, ...style} = styles[name];
+      const { ios, android, web, ...style } = styles[name];
       let xeStyle = style;
       if (ios && Platform.OS === 'ios') {
-        xeStyle = {...style, ...ios};
+        xeStyle = { ...style, ...ios };
       }
       if (android && Platform.OS === 'android') {
-        xeStyle = {...style, ...android};
+        xeStyle = { ...style, ...android };
       }
       if (android && Platform.OS === 'web') {
-        xeStyle = {...style, ...web};
+        xeStyle = { ...style, ...web };
       }
       if (screenWidth > 0) {
         // @ts-ignore
         xeStyle = this.scaleSize(xeStyle, designWidth, screenWidth);
       }
+      // @ts-ignore
       platformStyles[name] = xeStyle;
     });
 
@@ -63,7 +64,7 @@ export default class AutoSizeSheet {
     designWidth: number,
     screenWidth: number,
   ): number {
-    Object.keys(style).forEach((name) => {
+    Object.keys(style).forEach(name => {
       // console.info('type===>' + typeof Object.keys(style));
       if (
         this.scaleProps.indexOf(name) >= 0 &&

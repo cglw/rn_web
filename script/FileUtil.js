@@ -1,5 +1,5 @@
 const fs = require('fs');
-const fPath = require('path'); //解析需要遍历的文件夹
+const path = require('path'); //解析需要遍历的文件夹
 
 //扩充format的
 exports.template = function (strings, ...keys) {
@@ -30,11 +30,11 @@ exports.getParentDirNameByPath = function (file) {
 
 exports.scanDirHandle = function (rootPath, dirs, input = []) {
   //扫描文件夹
-  dirs.forEach((file) => {
-    let resRoot = fPath.join(rootPath, file);
+  dirs.forEach(file => {
+    let resRoot = path.join(rootPath, file);
     for (let i = 0; i < input.length; i++) {
       //拼接等待扫描的文件夹
-      let handleFileDir = fPath.join(resRoot, input[i].dir);
+      let handleFileDir = path.join(resRoot, input[i].dir);
 
       if (fs.existsSync(handleFileDir)) {
         input[i].handle(resRoot, scanDirFunc(handleFileDir));
@@ -47,8 +47,8 @@ exports.scanDirHandle = function (rootPath, dirs, input = []) {
 exports.getWaitScanDirs = function (rootPath, dirs, input = []) {
   let waitScanDir = [];
   //扫描文件夹
-  dirs.forEach((file) => {
-    let resRoot = fPath.join(rootPath, file);
+  dirs.forEach(file => {
+    let resRoot = path.join(rootPath, file);
     let tmpArray = [];
 
     let item = {
@@ -57,10 +57,39 @@ exports.getWaitScanDirs = function (rootPath, dirs, input = []) {
     };
 
     for (let i = 0; i < input.length; i++) {
-      tmpArray.push(fPath.join(resRoot, input[i].dir));
+      tmpArray.push(path.join(resRoot, input[i].dir));
       //扫描结果处理
     }
     waitScanDir.push(item);
   });
   return waitScanDir;
 };
+
+const deleteFolderRecursive = function (url) {
+  let files = [];
+  //判断给定的路径是否存在
+  if (fs.existsSync(url)) {
+    //返回文件和子目录的数组
+    files = fs.readdirSync(url);
+
+    files.forEach(function (file, index) {
+      // var curPath = url + "/" + file;
+      let curPath = path.join(url, file);
+      //fs.statSync同步读取文件夹文件，如果是文件夹，在重复触发函数
+      if (fs.statSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+
+        // 是文件delete file
+      } else {
+        fs.unlinkSync(curPath);
+      }
+    });
+    //清除文件夹
+    fs.rmdirSync(url);
+  } else {
+    console.log('给定的路径不存在，请给出正确的路径');
+  }
+};
+
+exports.deleteFolderRecursive = deleteFolderRecursive;

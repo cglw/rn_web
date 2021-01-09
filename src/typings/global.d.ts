@@ -13,8 +13,8 @@ declare global {
   let globalImages: any;
   let globalStore: any;
   let globalService: any;
-  function addTranslations(translations: object);
-  function routeTo(name: string, params?: object | undefined);
+  function addTranslations(translations: object): void;
+  function routeTo(name: string, params?: object | undefined): void;
 }
 
 export {};

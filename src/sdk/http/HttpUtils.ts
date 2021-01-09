@@ -3,7 +3,7 @@ export class HttpUtils {
     if (params) {
       url = url + '?';
       Object.keys(params).forEach(
-        (key) =>
+        key =>
           (url =
             url +
             encodeURIComponent(key) +
@@ -17,12 +17,13 @@ export class HttpUtils {
   }
   static objectToFormData(body: object = {}) {
     let formData = new FormData();
-    Object.keys(body).forEach((key) => {
+    Object.keys(body).forEach(key => {
+      // @ts-ignore
       formData.append(key, body[key]);
     });
     return formData;
   }
-  static isEmptyObject(obj) {
+  static isEmptyObject(obj: any) {
     return JSON.stringify(obj) == '{}';
   }
 }

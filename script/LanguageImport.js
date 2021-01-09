@@ -24,7 +24,7 @@ exports.handleLanguageCode = function (filePath, files) {
   }
   fs.writeFile(
     fPath.join(filePath, 'res/index.ts'),
-    languageResFmt({languageImport, languageList}),
-    (err) => {},
+    languageResFmt({ languageImport, languageList }),
+    err => {},
   );
 };

@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import {
   TouchableHighlight,
   TouchableNativeFeedback,
@@ -32,7 +32,7 @@ const defaultProps = {
 
 const preventDoublePress = {
   lastPressTime: 1,
-  onPress(callback) {
+  onPress(callback: any) {
     const curTime = new Date().getTime();
     if (curTime - this.lastPressTime > 500) {
       this.lastPressTime = curTime;
@@ -44,11 +44,11 @@ const preventDoublePress = {
 type P = {
   onPress: any;
   isPreventDouble: any;
-  isHighlight;
-  isNativeFeedback;
-  isWithoutFeedback;
-  activeOpacity;
-  underlayColor;
+  isHighlight: any;
+  isNativeFeedback: any;
+  isWithoutFeedback: any;
+  activeOpacity: any;
+  underlayColor: any;
 };
 
 /**
@@ -58,7 +58,7 @@ type P = {
 export class Touchable extends PureComponent<P> {
   static propTypes: any;
   static defaultProps: any;
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {};
     this.onPreventDoublePress = this.onPreventDoublePress.bind(this);
@@ -68,7 +68,7 @@ export class Touchable extends PureComponent<P> {
    * 防重复点击处理事件
    * */
   onPreventDoublePress() {
-    const {onPress, isPreventDouble} = this.props;
+    const { onPress, isPreventDouble } = this.props;
     if (!onPress) {
       return;
     }

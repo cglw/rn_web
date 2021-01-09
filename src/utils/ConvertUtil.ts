@@ -1,4 +1,4 @@
-export function convertSize(limit) {
+export function convertSize(limit: number) {
   let size = '';
   if (limit < 0.1 * 1024) {
     //如果小于0.1KB转化成B
@@ -24,7 +24,7 @@ export function convertSize(limit) {
   return sizeStr;
 }
 
-export function minToHour(min) {
+export function minToHour(min: number) {
   let s = (min / 60).toFixed(2);
   let string = String(s);
   if (string.endsWith('.00')) {
@@ -32,7 +32,7 @@ export function minToHour(min) {
   }
   return string;
 }
-export function hideCode(str, frontLen, endLen) {
+export function hideCode(str: string, frontLen: number, endLen: number) {
   let len = str.length - frontLen - endLen;
   let star = '';
   for (let i = 0; i < len; i++) {
