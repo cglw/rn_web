@@ -1,5 +1,5 @@
-import {Http} from '../../module_common/http/Http';
-import {NavBean} from '../bean/NavBean';
+import { Http } from '../../module_common/http/Http';
+import { NavBean } from '../bean/NavBean';
 
 export class LoginApi {
   static login() {

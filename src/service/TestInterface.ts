@@ -1,3 +1,3 @@
 interface TestInterface {
-  testPrint();
+  testPrint(): void;
 }

@@ -1,6 +1,6 @@
-import {RequestApiInterceptor, LogInterceptor} from './Interceptors';
-import {Interceptor} from './ResponseChain';
-import {getResponseWithInterceptorChain} from './RealCall';
+import { RequestApiInterceptor, LogInterceptor } from './Interceptors';
+import { Interceptor } from './ResponseChain';
+import { getResponseWithInterceptorChain } from './RealCall';
 
 interface ApiInterface {
   fetch<T>(input: RequestInfo, init?: RequestInit): Promise<T>;
@@ -25,7 +25,6 @@ export class HttpClient implements ApiInterface {
   }
   //新增拦截器
   addInterceptors(interceptor: Interceptor) {
-    console.info('addInterceptors');
     this.interceptors.unshift(interceptor);
   }
 

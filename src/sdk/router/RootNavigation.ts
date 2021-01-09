@@ -1,5 +1,6 @@
 import React from 'react';
-import {NavigationContainerRef} from '@react-navigation/core';
+// @ts-ignore
+import { NavigationContainerRef } from '@react-navigation/core';
 class ReadyRefWrapper {
   isReady: boolean;
   constructor() {

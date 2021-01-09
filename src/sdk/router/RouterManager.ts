@@ -1,5 +1,5 @@
-import {NavigationContainerRef, StackActions} from '@react-navigation/native';
-import {navigationRef} from './RootNavigation';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
+import { navigationRef } from './RootNavigation';
 
 export class RouterManager {
   private static instance: RouterManager;

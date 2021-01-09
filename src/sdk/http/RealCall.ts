@@ -1,4 +1,4 @@
-import {HttpRequest, Interceptor, RealTaskChain} from './ResponseChain';
+import { HttpRequest, Interceptor, RealTaskChain } from './ResponseChain';
 
 export function getResponseWithInterceptorChain<T>(
   input: RequestInfo,

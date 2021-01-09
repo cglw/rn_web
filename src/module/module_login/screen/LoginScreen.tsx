@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Image } from 'react-native';
+import { Text, View, ScrollView, Image } from 'react-native';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { getWindowHeight } from '../../../utils/ScreenUtil';
@@ -8,13 +8,13 @@ import { Button } from '@ant-design/react-native';
 
 // 让页面的值可以监听
 @observer
-class LoginScreen extends Component<any, any> {
+export default class LoginScreen extends Component<any, any> {
   date: string = '';
   dir: boolean = false;
   price = observable.box(1);
   data = observable([1231, 23]);
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     // globalService.testInterface.testPrint();
     console.info('6666');
@@ -54,30 +54,4 @@ class LoginScreen extends Component<any, any> {
     console.info('handleDec');
     globalStore.accountStore.time = 10;
   };
-
-  loadData() {}
 }
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#ffffff',
-//     // alignItems: 'center',
-//     // justifyContent: 'center',
-//     flexDirection: 'row',
-//   },
-//   btn: {
-//     // borderWidth: StyleSheet.hairlineWidth,
-//     borderColor: 'blue',
-//     color: 'blue',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     margin: 20,
-//     textAlign: 'center',
-//     padding: 20,
-//     fontSize: 100,
-//   },
-// });
-
-export default LoginScreen;
-
-// LoginScreen.contextType = MyContext;

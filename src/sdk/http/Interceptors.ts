@@ -3,7 +3,14 @@ import { Chain, HttpResponse, Interceptor } from './ResponseChain';
 export class RequestApiInterceptor implements Interceptor {
   intercept(chain: Chain): Promise<HttpResponse<any>> {
     let httpRequest = chain.request();
+    console.info('RequestApiInterceptor');
+    console.info(httpRequest.input);
+    console.info(httpRequest.init);
     return fetch(httpRequest.input, httpRequest.init).then(res => {
+      console.info('fetchheaders');
+      console.info(res);
+      console.info(res.headers);
+      res.headers.forEach((v: string, k: string) => console.log(k, v));
       return new HttpResponse(res);
     });
   }
@@ -17,9 +24,9 @@ export class LogInterceptor implements Interceptor {
     console.info(httpRequest.init);
     console.info('-------------------------------------------------');
     let httpResponse = chain.proceed(httpRequest);
-    return httpResponse.then(res => {
+    return httpResponse.then(async res => {
       if (res.response.ok) {
-        let response = res.response.clone();
+        let response: Response = res.response.clone();
         response.json().then(json => {
           console.info('HttpResponse');
           console.info(httpRequest.input);
@@ -30,4 +37,5 @@ export class LogInterceptor implements Interceptor {
       return res;
     });
   }
+  printLog() {}
 }

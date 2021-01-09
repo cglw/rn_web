@@ -1,9 +1,10 @@
-import {HttpClient} from '../../../sdk/http/HttpClient';
-import {CommonInterceptors} from './CommonInterceptors';
-import {HttpResponse} from '../../../sdk/http/ResponseChain';
-import {HttpUtils} from '../../../sdk/http/HttpUtils';
-import {DataHandleInterceptors} from './DataHandleInterceptors';
-import {BaseResponse} from '../bean/BaseResponse';
+import { HttpClient } from '../../../sdk/http/HttpClient';
+import { CommonInterceptors } from './interceptors/CommonInterceptors';
+import { HttpResponse } from '../../../sdk/http/ResponseChain';
+import { HttpUtils } from '../../../sdk/http/HttpUtils';
+import { DataHandleInterceptors } from './interceptors/DataHandleInterceptors';
+import { BaseResponse } from '../bean/BaseResponse';
+import { TimeCalibrationInterceptor } from './interceptors/TimeCalibrationInterceptor';
 interface ReqType<T> {
   get(): Promise<T>;
   post(): Promise<T>;
@@ -18,7 +19,7 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
   private _body: object = {};
   private _options?: object;
   private _isOriginResponse: boolean;
-  constructor(url) {
+  constructor(url: string) {
     this._url = url;
     this._isOriginResponse = false;
   }
@@ -43,24 +44,27 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
   }
 
   private commonReq<T>() {
-    let formData = HttpUtils.objectToFormData(this._body);
-    let body = {};
-    if (!HttpUtils.isEmptyObject(formData)) {
-      body = {
-        body: HttpUtils.objectToFormData(this._body),
-      };
-    }
+    let body = {
+      body: HttpUtils.objectToFormData(this._body),
+    };
     this._options = {
       isOriginResponse: this._isOriginResponse,
       ...this._options,
     };
+    console.info('body====test');
+    console.info(body);
+
+    let init = {
+      method: this._method,
+      ...this._options,
+    };
+    if (this._method !== 'GET') {
+      init = { ...init, ...body };
+    }
+
     return Http.defaultFetch<T>(
       HttpUtils.appendParams(this._url, this._params),
-      {
-        ...body,
-        method: this._method,
-        ...this._options,
-      },
+      init,
     );
   }
 
@@ -93,7 +97,7 @@ export class Http {
   static fetch<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     return HttpClient.getInstance()
       .fetch<HttpResponse<T>>(input, init)
-      .then((res) => {
+      .then(res => {
         return res.response;
       });
   }
@@ -142,5 +146,6 @@ export class Http {
     return Http.common(url, params, body, options).delete<T>();
   }
 }
+HttpClient.getInstance().addInterceptors(new TimeCalibrationInterceptor());
 HttpClient.getInstance().addInterceptors(new CommonInterceptors());
 HttpClient.getInstance().addInterceptors(new DataHandleInterceptors());

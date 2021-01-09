@@ -1,4 +1,4 @@
-import {MainScreen} from '../screen/MainScreen';
+import { MainScreen } from '../screen/MainScreen';
 
 export default {
   index: {

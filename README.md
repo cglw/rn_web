@@ -4,15 +4,18 @@
 ### 相关地址
 - RN中文官网：https://reactnative.cn/
 - RN英文官网：https://reactnative.dev/
+- RN路由框架 https://reactnavigation.org/docs/getting-started
 - RN的web端实现：https://github.com/necolas/react-native-web
   文档 https://necolas.github.io/react-native-web/docs/?path=/docs/overview-getting-started--page
 - UI组件库Ant Design Mobile RN: https://rn.mobile.ant.design/docs/react/introduce-cn
 - React中文官网：https://zh-hans.reactjs.org/
 - npm第三方库：https://www.npmjs.com/
 
+### UI库地址
+https://rn.mobile.ant.design/docs/react/introduce-cn
+
 代码格式化插件
 prettier
-
 
 ### 命名规范
 1.基本规范
@@ -23,11 +26,6 @@ prettier
 - 所有页面维度的组件命名xxxScreen 业务逻辑组件xxxView 公共组件不限制
 - string 资源 模块名_逻辑名称 module_login_tips
 - 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
-
-
-
-### UI库地址
-https://rn.mobile.ant.design/docs/react/introduce-cn
 
 
 assets 全局静态资源可以存储一些json 音频文件等

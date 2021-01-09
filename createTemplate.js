@@ -4,13 +4,13 @@ let fileUtil = require('./script/FileUtil');
 const ORIGIN_MODULE = './src/module';
 const ROOT_INDEX_FILE = './src/index.ts';
 const ROOT_ROUTER_FILE = './src/router/RouterConfig.ts';
-const MODULE_INDEX_STR = `import './res/index';\nexport {};`;
+const MODULE_INDEX_STR = `import './res/index';\nexport {};\n`;
 const MODULE_ROOT_REGISTER_FMT = fileUtil.template`import './module/${0}/index';\n`;
-const EXPORT_DEFAULT_STR = 'export default {};\n';
+const EXPORT_DEFAULT_STR = `export default {};\n`;
 const ROUTER_TEMPLATE_FMT = fileUtil.template`import ${0} from '../module/${1}/router/Router';\n`;
 // const EXPORT_DEFAULT_STR_FMT = fileUtil.template`export default {\n};`;
 
-const DIR_DEFAULT_FILE = fileUtil.template`export class ${0} {}`;
+const DIR_DEFAULT_FILE = fileUtil.template`export class ${0} {}\n`;
 const AUTO_CREATE_CLASS_END_INDEX = 4;
 const MODULE_CHILD = [
   'api',
@@ -46,65 +46,97 @@ function getModuleRealName(moduleName) {
 
 const arguments = process.argv.splice(2);
 if (arguments.length < 1) {
-  console.info('please input module_name');
+  console.info('please input module_name: node createTemplate.js module_xxx');
+  console.info(
+    'if you want delete module,Please add -d at end: node createTemplate.js module_xxx -d',
+  );
   return;
 }
 let moduleName = arguments[0].toLowerCase();
+let isNeedDelete = arguments.length > 1 && arguments[1] === '-d';
+
 if (!moduleName.startsWith('module_')) {
   console.info("module name must be start with 'module_'");
   return;
 }
 let moduleDir = fileUtil.scanDir(ORIGIN_MODULE);
-if (moduleDir.indexOf(moduleName) > -1) {
-  console.info('module has exist');
-  return;
+
+let isModuleExist = moduleDir.indexOf(moduleName) > -1;
+if (isNeedDelete) {
+  if (!isModuleExist) {
+    console.info(moduleName + ' not exist');
+    return;
+  }
+} else {
+  if (isModuleExist) {
+    console.info(moduleName + ' has exist');
+    return;
+  }
 }
 
-//创建文件夹
-fs.mkdirSync(path.join(ORIGIN_MODULE, moduleName));
-MODULE_CHILD.forEach((dir, index) => {
-  let targetDir = path.join(ORIGIN_MODULE, moduleName, dir);
-  if (dir.indexOf('.') === -1) {
-    fs.mkdirSync(targetDir);
-  } else if (dir === 'index.ts') {
-    fs.writeFileSync(targetDir, MODULE_INDEX_STR);
-  } else {
-    fs.writeFileSync(targetDir, EXPORT_DEFAULT_STR);
-  }
-  if (index <= AUTO_CREATE_CLASS_END_INDEX) {
-    let createFileName = `${getModuleRealName(moduleName)}${upStrFirst(dir)}`;
-    const endSuffix = CREATE_TSX_ARRAY.indexOf(dir) > -1 ? '.tsx' : '.ts';
-    fs.writeFileSync(
-      path.join(targetDir, createFileName) + endSuffix,
-      DIR_DEFAULT_FILE(createFileName),
-    );
-  }
-});
+function mkModuleDir(moduleName) {
+  //创建文件夹
+  fs.mkdirSync(path.join(ORIGIN_MODULE, moduleName));
+  MODULE_CHILD.forEach((dir, index) => {
+    let targetDir = path.join(ORIGIN_MODULE, moduleName, dir);
+    if (dir.indexOf('.') === -1) {
+      fs.mkdirSync(targetDir);
+    } else if (dir === 'index.ts') {
+      fs.writeFileSync(targetDir, MODULE_INDEX_STR);
+    } else {
+      fs.writeFileSync(targetDir, EXPORT_DEFAULT_STR);
+    }
+    if (index <= AUTO_CREATE_CLASS_END_INDEX) {
+      let createFileName = `${getModuleRealName(moduleName)}${upStrFirst(dir)}`;
+      const endSuffix = CREATE_TSX_ARRAY.indexOf(dir) > -1 ? '.tsx' : '.ts';
+      fs.writeFileSync(
+        path.join(targetDir, createFileName) + endSuffix,
+        DIR_DEFAULT_FILE(createFileName),
+      );
+    }
+  });
+}
 
-let newModuleDir = [...moduleDir, moduleName];
+function syncRouter(moduleDir = []) {
+  fs.writeFileSync(ROOT_ROUTER_FILE, '');
+  let routerResult = `export default {\n};\n`;
+  moduleDir.forEach(moduleName => {
+    if (
+      fs.existsSync(path.join(ORIGIN_MODULE, moduleName, 'Router', 'Router.ts'))
+    ) {
+      // //修改Router文件
+      routerResult = routerResult.replace(
+        'export default {',
+        `export default {\n  ...${getModuleRealName(moduleName)},`,
+      );
+      routerResult =
+        ROUTER_TEMPLATE_FMT(getModuleRealName(moduleName), moduleName) +
+        routerResult;
+    }
+  });
+  fs.writeFileSync(ROOT_ROUTER_FILE, routerResult);
+}
+function syncRootIndex(moduleDir = []) {
+  fs.writeFileSync(ROOT_INDEX_FILE, '');
+  moduleDir.forEach(name => {
+    //导入根的index
+    fs.appendFileSync(ROOT_INDEX_FILE, MODULE_ROOT_REGISTER_FMT(name));
+  });
+}
 
-fs.writeFileSync(ROOT_ROUTER_FILE, '');
-let routerResult = `export default {\n};`;
-newModuleDir.forEach((moduleName) => {
-  if (
-    fs.existsSync(path.join(ORIGIN_MODULE, moduleName, 'Router', 'Router.ts'))
-  ) {
-    // //修改Router文件
-    routerResult = routerResult.replace(
-      'export default {',
-      `export default {\n  ...${getModuleRealName(moduleName)},`,
-    );
-    routerResult =
-      ROUTER_TEMPLATE_FMT(getModuleRealName(moduleName), moduleName) +
-      routerResult;
-  }
-});
-fs.writeFileSync(ROOT_ROUTER_FILE, routerResult);
+let newModuleDir = [...moduleDir];
+if (isNeedDelete) {
+  newModuleDir.splice(newModuleDir.indexOf(moduleName), 1);
+  let deleteDir = path.join(ORIGIN_MODULE, moduleName);
+  //删除文件夹
+  fileUtil.deleteFolderRecursive(deleteDir);
+  console.info('delete complete');
+} else {
+  mkModuleDir(moduleName);
+  newModuleDir = [...newModuleDir, moduleName];
+}
 
-fs.writeFileSync(ROOT_INDEX_FILE, '');
-newModuleDir.forEach((moduleName) => {
-  //导入根的index
-  fs.appendFileSync(ROOT_INDEX_FILE, MODULE_ROOT_REGISTER_FMT(moduleName));
-});
+syncRouter(newModuleDir);
+syncRootIndex(newModuleDir);
 
-console.info('complete');
+console.info('sync complete');

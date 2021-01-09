@@ -7,6 +7,8 @@ import routes from './router/RouterConfig';
 import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
 import { RootStore } from './module/module_common/store/RootStore';
 import { Provider } from 'mobx-react';
+import { StatusBar } from 'react-native';
+
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -74,6 +76,11 @@ globalStore = rootStore;
 export const Root = () => {
   return (
     <Provider store={rootStore}>
+      <StatusBar
+        translucent={true}
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
       <MyApp />
     </Provider>
   );
