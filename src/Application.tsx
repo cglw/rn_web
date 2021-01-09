@@ -1,12 +1,12 @@
 import React from 'react';
 import './index';
 import AsyncStorage from '@react-native-community/async-storage';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import routes from './router/RouterConfig';
-import {isReadyRef, navigationRef} from './sdk/router/RootNavigation';
-import {RootStore} from './module/module_common/store/RootStore';
-import {Provider} from 'mobx-react';
+import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
+import { RootStore } from './module/module_common/store/RootStore';
+import { Provider } from 'mobx-react';
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -19,7 +19,7 @@ const HeaderNull = function (): React.ReactNode {
 function MyStack() {
   return (
     <Stack.Navigator initialRouteName={'login'}>
-      {(Object.keys(routes) as (keyof typeof routes)[]).map((name) => (
+      {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}
           name={name}
@@ -53,7 +53,7 @@ const MyApp = function () {
         isReadyRef.isReady = true;
       }}
       ref={navigationRef}
-      onStateChange={async (state) => {
+      onStateChange={async state => {
         console.info('onStateChange');
         console.info(state);
         try {
