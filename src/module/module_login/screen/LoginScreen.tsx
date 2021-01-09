@@ -22,12 +22,20 @@ export default class LoginScreen extends Component<any, any> {
     // console.info(props.rootStore.accountStore.time);
   }
 
+  toMain() {
+    globalRouter.push('index');
+  }
+
   render() {
     console.info('getWindowHeight()');
     console.info(getWindowHeight());
     return wrapWithSafe(
       <>
-        <Text style={{ height: 100, position: 'absolute' }}>test</Text>
+        <Text
+          style={{ height: 100, position: 'absolute' }}
+          onPress={this.toMain}>
+          test
+        </Text>
         <ScrollView style={{ marginTop: 20, flex: 1 }}>
           <Image
             style={{ width: 100, height: 100 }}

@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import routes from './router/RouterConfig';
 import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
-import { RootStore } from './module/module_common/store/RootStore';
 import { Provider } from 'mobx-react';
 import { StatusBar } from 'react-native';
 
@@ -71,11 +70,10 @@ const MyApp = function () {
     </NavigationContainer>
   );
 };
-export const rootStore = new RootStore();
-globalStore = rootStore;
+
 export const Root = () => {
   return (
-    <Provider store={rootStore}>
+    <Provider store={globalStore}>
       <StatusBar
         translucent={true}
         backgroundColor="transparent"

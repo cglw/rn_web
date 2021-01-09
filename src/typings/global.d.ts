@@ -13,6 +13,7 @@ declare global {
   let globalImages: any;
   let globalStore: any;
   let globalService: any;
+  let globalRouter: any;
   function addTranslations(translations: object): void;
   function routeTo(name: string, params?: object | undefined): void;
 }
