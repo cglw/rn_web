@@ -29,8 +29,8 @@ export class CommonInterceptors implements Interceptor {
 
     let httpResponsePromise = chain.proceed(request);
     return httpResponsePromise
-      .then((res) => <Promise<BaseResponse<any>>>res.response.json())
-      .then((res) => {
+      .then(res => <Promise<BaseResponse<any>>>res.response.json())
+      .then(res => {
         if (res.code === 200) {
           return new HttpResponse(res);
         } else {
