@@ -10,6 +10,7 @@
 - UI组件库Ant Design Mobile RN: https://rn.mobile.ant.design/docs/react/introduce-cn
 - React中文官网：https://zh-hans.reactjs.org/
 - npm第三方库：https://www.npmjs.com/
+- ts中文文档 https://www.tslang.cn/docs/home.html
 
 ### UI库地址
 https://rn.mobile.ant.design/docs/react/introduce-cn
@@ -18,7 +19,6 @@ https://rn.mobile.ant.design/docs/react/introduce-cn
 prettier
 
 ### 命名规范
-1.基本规范
 - 全局的模型类/ui类/function Ui组件 统一大小开头 驼峰
 - 除了例如index js项目通用的 这样的可以小写
 - 函数名、方法名、参数名、成员变量、局部变量都统一使用 lowerCamelCase 风格   组件function 需要大写开头需要注意
@@ -26,8 +26,9 @@ prettier
 - 所有页面维度的组件命名xxxScreen 业务逻辑组件xxxView 公共组件不限制
 - string 资源 模块名_逻辑名称 module_login_tips
 - 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
+- 带有boolean结果的变量，用isXxx 去表示如isOpen
 
-
+### 目录
 assets 全局静态资源可以存储一些json 音频文件等
 module 业务模块
     module_common 业务公共逻辑层
@@ -57,18 +58,35 @@ module 下的文件夹说明
     service 服务接口的实现，挂载在globalService,需要在当前的index.ts注册，
 
 
-
-
 遇到3端不统一的组件或者业务，需要在当前目录新建platform文件夹
 例如新建xxx.ts  xxx.web.ts  至少是2个 一个是默认实现 一个是对应平台实现
 android/ios/web
 导包的时候请勿导带有平台后缀，去掉后缀即可
 
+### Http api请求
+接口请求需要在对应模块文件夹下面的api的xxxApi 类进行编写api,请勿在模块中直接使用
+
+使用介绍：
+- 新建返回模型 例如:TabWrapperBean
+- 新建api方法 例如
+static testApi() {
+     return Http.get<TabWrapperBean>('api/app/nav/bottom');
+}
+Http链式调用
+//originResponse 指的是拿到带有msg code的完整请求返回，默认直接拿data返回
+Http.load('api/app/nav').originResponse().get<T>()
+
+普通调用需要在Http.get('url',{},{originResponse:true})
+设置originResponse 为true拿到完整的请求，对应设置的模型也需要
+
+- 使用
+XXXApi.testApi().then().catch()
 
 
-### Http 请求 2种请求形式可选
 1. 链式调用的
 //originResponse 开启代表拿到完整的结果 所以这时候T 要写完整的模型，
+
+
 Http.load('api/app/nav')
       .originResponse()
       .get<T>()
@@ -89,22 +107,16 @@ Http.get<T>(xx,xx,xx).then.catch
   let globalI18n: any;
   let globalImages: any;
 
-
-
-
-
-### 新增模块
-1.注册路由到最外层router
-2.检查最外层index包含新建模块index
-
 ### 脚本使用
-1. 注意事项
-createCode //开启后请勿关闭，会监听图片跟字符串ts文件变化 自动导入相关代码，
-createTemplate //脚本每次会重置src/index.js  src/router/index.js 所以这两个文件不要写别的
-               后面跟一个参数模块名称
+1. 介绍
+createCode //监听监听图片跟字符串ts文件变化 自动导入相关代码，建议项目启动后手动开启
+createTemplate //创建模块模版,这里会自动更新src/index.ts和src/router/RouterConfig.ts
+就是模块自动注册到程序最外层的index入口，不用担心module_common注册顺序，会始终放在第一个注册进去
+
 2. 使用例子
-node createCode.js
-node createTemplate.js module_test
+node createCode.js 开启资源变化监听，注意资源只能写在固定的res文件夹
+node createTemplate.js module_test 新建模块
+node createTemplate.js module_test -d 删除模块
 
 
 ### 如何运行项目
@@ -112,3 +124,20 @@ node createTemplate.js module_test
 2. 运行
 web端：npm run web
 移动端：npm run android/ios
+
+
+### 开发注意及使用
+1. 禁止修改项
+请勿修改src/index.ts 和src/router/RouterConfig.ts
+这两个文件为统一模块入口和注册入口，
+2. 模块初始化的东西在对应模块的index文件进行注册
+3. createCode 推荐在启动项目后手动开启，如果不涉及到资源变化也可以不开启
+4. module之间不推荐直接访问，除了直接依赖module_common访问
+如module_a 调用module_b
+- 在公共service写接口方法testInterface
+- 在module_b的service写实现testInterface，并在当前模块index进行注册实现
+- 这时候module_a通过如globalService.xxx可以调用module_b
+5. app开发中禁止在业务中直接写魔法值 如直接type===1，需要在constants写相应的静态变量，
+如果是简单的，可以在模型类里面方法 isOpen(){return is_open===1};
+
+

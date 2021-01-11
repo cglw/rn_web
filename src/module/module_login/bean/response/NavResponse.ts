@@ -1,8 +1,4 @@
-import { NavBean } from '../NavBean';
 import { BaseResponse } from '../../../module_common/bean/BaseResponse';
+import { TabWrapperBean } from '../TabWrapperBean';
 
-export class NavResponse extends BaseResponse<Array<NavBean>> {
-  getNavList() {
-    return this.data;
-  }
-}
+export class NavResponse extends BaseResponse<TabWrapperBean> {}

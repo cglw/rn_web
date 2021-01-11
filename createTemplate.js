@@ -1,6 +1,7 @@
 const fs = require('fs'); //解析需要遍历的文件夹
 const path = require('path'); //解析需要遍历的文件夹
 let fileUtil = require('./script/FileUtil');
+const INIT_FIRST_MODULE = 'module_common';
 const ORIGIN_MODULE = './src/module';
 const ROOT_INDEX_FILE = './src/index.ts';
 const ROOT_ROUTER_FILE = './src/router/RouterConfig.ts';
@@ -8,8 +9,6 @@ const MODULE_INDEX_STR = `import './res/index';\nexport {};\n`;
 const MODULE_ROOT_REGISTER_FMT = fileUtil.template`import './module/${0}/index';\n`;
 const EXPORT_DEFAULT_STR = `export default {};\n`;
 const ROUTER_TEMPLATE_FMT = fileUtil.template`import ${0} from '../module/${1}/router/Router';\n`;
-// const EXPORT_DEFAULT_STR_FMT = fileUtil.template`export default {\n};`;
-
 const DIR_DEFAULT_FILE = fileUtil.template`export class ${0} {}\n`;
 const AUTO_CREATE_CLASS_END_INDEX = 4;
 const MODULE_CHILD = [
@@ -96,7 +95,6 @@ function mkModuleDir(moduleName) {
     }
   });
 }
-
 function syncRouter(moduleDir = []) {
   fs.writeFileSync(ROOT_ROUTER_FILE, '');
   let routerResult = `export default {\n};\n`;
@@ -125,6 +123,11 @@ function syncRootIndex(moduleDir = []) {
 }
 
 let newModuleDir = [...moduleDir];
+let index = newModuleDir.indexOf(INIT_FIRST_MODULE);
+if (index > -1 && index !== 0) {
+  newModuleDir[index] = newModuleDir[0];
+  newModuleDir[0] = INIT_FIRST_MODULE;
+}
 if (isNeedDelete) {
   newModuleDir.splice(newModuleDir.indexOf(moduleName), 1);
   let deleteDir = path.join(ORIGIN_MODULE, moduleName);

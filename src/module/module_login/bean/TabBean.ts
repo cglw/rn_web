@@ -1,4 +1,4 @@
-export class NavBean {
+export class TabBean {
   name: string = '';
   nav_img: string = '';
   url: string = '';

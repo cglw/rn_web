@@ -4,6 +4,7 @@ import { action, computed, makeObservable, observable } from 'mobx';
 export class AccountStore {
   time = 100;
   data = 99;
+  isLogin = false;
   rootStore: RootStore;
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -19,5 +20,8 @@ export class AccountStore {
   }
   increment() {
     this.time++;
+  }
+  dec() {
+    this.time--;
   }
 }
