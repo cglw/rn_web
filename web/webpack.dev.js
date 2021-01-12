@@ -14,7 +14,6 @@ const config = {
     host: 'localhost',
     port: 9090,
     contentBase: path.resolve('./web'),
-    stats: 'errors-warnings',
   },
   stats: 'errors-warnings',
   plugins: [
@@ -27,11 +26,7 @@ const config = {
         './android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png',
       ),
     }),
-    new friendlyPlugin({
-      compilationSuccessInfo: {
-        messages: ['You application is running here http://localhost:9090'],
-      },
-    }),
+    new friendlyPlugin(),
   ],
 };
 

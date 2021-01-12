@@ -5,7 +5,7 @@ module.exports = {
   output: {
     path: path.resolve('./dist'),
     publicPath: '/',
-    filename: 'js/[name].[chunkhash:5].js',
+    filename: 'js/[name].[hash:5].js',
   },
   module: {
     rules: [
