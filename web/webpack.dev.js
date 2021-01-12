@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const friendlyPlugin = require('friendly-errors-webpack-plugin');
 
 const config = {
   mode: 'development',
@@ -13,8 +14,9 @@ const config = {
     host: 'localhost',
     port: 9090,
     contentBase: path.resolve('./web'),
+    stats: 'errors-warnings',
   },
-  stats: 'minimal',
+  stats: 'errors-warnings',
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve('./web/index.html'),
@@ -24,6 +26,11 @@ const config = {
       favicon: path.resolve(
         './android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png',
       ),
+    }),
+    new friendlyPlugin({
+      compilationSuccessInfo: {
+        messages: ['You application is running here http://localhost:9090'],
+      },
     }),
   ],
 };
