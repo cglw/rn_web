@@ -1,4 +1,1 @@
-export default {
-  login: 'login',
-  count: '{{count}}test',
-};
+export default { login: 'login', count: '{{count}}test' };

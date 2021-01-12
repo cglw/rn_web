@@ -9,10 +9,9 @@ export class TimeCalibrationInterceptor implements Interceptor {
   intercept(chain: Chain): Promise<HttpResponse<any>> {
     return chain.proceed(chain.request()).then(res => {
       let date = res.response.headers.get('date');
-      console.info(date);
-      if (date) {
-        TimeManager.getInstance().calculateDiff(new Date(date).getTime());
-      }
+      TimeManager.getInstance().calculateDiff(
+        date ? new Date(date).getTime() : new Date().getTime(),
+      );
       return res;
     });
   }
