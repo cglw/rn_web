@@ -6,8 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import routes from './router/RouterConfig';
 import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
 import { Provider } from 'mobx-react';
-import { PixelRatio, StatusBar } from 'react-native';
-PixelRatio.get();
+import { StatusBar } from 'react-native';
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -70,7 +69,6 @@ const MyApp = function () {
     </NavigationContainer>
   );
 };
-
 export const Root = () => {
   return (
     <Provider store={globalStore}>

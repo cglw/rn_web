@@ -49,10 +49,11 @@ export function MyTabBar(props: Props) {
             onPress={onPress}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
             activeOpacity={1}>
+            {/*{ uri: props.navList?.index[index].nav_img_checked }*/}
             <Image
               source={
                 isFocused
-                  ? { uri: props.navList?.index[index].nav_img_checked }
+                  ? globalImages.module_common_back
                   : {
                       uri: props.navList?.index[index].nav_img,
                     }

@@ -1,22 +1,33 @@
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title><%= htmlWebpackPlugin.options.title %></title>
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!--以下是正常运行所需的必须样式-->
-  <style>
-    html, body, #react-app {
-      height: 100%;
-      /*overflow: hidden;*/
-    }
-    #react-app {
-      display: flex;
-    }
-  </style>
-</head>
-<body>
-<div id="react-app"></div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!--以下是正常运行所需的必须样式-->
+    <style>
+      html, body, #react-app {
+        height: 100%;
+        /*overflow: hidden;*/
+      }
+      #react-app {
+        display: flex;
+      }
+
+      @font-face {
+        src: url('<%= BASE_URL %>antoutline.ttf') format('truetype');
+        font-family: antoutline;
+      }
+      /*@font-face {*/
+      /*  src: url('./antfill.ttf');*/
+      /*  font-family: antfill;*/
+      /*}*/
+    </style>
+  </head>
+  <body>
+    <div id="react-app"></div>
+  </body>
 </html>

@@ -4,6 +4,8 @@ import { wrapWithSafe } from '../../module_common/component/RootContainerView';
 import { HeaderView } from '../../module_common/component/HeaderView';
 import { Text, View } from 'react-native';
 import Touchable from '../../module_common/component/Touchable';
+import { Icon } from '@ant-design/react-native';
+// import { RouterManager } from '../../../sdk/router/RouterManager';
 // import { inflate } from 'zlib';
 
 // 让页面的值可以监听
@@ -11,6 +13,8 @@ import Touchable from '../../module_common/component/Touchable';
 export default class LoginScreen extends Component<any, any> {
   constructor(props: any) {
     super(props);
+    console.info('login');
+    console.info(props.route.params.router);
   }
 
   render() {
@@ -37,6 +41,7 @@ export default class LoginScreen extends Component<any, any> {
           }}>
           66666
         </Text>
+        <Icon name="account-book" size="md" color="red" />
       </>,
     );
   }

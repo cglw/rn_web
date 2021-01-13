@@ -1,7 +1,7 @@
 // @flow
 'use strict';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 // 导航标签页面
 import { PractiseScreen } from './main_page/practise/PractiseScreen';
 import { Course } from './main_page/course/CourseScreen';
@@ -15,8 +15,6 @@ import { MyTabBar } from './component/MyTabBar';
 // api
 import { MainApi } from '../api/MainApi';
 import { TabWrapperBean } from '../bean/TabWrapperBean';
-// import AutoSizeSheet from '../../../sdk/AutoSizeSheet';
-// import { getWindowWidth } from '../../../utils/ScreenUtil';
 
 const Tab = createBottomTabNavigator();
 type State = {
@@ -63,11 +61,11 @@ export class MainScreen extends Component<any, State> {
 
   render() {
     console.info('this.getAllParams(this)');
-    console.info(this.props);
+    // console.info(this.props);
+    // console.info(this.props?.route?.params?.router);
+    console.info(this.state.navList);
     return (
       <View style={{ flex: 1 }}>
-        {/*style={styles.title}*/}
-        <Text>test</Text>
         {/* 底部导航 */}
         {this._isHasNavList() ? (
           <Tab.Navigator
@@ -90,6 +88,12 @@ export class MainScreen extends Component<any, State> {
         ) : null}
       </View>
     );
+
+    // return (
+    //   <Tab.Navigator initialRouteName={'index'}>
+    //     <Tab.Screen name="index" component={IndexScreen} />
+    //     <Tab.Screen name="mine" component={MyScreen} />
+    //   </Tab.Navigator>
+    // );
   }
 }
-// const styles = AutoSizeSheet.create({});
