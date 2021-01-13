@@ -10,6 +10,7 @@ type Props = {
   //rightView 宽度大于45需要设置，这个是title距离左右边界的距离
   edgeWidth?: number;
   isShowBottomLine?: boolean;
+  isHideBack?: boolean;
 };
 
 export function HeaderView(props: Props) {
@@ -25,11 +26,15 @@ export function HeaderView(props: Props) {
   return (
     <View style={styles.container}>
       <View style={[styles.back_container, widthStyle]}>
-        <Image
-          style={styles.back_image}
-          source={globalImages.module_common_back}
-        />
-        <Text style={styles.back_text}>{backText}</Text>
+        {props.isHideBack ? null : (
+          <>
+            <Image
+              style={styles.back_image}
+              source={globalImages.module_common_back}
+            />
+            <Text style={styles.back_text}>{backText}</Text>
+          </>
+        )}
       </View>
       <View style={styles.title_container}>
         <Text numberOfLines={1} style={styles.title_style}>
@@ -46,7 +51,7 @@ export function HeaderView(props: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',

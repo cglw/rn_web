@@ -8,7 +8,6 @@ import {
   Dimensions,
   ImageStyle,
   Platform,
-  StyleSheet,
   TextStyle,
   ViewStyle,
 } from 'react-native';
@@ -56,7 +55,8 @@ export default class AutoSizeSheet {
     });
 
     // @ts-ignore
-    return StyleSheet.create(platformStyles);
+    // return StyleSheet.create(platformStyles);
+    return platformStyles;
   }
 
   static scaleSize<S extends Styles>(

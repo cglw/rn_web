@@ -16,7 +16,7 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
   private _method: string = 'GET';
   private readonly _url: string = '';
   private _params?: object;
-  private _body: object = {};
+  private _body?: object;
   private _options?: object;
   private _isOriginResponse: boolean;
   constructor(url: string) {
@@ -33,35 +33,38 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
     return this;
   }
 
-  body(value: object) {
+  body(value?: object) {
     this._body = value;
     return this;
   }
 
-  options(value: object) {
+  options(value: object = {}) {
+    console.info('options');
+    console.info(value);
     this._options = value;
     return this;
   }
 
   private commonReq<T>() {
+    console.info('body====test');
+    console.info(this._options);
     let body = {
       body: HttpUtils.objectToFormData(this._body),
     };
-    this._options = {
-      isOriginResponse: this._isOriginResponse,
-      ...this._options,
-    };
-    console.info('body====test');
-    console.info(body);
 
     let init = {
       method: this._method,
-      ...this._options,
+      headers: {
+        ...this._options,
+      },
+      isOriginResponse: this._isOriginResponse,
     };
     if (this._method !== 'GET') {
       init = { ...init, ...body };
     }
-
+    console.info('init===');
+    console.info(this._options);
+    console.info(init);
     return Http.defaultFetch<T>(
       HttpUtils.appendParams(this._url, this._params),
       init,
@@ -108,24 +111,26 @@ export class Http {
   private static common(
     url: string,
     params?: object,
-    body: object = {},
+    body?: object,
     options: object = {},
   ): RequestBuilder {
     return Http.load(url).params(params).body(body).options(options);
   }
   static get<T>(
     url: string,
-    params?: object,
+    params: object = {},
     options: object = {},
   ): Promise<T> {
-    return Http.common(url, params, options).get<T>();
+    console.info('options===>');
+    console.info(options);
+    return Http.common(url, params, {}, options).get<T>();
   }
 
   static post<T>(
     url: string,
     body?: object,
     params?: object,
-    options: object = {},
+    options?: object,
   ): Promise<T> {
     return Http.common(url, params, body, options).post<T>();
   }
@@ -133,7 +138,7 @@ export class Http {
     url: string,
     body?: object,
     params?: object,
-    options: object = {},
+    options?: object,
   ): Promise<T> {
     return Http.common(url, params, body, options).put<T>();
   }
@@ -141,7 +146,7 @@ export class Http {
     url: string,
     body?: object,
     params?: object,
-    options: object = {},
+    options?: object,
   ): Promise<T> {
     return Http.common(url, params, body, options).delete<T>();
   }

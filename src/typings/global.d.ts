@@ -17,5 +17,10 @@ declare global {
   function addTranslations(translations: object): void;
   function routeTo(name: string, params?: object | undefined): void;
 }
+// namespace StyleSheet {
+//   export function create<T extends NamedStyles<T> | NamedStyles<any>>(
+//     styles: T | NamedStyles<T>,
+//   ): T;
+// }
 
 export {};

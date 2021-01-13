@@ -1,13 +1,13 @@
 // @flow
 'use strict';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 // 导航标签页面
 import { PractiseScreen } from './main_page/practise/PractiseScreen';
 import { Course } from './main_page/course/CourseScreen';
 import { OneToOne } from './main_page/onetoone/OneToOneScreen';
 import { IndexScreen } from './main_page/index/IndexScreen';
-import { My } from './main_page/my/MyScreen';
+import { MyScreen } from './main_page/my/MyScreen';
 // React Navigation 控件
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // 自定义组件
@@ -15,6 +15,8 @@ import { MyTabBar } from './component/MyTabBar';
 // api
 import { MainApi } from '../api/MainApi';
 import { TabWrapperBean } from '../bean/TabWrapperBean';
+// import AutoSizeSheet from '../../../sdk/AutoSizeSheet';
+// import { getWindowWidth } from '../../../utils/ScreenUtil';
 
 const Tab = createBottomTabNavigator();
 type State = {
@@ -33,7 +35,7 @@ const ComponentMap = {
   },
   Oto: { component: OneToOne, path: 'oto' },
   Practise: { component: PractiseScreen, path: 'practise' },
-  Person: { component: My, path: 'person' },
+  Person: { component: MyScreen, path: 'person' },
 };
 
 export class MainScreen extends Component<any, State> {
@@ -60,12 +62,15 @@ export class MainScreen extends Component<any, State> {
   }
 
   render() {
+    console.info('this.getAllParams(this)');
+    console.info(this.props);
     return (
       <View style={{ flex: 1 }}>
+        {/*style={styles.title}*/}
+        <Text>test</Text>
         {/* 底部导航 */}
         {this._isHasNavList() ? (
           <Tab.Navigator
-            initialRouteName="index"
             tabBar={props => {
               return <MyTabBar {...props} navList={this.state.navList} />;
             }}>
@@ -87,3 +92,4 @@ export class MainScreen extends Component<any, State> {
     );
   }
 }
+// const styles = AutoSizeSheet.create({});

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
-export class My extends React.Component {
+export class MyScreen extends React.Component {
   render() {
-    return <Text>我的</Text>;
+    return <Text>我的2</Text>;
   }
 }

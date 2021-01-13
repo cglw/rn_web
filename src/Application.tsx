@@ -6,8 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import routes from './router/RouterConfig';
 import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
 import { Provider } from 'mobx-react';
-import { StatusBar } from 'react-native';
-
+import { PixelRatio, StatusBar } from 'react-native';
+PixelRatio.get();
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -16,7 +16,7 @@ const Stack = createStackNavigator<RootDrawerParamList>();
 const HeaderNull = function (): React.ReactNode {
   return null;
 };
-
+// window.devicePixelRatio = 1;
 function MyStack() {
   return (
     <Stack.Navigator initialRouteName={'index'}>
