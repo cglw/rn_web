@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './index.web.ts',
@@ -42,9 +43,14 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {
-        BASE_URL: '"/"',
-      },
+      BASE_URL: JSON.stringify('/'),
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve('./web/index.html'),
+      title: 'React Native H5',
+      favicon: path.resolve(
+        './android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png',
+      ),
     }),
   ],
   resolve: {
