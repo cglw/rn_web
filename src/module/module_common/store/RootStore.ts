@@ -41,4 +41,7 @@ export class RootStore {
   addTask(task: IStoreTask) {
     this.taskArr.push(task);
   }
+  isLogin() {
+    return this.accountStore.isLogin;
+  }
 }

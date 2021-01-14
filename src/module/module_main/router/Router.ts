@@ -1,6 +1,6 @@
 import { MainScreen } from '../screen/MainScreen';
 import { PersonScreen } from '../screen/main_page/my/PersonScreen';
-import { IndexScreen } from '../screen/main_page/index/IndexScreen';
+import { IndexScreenContainer } from '../screen/main_page/index/IndexScreen';
 import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
 import { PractiseScreen } from '../screen/main_page/practise/PractiseScreen';
 import { CourseScreen } from '../screen/main_page/course/CourseScreen';
@@ -12,7 +12,7 @@ export default {
     screens: {
       Index: {
         path: 'index',
-        screen: IndexScreen,
+        screen: IndexScreenContainer,
       },
       Person: {
         path: 'person',

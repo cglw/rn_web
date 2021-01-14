@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 type Props = {
   state: any;
@@ -25,7 +26,7 @@ export class MyTabBean {
   }
 }
 
-export function MyTabBar(props: Props) {
+export function MyTabBar(props: Props & BottomTabBarProps) {
   const focusedOptions =
     props.descriptors[props.state.routes[props.state.index].key].options;
   if (focusedOptions.tabBarVisible === false) {

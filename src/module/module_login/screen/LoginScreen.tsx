@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-// import { observer } from 'mobx-react';
 import { wrapWithSafe } from '../../module_common/component/RootContainerView';
 import { HeaderView } from '../../module_common/component/HeaderView';
 import { Text, View } from 'react-native';
 import Touchable from '../../module_common/component/Touchable';
-import { Icon } from '@ant-design/react-native';
-// import { RouterManager } from '../../../sdk/router/RouterManager';
-// import { inflate } from 'zlib';
+import { Button, Icon } from '@ant-design/react-native';
+import { observer } from 'mobx-react';
 
-// 让页面的值可以监听
-// @observer
-export default class LoginScreen extends Component<any, any> {
+class LoginScreen extends Component<any, any> {
   constructor(props: any) {
     super(props);
-    console.info('login');
-    console.info(props.route.params.router);
   }
 
   render() {
@@ -42,7 +36,22 @@ export default class LoginScreen extends Component<any, any> {
           66666
         </Text>
         <Icon name="account-book" size="md" color="red" />
+        <Text>{`登录状态${globalStore.accountStore.isLogin}`}</Text>
+        <Button
+          onPress={() => {
+            globalStore.accountStore.loginSuccess();
+            // globalRouter.goBack();
+          }}>
+          模拟登录成功{' '}
+        </Button>
+        <Button
+          onPress={() => {
+            globalStore.accountStore.loginOut();
+          }}>
+          模拟退出登录{' '}
+        </Button>
       </>,
     );
   }
 }
+export const LoginScreenContainer = observer(LoginScreen);

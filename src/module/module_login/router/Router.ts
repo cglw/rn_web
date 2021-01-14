@@ -1,8 +1,8 @@
-import LoginScreen from '../screen/LoginScreen';
+import { LoginScreenContainer } from '../screen/LoginScreen';
 
 export default {
   login: {
-    screen: LoginScreen,
+    screen: LoginScreenContainer,
     path: '/login/test',
   },
 };

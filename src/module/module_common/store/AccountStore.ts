@@ -1,5 +1,7 @@
 import { RootStore } from './RootStore';
 import { computed, makeObservable, observable } from 'mobx';
+import { StorageHelper } from '../../../sdk/storage/StorageHelper';
+import { AccountConstants } from '../constants/Constants';
 
 export class AccountStore implements IStoreTask {
   isLogin = false;
@@ -20,6 +22,22 @@ export class AccountStore implements IStoreTask {
 
   run(): void {
     console.info('run===>');
-    this.rootStore.syncSuccess(this);
+    StorageHelper.get(AccountConstants.LOGIN)
+      .then(res => {
+        this.isLogin = res === true;
+        this.rootStore.syncSuccess(this);
+      })
+      .catch(err => {
+        console.info(err);
+        this.rootStore.syncSuccess(this);
+      });
+  }
+  loginSuccess() {
+    StorageHelper.save(AccountConstants.LOGIN, true);
+    this.isLogin = true;
+  }
+  loginOut() {
+    StorageHelper.save(AccountConstants.LOGIN, false);
+    this.isLogin = false;
   }
 }

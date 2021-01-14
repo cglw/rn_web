@@ -2,15 +2,16 @@ import React from 'react';
 import { wrapWithSafe } from '../../../../module_common/component/RootContainerView';
 import { HeaderView } from '../../../../module_common/component/HeaderView';
 import { Button, Icon } from '@ant-design/react-native';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { RouterManager } from '../../../../../sdk/router/RouterManager';
 // import testV from './testView';
 import { List } from '@ant-design/react-native';
+import { observer } from 'mobx-react';
 const Item = List.Item;
 const Brief = Item.Brief;
 // import BasicListExample from '@ant-design/react-native/lib/list/demo/basic';
 
-export class IndexScreen extends React.Component {
+class IndexScreen extends React.Component {
   componentDidMount() {
     console.info('666');
     // testV();
@@ -24,14 +25,10 @@ export class IndexScreen extends React.Component {
         <Button
           onPress={() => {
             RouterManager.getInstance().push('login');
-          }}
-        />
-        {/*<BasicListExample />*/}
-        {/*<ListView*/}
-        {/*  onFetch={this.onFetch}*/}
-        {/*  keyExtractor={(item, index) => index.toString()}*/}
-        {/*  renderItem={this.renderItem}*/}
-        {/*/>*/}
+          }}>
+          {globalStore.accountStore.isLogin ? '已登录' : '去登录'}
+        </Button>
+
         <ScrollView
           style={{ flex: 1, backgroundColor: '#f5f5f9' }}
           automaticallyAdjustContentInsets={false}
@@ -104,65 +101,13 @@ export class IndexScreen extends React.Component {
               arrow="horizontal">
               thumb
             </Item>
-            {/*<Item*/}
-            {/*  extra={*/}
-            {/*    <Image*/}
-            {/*      source={{*/}
-            {/*        uri:*/}
-            {/*          'https://os.alipayobjects.com/rmsportal/mOoPurdIfmcuqtr.png',*/}
-            {/*      }}*/}
-            {/*      style={{ width: 29, height: 29 }}*/}
-            {/*    />*/}
-            {/*  }*/}
-            {/*  arrow="horizontal">*/}
-            {/*  extra为Image*/}
-            {/*</Item>*/}
           </List>
         </ScrollView>
       </>,
     );
   }
-  // @ts-ignore
-  renderItem = item => {
-    return (
-      <View style={{ padding: 10, marginTop: 20 }}>
-        <Text>{item}</Text>
-      </View>
-    );
-  };
-
-  // renderItem() {
-  //   return <View style={styles.item} />;
-  // }
-  sleep = (time: any) =>
-    new Promise(resolve => setTimeout(() => resolve(0), time));
-
-  // @ts-ignore
-  onFetch = async (page = 1, startFetch, abortFetch) => {
-    try {
-      let pageLimit = 30;
-      const skip = (page - 1) * pageLimit;
-
-      //Generate dummy data
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      let rowData = Array.from(
-        { length: pageLimit },
-        (_, index) => `item -> ${index + skip}`,
-      );
-
-      //Simulate the end of the list if there is no more data returned from the server
-      if (page === 3) {
-        rowData = [];
-      }
-
-      //Simulate the network loading in ES7 syntax (async/await)
-      await this.sleep(2000);
-      startFetch(rowData, pageLimit);
-    } catch (err) {
-      abortFetch(); //manually stop the refresh or pagination if it encounters network error
-    }
-  };
 }
+export const IndexScreenContainer = observer(IndexScreen);
 // const styles = StyleSheet.create({
 //   item: {
 //     backgroundColor: 'red',
