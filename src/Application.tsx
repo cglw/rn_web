@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import './index';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,10 +15,9 @@ const Stack = createStackNavigator<RootDrawerParamList>();
 const HeaderNull = function (): React.ReactNode {
   return null;
 };
-// window.devicePixelRatio = 1;
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'home'}>
+    <Stack.Navigator initialRouteName={'simple'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}

@@ -8,7 +8,7 @@ export class StorageHelper {
    */
   static get(key: string) {
     return AsyncStorage.getItem(key)
-      .then((value) => {
+      .then(value => {
         if (value && value !== '') {
           try {
             return JSON.parse(value);
@@ -27,12 +27,12 @@ export class StorageHelper {
    * @param value
    * @returns {Promise<string>}
    */
-  static save(key, value) {
+  static save(key: string, value: any) {
     this.saveWithPromise(key, value)
-      .then((res) => {})
-      .catch((err) => {});
+      .then(res => {})
+      .catch(err => {});
   }
-  static saveWithPromise(key: string, value) {
+  static saveWithPromise(key: string, value: any) {
     return AsyncStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -42,17 +42,17 @@ export class StorageHelper {
    * @param value
    * @returns {Promise<TResult>|Promise.<TResult>|Promise<T>}
    */
-  static updateWithPromise(key: string, value) {
-    return AsyncStorage.getItem(key).then((item) => {
+  static updateWithPromise(key: string, value: any) {
+    return AsyncStorage.getItem(key).then(item => {
       value =
         typeof value === 'string' ? value : Object.assign({}, item, value);
       return AsyncStorage.setItem(key, JSON.stringify(value));
     });
   }
-  static update(key, value) {
+  static update(key: string, value: any) {
     this.updateWithPromise(key, value)
-      .then((res) => {})
-      .catch((err) => {});
+      .then(res => {})
+      .catch(err => {});
   }
 
   /**
@@ -60,10 +60,10 @@ export class StorageHelper {
    * @param key
    * @returns {Promise<string>}
    */
-  static deleteItem(key) {
+  static deleteItem(key: string) {
     this.deleteItemWithPromise(key)
-      .then((res) => {})
-      .catch((err) => {});
+      .then(res => {})
+      .catch(err => {});
   }
 
   static deleteItemWithPromise(key: string) {
@@ -71,7 +71,7 @@ export class StorageHelper {
   }
   // 删除选择的json
   static deleteOptional(array: []) {
-    array.map((item, index) => AsyncStorage.removeItem(item));
+    array?.map((item, index) => AsyncStorage.removeItem(item));
   }
 
   /**
@@ -80,8 +80,8 @@ export class StorageHelper {
    */
   static clear() {
     AsyncStorage.clear()
-      .then((res) => {})
-      .catch((err) => {});
+      .then(res => {})
+      .catch(err => {});
   }
   static clearWithPromise() {
     return AsyncStorage.clear();

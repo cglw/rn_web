@@ -128,7 +128,7 @@ web端：npm run web
 
 ### 开发注意及使用
 1. 禁止修改项
-请勿修改src/index.ts 和src/router/RouterConfig.ts
+请勿修改src/index.js 和src/router/RouterConfig.ts
 这两个文件为统一模块入口和注册入口，
 2. 模块初始化的东西在对应模块的index文件进行注册
 3. createCode 推荐在启动项目后手动开启，如果不涉及到资源变化也可以不开启
@@ -139,5 +139,6 @@ web端：npm run web
 - 这时候module_a通过如globalService.xxx可以调用module_b
 5. app开发中禁止在业务中直接写魔法值 如直接type===1，需要在constants写相应的静态变量，
 如果是简单的，可以在模型类里面方法 isOpen(){return is_open===1};
+6. 禁用行内样式，一律用StyleSheet创建，动态计算的，需要对number进行适配处理
 
 

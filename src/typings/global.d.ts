@@ -1,4 +1,8 @@
-import { RootStore } from '../module/module_common/store/RootStore';
+import {
+  Constructor,
+  NativeMethods,
+  RefreshControlComponent,
+} from 'react-native';
 
 declare global {
   interface String {
@@ -18,11 +22,13 @@ declare global {
   let globalRouter: any;
   function addTranslations(translations: object): void;
   function routeTo(name: string, params?: object | undefined): void;
+  function checkEmpty(obj: any): boolean;
 }
-// namespace StyleSheet {
-//   export function create<T extends NamedStyles<T> | NamedStyles<any>>(
-//     styles: T | NamedStyles<T>,
-//   ): T;
-// }
+
+declare const RefreshControlBase: Constructor<NativeMethods> &
+  typeof RefreshControlComponent;
+export class RefreshControl extends RefreshControlBase {
+  static SIZE: Object; // Undocumented
+}
 
 export {};

@@ -15,4 +15,12 @@ export class MainApi {
       },
     );
   }
+  static getCourseList2(page: number) {
+    return Http.load('api/app/courseBasis?limit=10')
+      .params({ page })
+      .options({
+        schoolid: 25,
+      })
+      .get<Array<Object>>();
+  }
 }

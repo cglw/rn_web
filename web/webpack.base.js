@@ -24,6 +24,13 @@ module.exports = {
       },
       {
         test: /\.(js|jsx|web.js|ts|tsx|d.ts)$/,
+        include: [
+          path.resolve(__dirname, '../src'),
+          path.resolve(
+            __dirname,
+            '../node_modules/react-native-web-refresh-control',
+          ),
+        ],
         use: [
           {
             loader: 'babel-loader',

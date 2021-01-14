@@ -3,11 +3,11 @@ const path = require('path'); //解析需要遍历的文件夹
 let fileUtil = require('./script/FileUtil');
 const INIT_FIRST_MODULE = 'module_common';
 const ORIGIN_MODULE = './src/module';
-const ROOT_INDEX_FILE = './src/index.ts';
+const ROOT_INDEX_FILE = './src/index.js';
 const ROOT_ROUTER_FILE = './src/router/RouterConfig.ts';
-const MODULE_INDEX_STR = `import './res/index';\nexport {};\n`;
+const MODULE_INDEX_STR = "import './res/index';\nexport {};\n";
 const MODULE_ROOT_REGISTER_FMT = fileUtil.template`import './module/${0}/index';\n`;
-const EXPORT_DEFAULT_STR = `export default {};\n`;
+const EXPORT_DEFAULT_STR = 'export default {};\n';
 const ROUTER_TEMPLATE_FMT = fileUtil.template`import ${0} from '../module/${1}/router/Router';\n`;
 const DIR_DEFAULT_FILE = fileUtil.template`export class ${0} {}\n`;
 const AUTO_CREATE_CLASS_END_INDEX = 4;
@@ -21,10 +21,10 @@ const MODULE_CHILD = [
   'res/images',
   'res/strings',
   'res/strings/zh.ts',
-  'res/index.ts',
+  'res/index.js',
   'router',
   'router/Router.ts',
-  'index.ts',
+  'index.js',
 ];
 // const CREATE_TS_ARRAY = ['api', 'bean', 'constants'];
 const CREATE_TSX_ARRAY = ['component', 'screen'];
@@ -80,7 +80,7 @@ function mkModuleDir(moduleName) {
     let targetDir = path.join(ORIGIN_MODULE, moduleName, dir);
     if (dir.indexOf('.') === -1) {
       fs.mkdirSync(targetDir);
-    } else if (dir === 'index.ts') {
+    } else if (dir === 'index.js') {
       fs.writeFileSync(targetDir, MODULE_INDEX_STR);
     } else {
       fs.writeFileSync(targetDir, EXPORT_DEFAULT_STR);
@@ -97,7 +97,7 @@ function mkModuleDir(moduleName) {
 }
 function syncRouter(moduleDir = []) {
   fs.writeFileSync(ROOT_ROUTER_FILE, '');
-  let routerResult = `export default {\n};\n`;
+  let routerResult = 'export default {\n};\n';
   moduleDir.forEach(moduleName => {
     if (
       fs.existsSync(path.join(ORIGIN_MODULE, moduleName, 'Router', 'Router.ts'))

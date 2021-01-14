@@ -13,7 +13,7 @@ if (systemLanguage) {
 I18n.fallbacks = true;
 I18n.translations = {};
 
-export function itnFormat(str: String, params: Object = {}): string {
+export function itnFormat(str: any, params: Object = {}): string {
   return I18n.t(str, params);
 }
 

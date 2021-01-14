@@ -35,4 +35,8 @@ window.routeTo = (name: string, params?: object | undefined) => {
   RouterManager.getInstance().push(name, params);
 };
 
+window.checkEmpty = (obj: any): boolean => {
+  return obj === null || obj === void 0 || obj.length <= 0;
+};
+
 export {};

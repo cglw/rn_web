@@ -4,4 +4,7 @@ export class LoginApi {
   static login() {
     return Http.get('api/login');
   }
+  static login2() {
+    return Http.load('api/login').get();
+  }
 }
