@@ -1,10 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { RouterManager } from '../../../../../sdk/router/RouterManager';
-export class MyScreen extends React.Component {
+export class PersonScreen extends React.Component {
   componentDidMount() {
     console.info('index====>');
-    RouterManager.getInstance().push('login', { router: 'person' });
   }
 
   render() {

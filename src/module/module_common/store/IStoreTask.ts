@@ -1,0 +1,3 @@
+interface IStoreTask {
+  run(): void;
+}

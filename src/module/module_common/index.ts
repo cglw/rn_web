@@ -12,6 +12,7 @@ import { isPad } from '../../utils/DeviceUtil';
 globalService = {};
 globalRouter = RouterManager.getInstance();
 globalStore = new RootStore();
+globalStore.start();
 
 StyleSheet.create = (styles: any) => {
   return isPad() ? styles : AutoSizeSheet.create(styles, getWindowWidth(), 375);

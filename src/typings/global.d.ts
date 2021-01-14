@@ -1,3 +1,5 @@
+import { RootStore } from '../module/module_common/store/RootStore';
+
 declare global {
   interface String {
     //国际化

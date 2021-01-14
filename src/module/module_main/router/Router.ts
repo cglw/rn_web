@@ -1,20 +1,35 @@
 import { MainScreen } from '../screen/MainScreen';
-import { MyScreen } from '../screen/main_page/my/MyScreen';
+import { PersonScreen } from '../screen/main_page/my/PersonScreen';
+import { IndexScreen } from '../screen/main_page/index/IndexScreen';
+import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
+import { PractiseScreen } from '../screen/main_page/practise/PractiseScreen';
+import { CourseScreen } from '../screen/main_page/course/CourseScreen';
 
 export default {
-  index: {
+  home: {
     screen: MainScreen,
     path: 'home',
     screens: {
-      index: 'index',
-      person: 'person',
-      course: 'course',
-      oto: 'oto',
-      practice: 'practice',
+      Index: {
+        path: 'index',
+        screen: IndexScreen,
+      },
+      Person: {
+        path: 'person',
+        screen: PersonScreen,
+      },
+      Course: {
+        path: 'course',
+        screen: CourseScreen,
+      },
+      Oto: {
+        path: 'oto',
+        screen: OneToOneScreen,
+      },
+      Practise: {
+        path: 'practice',
+        screen: PractiseScreen,
+      },
     },
-  },
-  person: {
-    screen: MyScreen,
-    path: '/person',
   },
 };

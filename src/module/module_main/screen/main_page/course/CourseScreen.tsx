@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text } from 'react-native';
 
-export class Course extends React.Component {
+export class CourseScreen extends React.Component {
   render() {
     return (
       <>

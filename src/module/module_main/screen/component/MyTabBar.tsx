@@ -1,13 +1,29 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { TabWrapperBean } from '../../bean/TabWrapperBean';
 
 type Props = {
   state: any;
   descriptors: any;
   navigation: any;
-  navList?: TabWrapperBean;
+  tabList: Array<MyTabBean>;
 };
+export class MyTabBean {
+  icon: any;
+  iconChecked: any;
+  text: string = '';
+  setIcon(icon: any) {
+    this.icon = icon;
+    return this;
+  }
+  setText(text: string) {
+    this.text = text;
+    return this;
+  }
+  setIconChecked(icon: any) {
+    this.iconChecked = icon;
+    return this;
+  }
+}
 
 export function MyTabBar(props: Props) {
   const focusedOptions =
@@ -18,17 +34,8 @@ export function MyTabBar(props: Props) {
 
   return (
     <View style={styles.container}>
-      {/* 遍历 */}
       {props.state.routes.map((route: any, index: number) => {
-        const { options } = props.descriptors[route.key];
-        // label:标签名称
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
+        let myTabBean = props.tabList[index];
         // isFocused 是否选中
         const isFocused = props.state.index === index;
         // onPress 点击触发
@@ -43,36 +50,26 @@ export function MyTabBar(props: Props) {
           }
         };
 
+        let source = isFocused ? myTabBean.iconChecked : myTabBean.icon;
+
         return (
           <TouchableOpacity
             key={route.key}
             onPress={onPress}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            style={styles.touch}
             activeOpacity={1}>
-            {/*{ uri: props.navList?.index[index].nav_img_checked }*/}
             <Image
-              source={
-                isFocused
-                  ? globalImages.module_common_back
-                  : {
-                      uri: props.navList?.index[index].nav_img,
-                    }
-              }
-              style={{
-                width: 25,
-                height: 25,
-                marginTop: 4,
-              }}
+              source={typeof source === 'number' ? source : { uri: source }}
+              style={styles.icon}
             />
             <Text
               style={{
                 color: isFocused
                   ? globalColors.mainColor
                   : globalColors.contentColor,
-                marginBottom: 2,
-                lineHeight: 20,
+                ...styles.text,
               }}>
-              {label}
+              {myTabBean.text}
             </Text>
           </TouchableOpacity>
         );
@@ -85,5 +82,18 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: 'white',
+  },
+  touch: {
+    flex: 1,
+    ...globalStyles.center,
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    marginTop: 4,
+  },
+  text: {
+    marginBottom: 2,
+    lineHeight: 20,
   },
 });

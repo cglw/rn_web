@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useState } from 'react';
 import './index';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,7 +18,7 @@ const HeaderNull = function (): React.ReactNode {
 // window.devicePixelRatio = 1;
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'index'}>
+    <Stack.Navigator initialRouteName={'home'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}
@@ -55,6 +55,8 @@ const MyApp = function () {
       ref={navigationRef}
       onStateChange={async state => {
         console.info('onStateChange');
+
+        window.document.title = '测试';
         console.info(state);
         try {
           await AsyncStorage.setItem(
@@ -69,15 +71,59 @@ const MyApp = function () {
     </NavigationContainer>
   );
 };
-export const Root = () => {
-  return (
-    <Provider store={globalStore}>
-      <StatusBar
-        translucent={true}
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <MyApp />
-    </Provider>
-  );
+
+type State = {
+  isLoadEnd: boolean;
 };
+export class Root extends Component<any, State> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      isLoadEnd: false,
+    };
+  }
+  componentDidMount() {
+    globalStore.syncCallBack(() => {
+      console.info('sync load end');
+      this.setState({
+        isLoadEnd: true,
+      });
+    });
+    console.info('globalStore.actionStore');
+    console.info(globalStore.actionStore);
+  }
+
+  render() {
+    return (
+      <Provider store={globalStore}>
+        <StatusBar
+          translucent={true}
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
+        {this.state.isLoadEnd ? <MyApp /> : null}
+      </Provider>
+    );
+  }
+}
+
+// export const Root = () => {
+//   const [isLoadEnd, setLoadEnd] = useState(false);
+//   console.info('globalStore.rootStore');
+//   console.info(globalStore);
+//   // globalStore.get().actionStr;
+//   globalStore.syncCallBack(() => {
+//     console.info('sync load end');
+//     setLoadEnd(true);
+//   });
+//   return (
+//     <Provider store={globalStore}>
+//       <StatusBar
+//         translucent={true}
+//         backgroundColor="transparent"
+//         barStyle="dark-content"
+//       />
+//       {isLoadEnd ? <MyApp /> : null}
+//     </Provider>
+//   );
+// };

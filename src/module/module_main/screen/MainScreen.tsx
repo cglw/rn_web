@@ -2,19 +2,20 @@
 'use strict';
 import React, { Component } from 'react';
 import { View } from 'react-native';
-// 导航标签页面
-import { PractiseScreen } from './main_page/practise/PractiseScreen';
-import { Course } from './main_page/course/CourseScreen';
-import { OneToOne } from './main_page/onetoone/OneToOneScreen';
-import { IndexScreen } from './main_page/index/IndexScreen';
-import { MyScreen } from './main_page/my/MyScreen';
+
+import routes from '../router/Router';
 // React Navigation 控件
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // 自定义组件
-import { MyTabBar } from './component/MyTabBar';
+import { MyTabBar, MyTabBean } from './component/MyTabBar';
 // api
 import { MainApi } from '../api/MainApi';
 import { TabWrapperBean } from '../bean/TabWrapperBean';
+import { IndexScreen } from './main_page/index/IndexScreen';
+import { CourseScreen } from './main_page/course/CourseScreen';
+import { OneToOneScreen } from './main_page/onetoone/OneToOneScreen';
+import { PractiseScreen } from './main_page/practise/PractiseScreen';
+import { PersonScreen } from './main_page/my/PersonScreen';
 
 const Tab = createBottomTabNavigator();
 type State = {
@@ -24,18 +25,17 @@ type State = {
 // 组件
 const ComponentMap = {
   Index: {
-    component: IndexScreen,
+    screen: IndexScreen,
     path: 'index',
   },
   Course: {
-    component: Course,
+    screen: CourseScreen,
     path: 'course',
   },
-  Oto: { component: OneToOne, path: 'oto' },
-  Practise: { component: PractiseScreen, path: 'practise' },
-  Person: { component: MyScreen, path: 'person' },
+  Oto: { screen: OneToOneScreen, path: 'oto' },
+  Practise: { screen: PractiseScreen, path: 'practise' },
+  Person: { screen: PersonScreen, path: 'person' },
 };
-
 export class MainScreen extends Component<any, State> {
   constructor(props: any) {
     super(props);
@@ -44,6 +44,50 @@ export class MainScreen extends Component<any, State> {
     };
   }
   componentDidMount() {
+    this.loadBottomNav();
+  }
+
+  render() {
+    let tabScreens = routes.home.screens;
+    return (
+      <View style={{ flex: 1 }}>
+        {/* 底部导航 */}
+        {this._isHasNavList() ? (
+          <Tab.Navigator
+            tabBar={props => {
+              return (
+                <MyTabBar
+                  {...props}
+                  tabList={this.state.navList.index.map(item => {
+                    return new MyTabBean()
+                      .setText(item.name)
+                      .setIcon(item.nav_img)
+                      .setIconChecked(item.nav_img_checked);
+                  })}
+                />
+              );
+            }}>
+            {this.state.navList.index.map(val => {
+              let url = val.url;
+              return (
+                <Tab.Screen
+                  key={url}
+                  // @ts-ignore
+                  name={tabScreens[url].path}
+                  // name={val.name}
+                  // @ts-ignore
+                  component={tabScreens[url].screen}
+                  options={{ tabBarLabel: val.name }}
+                />
+              );
+            })}
+          </Tab.Navigator>
+        ) : null}
+      </View>
+    );
+  }
+
+  loadBottomNav() {
     MainApi.getBottomNav()
       .then(res => {
         this.setState({
@@ -54,46 +98,7 @@ export class MainScreen extends Component<any, State> {
         console.log(err);
       });
   }
-
   _isHasNavList() {
     return this.state.navList.index.length > 0;
-  }
-
-  render() {
-    console.info('this.getAllParams(this)');
-    // console.info(this.props);
-    // console.info(this.props?.route?.params?.router);
-    console.info(this.state.navList);
-    return (
-      <View style={{ flex: 1 }}>
-        {/* 底部导航 */}
-        {this._isHasNavList() ? (
-          <Tab.Navigator
-            tabBar={props => {
-              return <MyTabBar {...props} navList={this.state.navList} />;
-            }}>
-            {this.state.navList.index.map(val => {
-              return (
-                <Tab.Screen
-                  key={val.url}
-                  // @ts-ignore
-                  name={ComponentMap[val.url].path}
-                  // @ts-ignore
-                  component={ComponentMap[val.url].component}
-                  options={{ tabBarLabel: val.name }}
-                />
-              );
-            })}
-          </Tab.Navigator>
-        ) : null}
-      </View>
-    );
-
-    // return (
-    //   <Tab.Navigator initialRouteName={'index'}>
-    //     <Tab.Screen name="index" component={IndexScreen} />
-    //     <Tab.Screen name="mine" component={MyScreen} />
-    //   </Tab.Navigator>
-    // );
   }
 }
