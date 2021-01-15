@@ -1,7 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React, { Component } from 'react';
 import ListView from '../../module_common/component/refresh/ListView';
-import { wrapWithSafe } from '../../module_common/component/RootContainerView';
 export class SectionListDemoScreen extends Component {
   constructor(props: any) {
     super(props);

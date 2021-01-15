@@ -1,5 +1,5 @@
 import { RootStore } from './RootStore';
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { StorageHelper } from '../../../sdk/storage/StorageHelper';
 import { AccountConstants } from '../constants/Constants';
 
@@ -11,9 +11,12 @@ export class AccountStore implements IStoreTask {
     makeObservable(this, {
       isLogin: observable,
       total: computed,
-      // increment: action,
+      setLoginStatus: action,
     });
     this.rootStore.addTask(this);
+  }
+  setLoginStatus(loginStatus: boolean) {
+    this.isLogin = loginStatus;
   }
 
   get total() {
@@ -34,10 +37,10 @@ export class AccountStore implements IStoreTask {
   }
   loginSuccess() {
     StorageHelper.save(AccountConstants.LOGIN, true);
-    this.isLogin = true;
+    this.setLoginStatus(true);
   }
   loginOut() {
     StorageHelper.save(AccountConstants.LOGIN, false);
-    this.isLogin = false;
+    this.setLoginStatus(false);
   }
 }

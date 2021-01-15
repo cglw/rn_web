@@ -3,6 +3,7 @@ import {
   NativeMethods,
   RefreshControlComponent,
 } from 'react-native';
+import { wrapWithSafe } from '../module/module_common/component/RootContainerView';
 
 declare global {
   interface String {
@@ -23,6 +24,11 @@ declare global {
   function addTranslations(translations: object): void;
   function routeTo(name: string, params?: object | undefined): void;
   function checkEmpty(obj: any): boolean;
+  function wrapWithSafe(
+    component: any,
+    isNeedSafe?: boolean,
+    style?: object,
+  ): any;
 }
 
 declare const RefreshControlBase: Constructor<NativeMethods> &

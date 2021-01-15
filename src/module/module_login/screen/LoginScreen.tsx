@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
-import { wrapWithSafe } from '../../module_common/component/RootContainerView';
 import { HeaderView } from '../../module_common/component/HeaderView';
 import { Text, View } from 'react-native';
 import Touchable from '../../module_common/component/Touchable';
 import { Button, Icon } from '@ant-design/react-native';
 import { observer } from 'mobx-react';
+import { reaction } from 'mobx';
 
 class LoginScreen extends Component<any, any> {
   constructor(props: any) {
     super(props);
+  }
+  action: any;
+  componentDidMount() {
+    this.action = reaction(
+      () => globalStore.mainListStore.count,
+      count => {
+        console.info('count change' + count);
+      },
+    );
+  }
+  componentWillUnmount() {
+    this.action();
   }
 
   render() {

@@ -13,12 +13,14 @@ import { RefreshState } from './RefreshState';
 type Props = {
   onLoadMore: (() => void) | null;
   onRetryLoading: (() => void) | null; // 重新加载的方法
-  footerNoMore: React.ComponentType<any> | React.ReactElement | null;
+  renderFooter: (
+    state: RefreshState,
+  ) => React.ComponentType<any> | React.ReactElement;
   refreshingText: string;
   loadMoreText: string;
   failureText: string;
   noMoreDataText: string;
-  footRefreshState?: RefreshState;
+  footRefreshState: RefreshState;
 };
 
 export default class RefreshFooter extends Component<Props, any> {
@@ -27,11 +29,15 @@ export default class RefreshFooter extends Component<Props, any> {
     loadMoreText: '上拉加载更多',
     failureText: '点击重新加载',
     noMoreDataText: '没有更多了',
+    renderFooter: null,
   };
 
   render() {
     let state = this.props.footRefreshState;
     let footer = null;
+    if (this.props.renderFooter) {
+      return this.props.renderFooter(state);
+    }
     switch (state) {
       case RefreshState.Idle:
         break;
@@ -42,10 +48,6 @@ export default class RefreshFooter extends Component<Props, any> {
         footer = this._renderLoadMore();
         break;
       case RefreshState.NoMoreData:
-        if (this.props.footerNoMore) {
-          footer = this.props.footerNoMore;
-          break;
-        }
         footer = this._renderNoMoreData();
         break;
       case RefreshState.Failure:

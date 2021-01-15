@@ -10,8 +10,6 @@ import {
   SectionList,
   SectionListProps,
   StyleSheet,
-  Text,
-  View,
   VirtualizedList,
 } from 'react-native';
 import { RefreshState } from './RefreshState';
@@ -19,6 +17,8 @@ import RefreshFooter from './RefreshFooter';
 import { LoadState } from '../load/LoadState';
 import { getWindowHeight } from '../../../../utils/ScreenUtil';
 import { isWeb } from '../../../../utils/DeviceUtil';
+import { StateContainerView } from '../StateContainerView';
+import { LoadBaseViewProps } from '../load/LoadStateView';
 //renderSectionHeader 实现这个方法 会切到sectionList
 type Props = {
   onFetch: (page: number) => Promise<any>;
@@ -26,7 +26,6 @@ type Props = {
   onLoadMoreCallBack: (() => void) | null;
   onRetryCallBack: (() => void) | null;
   onErrorCallBack: (() => void) | null;
-  footerNoMore: React.ComponentType<any> | React.ReactElement | null;
   enableLoadMore: boolean;
   enableRefresh: boolean;
   resultCovertToList: (date: any) => Array<any>;
@@ -50,13 +49,19 @@ const ScrollViewWrapper = forwardRef((props: any, ref) => {
 });
 
 export default class ListView<ItemT> extends Component<
-  SectionListProps<ItemT> & FlatListProps<ItemT> & Props,
+  SectionListProps<ItemT> & FlatListProps<ItemT> & Props & LoadBaseViewProps,
   State<ItemT>
 > {
   listView?: React.ElementRef<typeof VirtualizedList>;
   onEndReachedCalledDuringMomentum: boolean = false;
   page: number = 1;
-  constructor(props: Props & FlatListProps<any> & SectionListProps<any>) {
+  loadContainerViewRef: any;
+  constructor(
+    props: Props &
+      FlatListProps<any> &
+      SectionListProps<any> &
+      LoadBaseViewProps,
+  ) {
     super(props);
     this.state = {
       _enableLoadMore: false,
@@ -95,37 +100,44 @@ export default class ListView<ItemT> extends Component<
         refreshProps = { ...refreshProps, renderScrollComponent: null };
       }
     }
+    console.info('ScrollViewWrapper');
+    console.info(this.props.errorView);
+    console.info('this.props.errorView');
     return (
-      <ScrollViewWrapper
-        // windowSize={300}
-        onLayout={this.calculateFlatListHeight.bind(this)}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        ListEmptyComponent={this.renderListEmptyComponent}
-        ListFooterComponentStyle={styles.foot_container}
-        ListFooterComponent={this._renderFooter}
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyExtractor={(item: any, index: number) => `${index}${item}`}
-        onEndReached={() => this.beginFooterRefresh()}
-        refreshing={this.state._isHeaderRefreshing}
-        refreshControl={
-          this.props.enableRefresh ? (
-            <RefreshControl
-              refreshing={this.state._isHeaderRefreshing}
-              onRefresh={() => this.onRefresh(false)}
-            />
-          ) : null
-        }
-        onEndReachedThreshold={isWeb() ? 0.5 : 0.2}
-        onMomentumScrollBegin={() =>
-          (this.onEndReachedCalledDuringMomentum = false)
-        }
-        ref={(ref: any) => (this.listView = ref)}
+      <StateContainerView
         {...this.props}
-        {...refreshProps}
-        data={this._getRenderData()}
-        sections={this._getRenderData()}
-      />
+        ref={(ref: any) => (this.loadContainerViewRef = ref)}
+        loadState={this.state._loadState}>
+        <ScrollViewWrapper
+          onLayout={this.calculateFlatListHeight.bind(this)}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={this.renderListEmptyComponent.bind(this)}
+          ListFooterComponentStyle={styles.foot_container}
+          ListFooterComponent={this._renderFooter}
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyExtractor={(index: number, item: any) => `${index}${item}`}
+          onEndReached={() => this.beginFooterRefresh()}
+          refreshing={this.state._isHeaderRefreshing}
+          refreshControl={
+            this.props.enableRefresh ? (
+              <RefreshControl
+                refreshing={this.state._isHeaderRefreshing}
+                onRefresh={() => this.onRefresh(false)}
+              />
+            ) : null
+          }
+          onEndReachedThreshold={isWeb() ? 0.5 : 0.2}
+          onMomentumScrollBegin={() =>
+            (this.onEndReachedCalledDuringMomentum = false)
+          }
+          ref={(ref: any) => (this.listView = ref)}
+          {...this.props}
+          {...refreshProps}
+          data={this._getRenderData()}
+          sections={this._getRenderData()}
+        />
+      </StateContainerView>
     );
   }
   _getRenderData() {
@@ -145,11 +157,11 @@ export default class ListView<ItemT> extends Component<
     this._getData();
   }
   onRefresh(isShowLoading = true) {
-    console.info(isShowLoading);
+    console.info('onRefresh===>' + isShowLoading);
     this.setState(
       {
         _isHeaderRefreshing: true,
-        _loadState: isShowLoading ? LoadState.Init : LoadState.Loading,
+        _loadState: isShowLoading ? LoadState.Loading : LoadState.Finish,
       },
       () => {
         this.props.onRefreshCallback && this.props.onRefreshCallback();
@@ -166,18 +178,15 @@ export default class ListView<ItemT> extends Component<
     }
   }
   renderListEmptyComponent() {
-    return (
-      <View>
-        <Text>{'null'}</Text>
-      </View>
-    );
+    return checkEmpty(this.props.emptyView)
+      ? StateContainerView.defaultProps.emptyView
+      : this.props.emptyView;
   }
 
   _renderFooter = () => {
     if (this.props.enableLoadMore) {
       return (
         <RefreshFooter
-          footerNoMore={this.props.footerNoMore}
           footRefreshState={this.state._footerState}
           onRetryLoading={this.beginFooterRefresh}
           onLoadMore={() => this.loadMore()}

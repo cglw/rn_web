@@ -1,8 +1,8 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { Component } from 'react';
 import ListView from '../../module_common/component/refresh/ListView';
-import { wrapWithSafe } from '../../module_common/component/RootContainerView';
-
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 type Props = {};
 
 type State = {
@@ -12,6 +12,9 @@ type State = {
 };
 
 export class SimpleListDemoScreen extends Component<Props, State> {
+  // num: observable.box(1)
+  num = observable.box(1);
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -28,47 +31,31 @@ export class SimpleListDemoScreen extends Component<Props, State> {
     console.info('render=====>');
     return wrapWithSafe(
       <View style={styles.container}>
+        <Text>{this.num.get()}</Text>
+        <Text
+          onPress={() => {
+            this.num.set(this.num.get() + 1);
+          }}>
+          {'add'}
+        </Text>
         <ListView
-          // enableLoadMore={false}
-          // enableRefresh={false}
-          onFetch={() => {
-            console.info('onFetchReq====>');
-            return new Promise<any>(resolve => {
-              setTimeout(() => {
-                resolve(new Array(20).fill(0));
-                // resolve([
-                //   {
-                //     title: 'Main dishes',
-                //     data: ['Pizza', 'Burger', 'Risotto'],
-                //   },
-                //   {
-                //     title: 'Sides',
-                //     data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-                //   },
-                //   {
-                //     title: 'Drinks',
-                //     data: ['Water', 'Coke', 'Beer'],
-                //   },
-                //   {
-                //     title: 'Desserts',
-                //     data: ['Cheese Cake', 'Ice Cream'],
-                //   },
-                // ]);
-              }, 1000);
-            });
-          }}
+          // onFetch={() => {
+          //   return new Promise<any>(resolve => {
+          //     setTimeout(() => {
+          //       resolve(new Array(20).fill(0));
+          //     }, 3000);
+          //   });
+          // }}
           resultCovertToList={res => {
-            console.info('resultCovertToList');
             return res;
           }}
-          // renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
           renderItem={this.renderItem}
+          onFetch={() => Promise.resolve([])}
         />
       </View>,
     );
   }
   renderItem = (item: any) => {
-    console.info('renderItem');
     return (
       <View style={{ height: 100, backgroundColor: 'red', marginTop: 10 }}>
         <Text>{item.index}</Text>
@@ -82,3 +69,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+export const SimpleListDemoScreenContainer = observer(SimpleListDemoScreen);
