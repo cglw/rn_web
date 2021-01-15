@@ -29,6 +29,19 @@ class IndexScreen extends React.Component {
           {globalStore.accountStore.isLogin ? '已登录' : '去登录'}
         </Button>
 
+        <Button
+          onPress={() => {
+            RouterManager.getInstance().push('demo');
+          }}>
+          {'test'.itn()}
+        </Button>
+        <Button
+          onPress={() => {
+            RouterManager.getInstance().push('sectionList');
+          }}>
+          {'count'.itn({ count: 666 })}
+        </Button>
+
         <ScrollView
           style={{ flex: 1, backgroundColor: '#f5f5f9' }}
           automaticallyAdjustContentInsets={false}

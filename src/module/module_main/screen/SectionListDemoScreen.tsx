@@ -2,23 +2,9 @@ import { View, StyleSheet, Text } from 'react-native';
 import React, { Component } from 'react';
 import ListView from '../../module_common/component/refresh/ListView';
 import { wrapWithSafe } from '../../module_common/component/RootContainerView';
-
-type Props = {};
-
-type State = {
-  listData: Array<any>;
-  timeStamp: number;
-  refreshing: boolean;
-};
-
-export class SimpleListDemoScreen extends Component<Props, State> {
-  constructor(props: Props) {
+export class SectionListDemoScreen extends Component {
+  constructor(props: any) {
     super(props);
-    this.state = {
-      listData: [{ isCheck: false }, { isCheck: false }],
-      timeStamp: 0,
-      refreshing: false,
-    };
   }
   sleep = function (time: number) {
     let startTime = new Date().getTime() + time;
@@ -29,31 +15,28 @@ export class SimpleListDemoScreen extends Component<Props, State> {
     return wrapWithSafe(
       <View style={styles.container}>
         <ListView
-          // enableLoadMore={false}
-          // enableRefresh={false}
           onFetch={() => {
             console.info('onFetchReq====>');
             return new Promise<any>(resolve => {
               setTimeout(() => {
-                resolve(new Array(20).fill(0));
-                // resolve([
-                //   {
-                //     title: 'Main dishes',
-                //     data: ['Pizza', 'Burger', 'Risotto'],
-                //   },
-                //   {
-                //     title: 'Sides',
-                //     data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-                //   },
-                //   {
-                //     title: 'Drinks',
-                //     data: ['Water', 'Coke', 'Beer'],
-                //   },
-                //   {
-                //     title: 'Desserts',
-                //     data: ['Cheese Cake', 'Ice Cream'],
-                //   },
-                // ]);
+                resolve([
+                  {
+                    title: 'Main dishes',
+                    data: ['Pizza', 'Burger', 'Risotto'],
+                  },
+                  {
+                    title: 'Sides',
+                    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+                  },
+                  {
+                    title: 'Drinks',
+                    data: ['Water', 'Coke', 'Beer'],
+                  },
+                  {
+                    title: 'Desserts',
+                    data: ['Cheese Cake', 'Ice Cream'],
+                  },
+                ]);
               }, 1000);
             });
           }}
@@ -61,7 +44,7 @@ export class SimpleListDemoScreen extends Component<Props, State> {
             console.info('resultCovertToList');
             return res;
           }}
-          // renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
           renderItem={this.renderItem}
         />
       </View>,

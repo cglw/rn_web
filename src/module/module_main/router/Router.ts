@@ -6,6 +6,7 @@ import { PractiseScreen } from '../screen/main_page/practise/PractiseScreen';
 import { CourseScreen } from '../screen/main_page/course/CourseScreen';
 import { ListDemoScreen } from '../screen/ListDemoScreen';
 import { SimpleListDemoScreen } from '../screen/SimpleListDemoScreen';
+import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
 
 export default {
   home: {
@@ -41,5 +42,9 @@ export default {
   simple: {
     screen: SimpleListDemoScreen,
     path: 'simple',
+  },
+  section: {
+    screen: SectionListDemoScreen,
+    path: 'section',
   },
 };

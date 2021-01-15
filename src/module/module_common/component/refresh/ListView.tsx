@@ -7,6 +7,7 @@ import {
   FlatListProps,
   LayoutChangeEvent,
   RefreshControl,
+  SectionList,
   SectionListProps,
   StyleSheet,
   Text,
@@ -18,39 +19,38 @@ import RefreshFooter from './RefreshFooter';
 import { LoadState } from '../load/LoadState';
 import { getWindowHeight } from '../../../../utils/ScreenUtil';
 import { isWeb } from '../../../../utils/DeviceUtil';
-
+//renderSectionHeader 实现这个方法 会切到sectionList
 type Props = {
-  onFetchReq: (page: number) => Promise<any>;
+  onFetch: (page: number) => Promise<any>;
   onRefreshCallback: (() => void) | null;
   onLoadMoreCallBack: (() => void) | null;
   onRetryCallBack: (() => void) | null;
   onErrorCallBack: (() => void) | null;
-  isNeedFooter: boolean;
   footerNoMore: React.ComponentType<any> | React.ReactElement | null;
-  //等待实现
   enableLoadMore: boolean;
-  //等待实现
   enableRefresh: boolean;
   resultCovertToList: (date: any) => Array<any>;
   pageLimit: number;
 };
 type State<ItemT> = {
-  footerState: RefreshState;
-  isHeaderRefreshing: boolean;
-  enableLoadMore: boolean;
-  flatListHeight: number;
-  data: Array<ItemT>;
-  loadState: LoadState;
+  _footerState: RefreshState;
+  _isHeaderRefreshing: boolean;
+  _enableLoadMore: boolean;
+  _flatListHeight: number;
+  _data: Array<ItemT>;
+  _loadState: LoadState;
 };
 
 const ScrollViewWrapper = forwardRef((props: any, ref) => {
-  return <FlatList {...props} ref={ref} />;
+  return props.renderSectionHeader ? (
+    <SectionList {...props} ref={ref} />
+  ) : (
+    <FlatList {...props} ref={ref} />
+  );
 });
-interface Pp<ItemT> extends FlatListProps<ItemT> {
-  data: ReadonlyArray<ItemT> | null | undefined;
-}
+
 export default class ListView<ItemT> extends Component<
-  Pp<ItemT> & Props,
+  SectionListProps<ItemT> & FlatListProps<ItemT> & Props,
   State<ItemT>
 > {
   listView?: React.ElementRef<typeof VirtualizedList>;
@@ -59,12 +59,12 @@ export default class ListView<ItemT> extends Component<
   constructor(props: Props & FlatListProps<any> & SectionListProps<any>) {
     super(props);
     this.state = {
-      enableLoadMore: false,
-      flatListHeight: getWindowHeight(),
-      isHeaderRefreshing: false,
-      data: [],
-      footerState: RefreshState.Idle,
-      loadState: LoadState.Init,
+      _enableLoadMore: false,
+      _flatListHeight: getWindowHeight(),
+      _isHeaderRefreshing: false,
+      _data: [],
+      _footerState: RefreshState.Idle,
+      _loadState: LoadState.Init,
     };
   }
   static defaultProps = {
@@ -73,17 +73,28 @@ export default class ListView<ItemT> extends Component<
     onLoadMoreCallBack: null,
     onRetryCallBack: null,
     onErrorCallBack: null,
-    isNeedFooter: true,
     footerNoMore: null,
     enableLoadMore: true,
     enableRefresh: true,
     data: [],
+    //sectionList使用
+    sections: [],
   };
   componentDidMount() {
     this.onRefresh(true);
   }
 
   render() {
+    let refreshProps = {};
+    if (this.props.enableRefresh) {
+      refreshProps = {
+        onRefresh: () => this.onRefresh(false),
+      };
+    } else {
+      if (isWeb()) {
+        refreshProps = { ...refreshProps, renderScrollComponent: null };
+      }
+    }
     return (
       <ScrollViewWrapper
         // windowSize={300}
@@ -96,38 +107,40 @@ export default class ListView<ItemT> extends Component<
         contentContainerStyle={{ flexGrow: 1 }}
         keyExtractor={(item: any, index: number) => `${index}${item}`}
         onEndReached={() => this.beginFooterRefresh()}
-        onRefresh={() => this.onRefresh(false)}
-        refreshing={this.state.isHeaderRefreshing}
+        refreshing={this.state._isHeaderRefreshing}
         refreshControl={
-          <RefreshControl
-            refreshing={this.state.isHeaderRefreshing}
-            onRefresh={() => this.onRefresh(false)}
-          />
+          this.props.enableRefresh ? (
+            <RefreshControl
+              refreshing={this.state._isHeaderRefreshing}
+              onRefresh={() => this.onRefresh(false)}
+            />
+          ) : null
         }
-        footRefreshState={this.state.footerState}
         onEndReachedThreshold={isWeb() ? 0.5 : 0.2}
         onMomentumScrollBegin={() =>
           (this.onEndReachedCalledDuringMomentum = false)
         }
         ref={(ref: any) => (this.listView = ref)}
         {...this.props}
+        {...refreshProps}
         data={this._getRenderData()}
+        sections={this._getRenderData()}
       />
     );
   }
   _getRenderData() {
-    return this.state.data;
+    return this.state._data;
   }
   getItemData(index: number) {
-    return this.state.data[index];
+    return this.state._data[index];
   }
 
   loadMore() {
-    if (this.state.footerState === RefreshState.Refreshing) {
+    if (this.state._footerState === RefreshState.Refreshing) {
       return;
     }
     this.setState({
-      footerState: RefreshState.Refreshing,
+      _footerState: RefreshState.Refreshing,
     });
     this._getData();
   }
@@ -135,8 +148,8 @@ export default class ListView<ItemT> extends Component<
     console.info(isShowLoading);
     this.setState(
       {
-        isHeaderRefreshing: true,
-        loadState: isShowLoading ? LoadState.Init : LoadState.Loading,
+        _isHeaderRefreshing: true,
+        _loadState: isShowLoading ? LoadState.Init : LoadState.Loading,
       },
       () => {
         this.props.onRefreshCallback && this.props.onRefreshCallback();
@@ -148,8 +161,8 @@ export default class ListView<ItemT> extends Component<
 
   calculateFlatListHeight(e: LayoutChangeEvent) {
     let height = e.nativeEvent.layout.height;
-    if (this.state.flatListHeight < height) {
-      this.setState({ flatListHeight: height });
+    if (this.state._flatListHeight < height) {
+      this.setState({ _flatListHeight: height });
     }
   }
   renderListEmptyComponent() {
@@ -161,11 +174,11 @@ export default class ListView<ItemT> extends Component<
   }
 
   _renderFooter = () => {
-    if (this.props.isNeedFooter) {
+    if (this.props.enableLoadMore) {
       return (
         <RefreshFooter
           footerNoMore={this.props.footerNoMore}
-          footRefreshState={this.state.footerState}
+          footRefreshState={this.state._footerState}
           onRetryLoading={this.beginFooterRefresh}
           onLoadMore={() => this.loadMore()}
         />
@@ -199,14 +212,14 @@ export default class ListView<ItemT> extends Component<
    */
   shouldStartFooterRefreshing() {
     console.info('shouldStartFooterRefreshing');
-    console.info(this.state.footerState);
-    console.info('isHeaderRefreshing' + this.state.isHeaderRefreshing);
-    console.info('enableLoadMore' + this.state.enableLoadMore);
+    console.info(this.state._footerState);
+    console.info('isHeaderRefreshing' + this.state._isHeaderRefreshing);
+    console.info('enableLoadMore' + this.state._enableLoadMore);
     return !(
-      this.state.footerState === RefreshState.Refreshing ||
-      this.state.footerState === RefreshState.NoMoreData ||
-      this.state.data.length === 0 ||
-      this.state.isHeaderRefreshing ||
+      this.state._footerState === RefreshState.Refreshing ||
+      this.state._footerState === RefreshState.NoMoreData ||
+      this.state._data.length === 0 ||
+      this.state._isHeaderRefreshing ||
       !this.props.enableLoadMore
     );
   }
@@ -217,7 +230,7 @@ export default class ListView<ItemT> extends Component<
 
   private _getData() {
     this.props
-      ?.onFetchReq(this.page)
+      ?.onFetch(this.page)
       .then((resData: any) => {
         console.info('resData====>');
         console.info(resData);
@@ -239,24 +252,24 @@ export default class ListView<ItemT> extends Component<
     console.info(err);
     this.props.onErrorCallBack && this.props.onErrorCallBack();
     this.setState({
-      loadState: LoadState.Error,
-      isHeaderRefreshing: false,
-      footerState: RefreshState.Failure,
+      _loadState: LoadState.Error,
+      _isHeaderRefreshing: false,
+      _footerState: RefreshState.Failure,
     });
   }
 
   private _handleData(page: number, resultListData: any[]) {
     console.info('_handleData');
     console.info(
-      page === 1 ? resultListData : [...this.state.data, ...resultListData],
+      page === 1 ? resultListData : [...this.state._data, ...resultListData],
     );
     this.setState({
-      data:
-        page === 1 ? resultListData : [...this.state.data, ...resultListData],
-      loadState: LoadState.Finish,
-      isHeaderRefreshing: false,
-      enableLoadMore: resultListData.length >= this.props.pageLimit,
-      footerState:
+      _data:
+        page === 1 ? resultListData : [...this.state._data, ...resultListData],
+      _loadState: LoadState.Finish,
+      _isHeaderRefreshing: false,
+      _enableLoadMore: resultListData.length >= this.props.pageLimit,
+      _footerState:
         resultListData.length >= this.props.pageLimit
           ? RefreshState.CanLoadMore
           : RefreshState.NoMoreData,
@@ -268,18 +281,18 @@ export default class ListView<ItemT> extends Component<
 
   private _handleEmptyData(page: number) {
     this.setState({
-      data: page === 1 ? [] : this.state.data,
-      loadState: LoadState.Finish,
-      isHeaderRefreshing: false,
-      footerState: page > 1 ? RefreshState.NoMoreData : RefreshState.Idle,
-      enableLoadMore: false,
+      _data: page === 1 ? [] : this.state._data,
+      _loadState: LoadState.Finish,
+      _isHeaderRefreshing: false,
+      _footerState: page > 1 ? RefreshState.NoMoreData : RefreshState.Idle,
+      _enableLoadMore: false,
     });
   }
   retryLoad() {
     this.props.onRetryCallBack && this.props.onRetryCallBack();
     this.setState(
       {
-        loadState: LoadState.Loading,
+        _loadState: LoadState.Loading,
       },
       () => this._getData(),
     );
@@ -292,5 +305,3 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 });
-
-// ListView.p

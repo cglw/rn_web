@@ -9,23 +9,30 @@ import React from 'react';
 import { getWindowHeight } from '../../../utils/ScreenUtil';
 
 export const wrapWithSafe = (component: any, isNeedSafe = true, style = {}) => {
+  let containerStyle = styles.container;
+
   if (isWeb()) {
-    return <View style={styles.container}>{component}</View>;
+    //不要写在下面。这个容器高度不需要适配!!!
+    return (
+      <View style={{ height: getWindowHeight(), ...containerStyle }}>
+        {component}
+      </View>
+    );
   }
   if (isAndroid()) {
     let paddingStyle = { paddingTop: isNeedSafe ? getStatusBarHeight() : 0 };
     return (
-      <View style={[paddingStyle, styles.container, style]}>{component}</View>
+      <View style={[paddingStyle, containerStyle, style]}>{component}</View>
     );
   }
   return isNeedSafe ? (
     <SafeAreaView
       edges={['right', 'top', 'left']}
-      style={[styles.container, style]}>
+      style={[containerStyle, style]}>
       {component}
     </SafeAreaView>
   ) : (
-    <View style={[styles.container, style]}>{component}</View>
+    <View style={[containerStyle, style]}>{component}</View>
   );
 };
 
@@ -33,11 +40,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    ...Platform.select({
-      web: {
-        height: getWindowHeight(),
-      },
-    }),
     backgroundColor: 'white',
   },
 });
