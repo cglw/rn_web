@@ -1,0 +1,2 @@
+import './res/index';
+export {};

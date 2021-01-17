@@ -17,7 +17,7 @@ const HeaderNull = function (): React.ReactNode {
 };
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'home'}>
+    <Stack.Navigator initialRouteName={'demos'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}
