@@ -17,7 +17,7 @@ const HeaderNull = function (): React.ReactNode {
 };
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'index'}>
+    <Stack.Navigator initialRouteName={'home'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}
@@ -25,6 +25,7 @@ function MyStack() {
           component={routes[name].screen}
           options={{
             header: () => HeaderNull(),
+            title: `${routes[name].title}`,
           }}
         />
       ))}
@@ -54,8 +55,7 @@ const MyApp = function () {
       ref={navigationRef}
       onStateChange={async state => {
         console.info('onStateChange');
-
-        window.document.title = '测试';
+        // window.document.title = '测试';
         console.info(state);
         try {
           await AsyncStorage.setItem(
@@ -83,13 +83,10 @@ export class Root extends Component<any, State> {
   }
   componentDidMount() {
     globalStore.syncCallBack(() => {
-      console.info('sync load end');
       this.setState({
         isLoadEnd: true,
       });
     });
-    console.info('globalStore.actionStore');
-    console.info(globalStore.actionStore);
   }
 
   render() {

@@ -1,4 +1,4 @@
-import { MainScreen } from '../screen/MainScreen';
+import { MainScreenContainer } from '../screen/MainScreen';
 import { PersonScreen } from '../screen/main_page/my/PersonScreen';
 import { IndexScreenContainer } from '../screen/main_page/index/IndexScreen';
 import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
@@ -7,29 +7,31 @@ import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
 import { ListDemoScreen } from '../screen/ListDemoScreen';
 import { SimpleListDemoScreenContainer } from '../screen/SimpleListDemoScreen';
 import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
+import { LoadStateDemoScreenContainer } from '../screen/LoadStateDemoScreen';
 
 export default {
   home: {
-    screen: MainScreen,
+    screen: MainScreenContainer,
     path: 'home',
+    title: '主页',
     screens: {
-      Index: {
+      index: {
         path: 'index',
         screen: IndexScreenContainer,
       },
-      Person: {
+      person: {
         path: 'person',
         screen: PersonScreen,
       },
-      Course: {
+      course: {
         path: 'course',
         screen: CourseScreenContainer,
       },
-      Oto: {
+      oto: {
         path: 'oto',
         screen: OneToOneScreen,
       },
-      Practise: {
+      practise: {
         path: 'practice',
         screen: PractiseScreenContainer,
       },
@@ -38,13 +40,21 @@ export default {
   demo: {
     screen: ListDemoScreen,
     path: 'demo',
+    title: 'Demo',
   },
   simple: {
     screen: SimpleListDemoScreenContainer,
     path: 'simple',
+    title: '简单列表',
   },
   section: {
     screen: SectionListDemoScreen,
     path: 'section',
+    title: '多样式',
+  },
+  load: {
+    screen: LoadStateDemoScreenContainer,
+    path: 'load',
+    title: '加载',
   },
 };

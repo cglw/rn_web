@@ -1,37 +1,34 @@
 // @flow
 'use strict';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import routes from '../router/Router';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MyTabBar, MyTabBean } from './component/MyTabBar';
 import { MainApi } from '../api/MainApi';
 import { TabWrapperBean } from '../bean/TabWrapperBean';
+import { LoadDataContainerView } from '../../module_common/component/LoadDataContainerView';
+import { observer } from 'mobx-react';
+import { observable } from 'mobx';
 
 const Tab = createBottomTabNavigator();
-type State = {
-  navList: TabWrapperBean;
-};
 
-export class MainScreen extends Component<any, State> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      navList: new TabWrapperBean(),
-    };
-  }
-  componentDidMount() {
-    this.loadBottomNav();
-  }
-
+export class MainScreen extends Component<any, any> {
+  navList = observable.box(new TabWrapperBean());
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        {this._isHasNavList() ? (
-          <Tab.Navigator tabBar={props => this._renderTabBar(props)}>
-            {this._renderScreen()}
-          </Tab.Navigator>
-        ) : null}
+      <View style={styles.container}>
+        <LoadDataContainerView
+          onFetch={() => MainApi.getBottomNav()}
+          onLoadSuccess={res => this.navList.set(res)}>
+          {this._isHasNavList() ? (
+            <Tab.Navigator tabBar={props => this._renderTabBar(props)}>
+              {this._renderScreen()}
+            </Tab.Navigator>
+          ) : (
+            <View />
+          )}
+        </LoadDataContainerView>
       </View>
     );
   }
@@ -39,7 +36,7 @@ export class MainScreen extends Component<any, State> {
     return (
       <MyTabBar
         {...props}
-        tabList={this.state.navList.index.map(item => {
+        tabList={this._getNavList().map(item => {
           return new MyTabBean()
             .setText(item.name)
             .setIcon(item.nav_img)
@@ -50,8 +47,8 @@ export class MainScreen extends Component<any, State> {
   }
   _renderScreen() {
     const tabScreens = routes.home.screens;
-    return this.state.navList.index.map(val => {
-      let url = val.url;
+    return this._getNavList().map(item => {
+      let url = item.url.toLowerCase();
       return (
         <Tab.Screen
           key={url}
@@ -59,24 +56,26 @@ export class MainScreen extends Component<any, State> {
           name={tabScreens[url].path}
           // @ts-ignore
           component={tabScreens[url].screen}
-          options={{ tabBarLabel: val.name }}
+          options={{
+            tabBarLabel: item.name,
+            title: item.name,
+          }}
         />
       );
     });
   }
-
-  loadBottomNav() {
-    MainApi.getBottomNav()
-      .then(res => {
-        this.setState({
-          navList: res,
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  _getNavList() {
+    return this.navList.get().index;
   }
   _isHasNavList() {
-    return this.state.navList.index.length > 0;
+    return this._getNavList().length > 0;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+export const MainScreenContainer = observer(MainScreen);

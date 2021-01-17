@@ -17,7 +17,9 @@ export class RouterManager {
     this.getNavigation().dispatch(StackActions.push(name, params));
   }
   goBack() {
-    this.getNavigation().goBack();
+    if (this.getNavigation().canGoBack()) {
+      this.getNavigation().goBack();
+    }
   }
   canGoBack() {
     this.getNavigation().canGoBack();

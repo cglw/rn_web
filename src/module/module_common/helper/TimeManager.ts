@@ -41,8 +41,6 @@ export class TimeManager {
    * @param serverReturnTime
    */
   calculateDiff(serverReturnTime: number) {
-    console.info('serverReturnTime' + serverReturnTime);
-
     if (serverReturnTime === 0) {
       return;
     }

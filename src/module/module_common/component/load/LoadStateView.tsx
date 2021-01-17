@@ -7,11 +7,11 @@ export type LoadBaseViewProps = {
   loadingView?: React.ComponentType<any> | React.ReactElement;
   errorView?: React.ComponentType<any> | React.ReactElement;
   emptyView?: React.ComponentType<any> | React.ReactElement;
+  initView?: React.ComponentType<any> | React.ReactElement;
+  finishView?: any;
 };
 export type LoadStateProps = {
   loadState: LoadState;
-  finishView?: any;
-  initView?: React.ComponentType<any> | React.ReactElement;
 };
 
 export const LoadStateView = function (

@@ -39,15 +39,11 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
   }
 
   options(value: object = {}) {
-    console.info('options');
-    console.info(value);
     this._options = value;
     return this;
   }
 
   private commonReq<T>() {
-    console.info('body====test');
-    console.info(this._options);
     let body = {
       body: HttpUtils.objectToFormData(this._body),
     };
@@ -62,9 +58,6 @@ class RequestBuilder implements ReqType<BaseResponse<any>> {
     if (this._method !== 'GET') {
       init = { ...init, ...body };
     }
-    console.info('init===');
-    console.info(this._options);
-    console.info(init);
     return Http.defaultFetch<T>(
       HttpUtils.appendParams(this._url, this._params),
       init,
@@ -121,8 +114,6 @@ export class Http {
     params: object = {},
     options: object = {},
   ): Promise<T> {
-    console.info('options===>');
-    console.info(options);
     return Http.common(url, params, {}, options).get<T>();
   }
 
