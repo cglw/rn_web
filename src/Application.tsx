@@ -17,7 +17,7 @@ const HeaderNull = function (): React.ReactNode {
 };
 function MyStack() {
   return (
-    <Stack.Navigator initialRouteName={'demos'}>
+    <Stack.Navigator initialRouteName={'index'}>
       {(Object.keys(routes) as (keyof typeof routes)[]).map(name => (
         <Stack.Screen
           key={name}
@@ -105,24 +105,3 @@ export class Root extends Component<any, State> {
     );
   }
 }
-
-// export const Root = () => {
-//   const [isLoadEnd, setLoadEnd] = useState(false);
-//   console.info('globalStore.rootStore');
-//   console.info(globalStore);
-//   // globalStore.get().actionStr;
-//   globalStore.syncCallBack(() => {
-//     console.info('sync load end');
-//     setLoadEnd(true);
-//   });
-//   return (
-//     <Provider store={globalStore}>
-//       <StatusBar
-//         translucent={true}
-//         backgroundColor="transparent"
-//         barStyle="dark-content"
-//       />
-//       {isLoadEnd ? <MyApp /> : null}
-//     </Provider>
-//   );
-// };

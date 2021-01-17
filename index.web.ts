@@ -9,3 +9,5 @@ AppRegistry.registerComponent(json.name, () => Root);
 AppRegistry.runApplication(json.name, {
   rootTag: document.getElementById('react-app'),
 });
+
+console.disableYellowBox = true;

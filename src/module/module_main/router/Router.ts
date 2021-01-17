@@ -2,10 +2,10 @@ import { MainScreen } from '../screen/MainScreen';
 import { PersonScreen } from '../screen/main_page/my/PersonScreen';
 import { IndexScreenContainer } from '../screen/main_page/index/IndexScreen';
 import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
-import { PractiseScreen } from '../screen/main_page/practise/PractiseScreen';
-import { CourseScreen } from '../screen/main_page/course/CourseScreen';
+import { PractiseScreenContainer } from '../screen/main_page/practise/PractiseScreen';
+import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
 import { ListDemoScreen } from '../screen/ListDemoScreen';
-import { SimpleListDemoScreen } from '../screen/SimpleListDemoScreen';
+import { SimpleListDemoScreenContainer } from '../screen/SimpleListDemoScreen';
 import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
 
 export default {
@@ -23,7 +23,7 @@ export default {
       },
       Course: {
         path: 'course',
-        screen: CourseScreen,
+        screen: CourseScreenContainer,
       },
       Oto: {
         path: 'oto',
@@ -31,7 +31,7 @@ export default {
       },
       Practise: {
         path: 'practice',
-        screen: PractiseScreen,
+        screen: PractiseScreenContainer,
       },
     },
   },
@@ -40,7 +40,7 @@ export default {
     path: 'demo',
   },
   simple: {
-    screen: SimpleListDemoScreen,
+    screen: SimpleListDemoScreenContainer,
     path: 'simple',
   },
   section: {

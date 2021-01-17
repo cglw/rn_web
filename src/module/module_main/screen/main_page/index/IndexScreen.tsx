@@ -1,5 +1,4 @@
 import React from 'react';
-import { wrapWithSafe } from '../../../../module_common/component/RootContainerView';
 import { HeaderView } from '../../../../module_common/component/HeaderView';
 import { Button, Icon } from '@ant-design/react-native';
 import { View, ScrollView } from 'react-native';

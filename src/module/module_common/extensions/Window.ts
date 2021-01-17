@@ -5,6 +5,7 @@ import {
 } from '../../../style/GlobleStyle';
 import I18n from 'i18n-js';
 import { RouterManager } from '../../../sdk/router/RouterManager';
+import { wrapWithSafeImpl } from '../component/RootContainerView';
 globalStyles = GLOBAL_STYLES;
 globalDimes = GLOBAL_DIMES;
 globalColors = GLOBAL_COLORS;
@@ -39,4 +40,11 @@ window.checkEmpty = (obj: any): boolean => {
   return obj === null || obj === void 0 || obj.length <= 0;
 };
 
+window.wrapWithSafe = (
+  component: any,
+  isNeedSafe?: boolean,
+  style?: object,
+) => {
+  return wrapWithSafeImpl(component, isNeedSafe, style);
+};
 export {};

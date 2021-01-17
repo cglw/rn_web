@@ -1,36 +1,33 @@
 // @flow
 'use strict';
 import { LoadState } from './LoadState';
-type loadStateProps = {
+import React from 'react';
+import { View } from 'react-native';
+export type LoadBaseViewProps = {
+  loadingView?: React.ComponentType<any> | React.ReactElement;
+  errorView?: React.ComponentType<any> | React.ReactElement;
+  emptyView?: React.ComponentType<any> | React.ReactElement;
+};
+export type LoadStateProps = {
   loadState: LoadState;
-  loadingView?: any;
-  errorView?: any;
-  emptyView?: any;
   finishView?: any;
-  initView?: any;
+  initView?: React.ComponentType<any> | React.ReactElement;
 };
 
-export const LoadStateView = function (props: loadStateProps) {
-  let res;
+export const LoadStateView = function (
+  props: LoadStateProps & LoadBaseViewProps,
+): any {
   switch (props.loadState) {
     case LoadState.Init:
-      res = props?.initView;
-      break;
+      return props.initView;
     case LoadState.Loading:
-      res = props?.loadingView;
-      break;
+      return props.loadingView;
     case LoadState.Empty:
-      res = props?.emptyView;
-      break;
+      return props.emptyView;
     case LoadState.Finish:
-      res = props?.finishView;
-      break;
+      return props.finishView;
     case LoadState.Error:
-      res = props?.errorView;
-      break;
-    default:
-      res = null;
+      return props.errorView;
   }
-
-  return res;
+  return <View />;
 };
