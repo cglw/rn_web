@@ -3,7 +3,6 @@ import {
   NativeMethods,
   RefreshControlComponent,
 } from 'react-native';
-import { wrapWithSafe } from '../module/module_common/component/RootContainerView';
 
 declare global {
   interface String {

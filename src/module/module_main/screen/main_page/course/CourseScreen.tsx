@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text } from 'react-native';
 import { observer } from 'mobx-react';
-import { autorun } from 'mobx';
+// import { autorun } from 'mobx';
 
 export class CourseScreen extends React.Component {
   render() {

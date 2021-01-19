@@ -1,6 +1,7 @@
 import { action, autorun, observable } from 'mobx';
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import { AntDesignTestScreen } from './AntDesignTestScreen';
 
 export class DemoScreen extends Component {
   constructor(props: {} | Readonly<{}>) {
@@ -8,10 +9,11 @@ export class DemoScreen extends Component {
   }
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Text>{map}</Text>
         <Text>{list}</Text>
         {/* <Text>{temperature}</Text> */}
+        <AntDesignTestScreen />
       </View>
     );
   }
