@@ -33,8 +33,6 @@ export class StateContainerView extends Component<
         loadState={this.props.loadState}
       />
     );
-    console.info('this.props.loadState');
-    console.info(this.props.loadState);
     return res === null || res === void 0 ? <View /> : res;
   }
 }

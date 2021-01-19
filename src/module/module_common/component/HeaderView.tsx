@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text, Image } from 'react-native';
 import React from 'react';
 import { SplitLinePosition } from './SplitLine';
+import Touchable from './Touchable';
 
 type Props = {
   title: string;
@@ -11,6 +12,7 @@ type Props = {
   edgeWidth?: number;
   isShowBottomLine?: boolean;
   isHideBack?: boolean;
+  oBack?: () => void;
 };
 
 export function HeaderView(props: Props) {
@@ -23,19 +25,33 @@ export function HeaderView(props: Props) {
     edgeWidth = props.edgeWidth;
   }
   let widthStyle = { minWidth: Math.max(45, edgeWidth) };
+
+  function onBackPress() {
+    if (props.isHideBack) {
+      return;
+    }
+    if (props.oBack) {
+      props.oBack;
+    } else {
+      globalRouter.goBack();
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <View style={[styles.back_container, widthStyle]}>
-        {props.isHideBack ? null : (
-          <>
-            <Image
-              style={styles.back_image}
-              source={globalImages.module_common_back}
-            />
-            <Text style={styles.back_text}>{backText}</Text>
-          </>
-        )}
-      </View>
+      <Touchable onPress={onBackPress}>
+        <View style={[styles.back_container, widthStyle]}>
+          {props.isHideBack ? null : (
+            <>
+              <Image
+                style={styles.back_image}
+                source={globalImages.module_common_back}
+              />
+              <Text style={styles.back_text}>{backText}</Text>
+            </>
+          )}
+        </View>
+      </Touchable>
       <View style={styles.title_container}>
         <Text numberOfLines={1} style={styles.title_style}>
           {props?.title}
@@ -51,8 +67,8 @@ export function HeaderView(props: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
     height: 60,
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

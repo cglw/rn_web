@@ -1,4 +1,4 @@
-import { DemoScreen } from './../screen/DemoScreen';
+import { DemoScreen } from '../screen/DemoScreen';
 export default {
   demos: {
     screen: DemoScreen,

@@ -21,8 +21,6 @@ export class CommonInterceptors implements Interceptor {
       'Access-Control-Expose-Headers': 'date',
       'Access-Control-Allow-Origin': '*',
     };
-    console.info('request.init');
-    console.info(request.init);
     request.init = {
       ...request.init,
       headers: {

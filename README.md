@@ -114,7 +114,7 @@ createTemplate //创建模块模版,这里会自动更新src/index.ts和src/rout
 就是模块自动注册到程序最外层的index入口，不用担心module_common注册顺序，会始终放在第一个注册进去
 
 2. 使用例子
-node createCode.js 开启资源变化监听，注意资源只能写在固定的res文件夹
+npm run res 开启资源变化监听，注意资源只能写在固定的res文件夹
 node createTemplate.js module_test 新建模块
 node createTemplate.js module_test -d 删除模块
 
