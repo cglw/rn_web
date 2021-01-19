@@ -5,9 +5,9 @@ import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
 import { PractiseScreenContainer } from '../screen/main_page/practise/PractiseScreen';
 import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
 import { ListDemoScreen } from '../screen/ListDemoScreen';
-import { SimpleListDemoScreenContainer } from '../screen/SimpleListDemoScreen';
 import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
 import { LoadStateDemoScreenContainer } from '../screen/LoadStateDemoScreen';
+import { SimpleListDemoScreen } from '../screen/SimpleListDemoScreen';
 
 export default {
   home: {
@@ -43,7 +43,7 @@ export default {
     title: 'Demo',
   },
   simple: {
-    screen: SimpleListDemoScreenContainer,
+    screen: SimpleListDemoScreen,
     path: 'simple',
     title: '简单列表',
   },

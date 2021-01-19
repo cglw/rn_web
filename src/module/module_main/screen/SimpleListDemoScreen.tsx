@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { Component } from 'react';
 import ListView from '../../module_common/component/refresh/ListView';
 import { observable } from 'mobx';
-import { observer } from 'mobx-react';
+// import { observer } from 'mobx-react';
 type Props = {};
 
 type State = {
@@ -39,18 +39,18 @@ export class SimpleListDemoScreen extends Component<Props, State> {
           {'add'}
         </Text>
         <ListView
-          // onFetch={() => {
-          //   return new Promise<any>(resolve => {
-          //     setTimeout(() => {
-          //       resolve(new Array(20).fill(0));
-          //     }, 3000);
-          //   });
-          // }}
+          onFetch={() => {
+            return new Promise<any>(resolve => {
+              setTimeout(() => {
+                resolve(new Array(20).fill(0));
+              }, 1500);
+            });
+          }}
           resultCovertToList={res => {
             return res;
           }}
           renderItem={this.renderItem}
-          onFetch={() => Promise.resolve([])}
+          // onFetch={() => Promise.resolve([])}
         />
       </View>,
     );
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-export const SimpleListDemoScreenContainer = observer(SimpleListDemoScreen);
+// export const SimpleListDemoScreenContainer = observer(SimpleListDemoScreen);

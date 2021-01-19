@@ -13,6 +13,7 @@ export class LoadStateDemoScreen extends Component<Props, any> {
     return (
       <View style={styles.container}>
         <LoadDataContainerView
+          loadingView={<Text>is loading</Text>}
           onFetch={() =>
             new Promise(resolve => {
               setTimeout(() => {

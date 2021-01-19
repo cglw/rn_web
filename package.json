@@ -9,7 +9,8 @@
     "web": "webpack-dev-server --config ./web/webpack.dev.js",
     "webpack": "webpack --config ./web/webpack.prod.js",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "res": "node createCode.js"
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
