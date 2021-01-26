@@ -49,6 +49,10 @@ export class MainScreen extends Component<any, any> {
     const tabScreens = routes.home.screens;
     return this._getNavList().map(item => {
       let url = item.url.toLowerCase();
+      // @ts-ignore
+      if (!tabScreens[url]) {
+        return null;
+      }
       return (
         <Tab.Screen
           key={url}
