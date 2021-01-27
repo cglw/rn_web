@@ -8,6 +8,7 @@ import { ListDemoScreen } from '../screen/ListDemoScreen';
 import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
 import { LoadStateDemoScreenContainer } from '../screen/LoadStateDemoScreen';
 import { SimpleListDemoScreen } from '../screen/SimpleListDemoScreen';
+import { ListScreen } from '../screen/ListScreen';
 
 export default {
   home: {
@@ -56,5 +57,10 @@ export default {
     screen: LoadStateDemoScreenContainer,
     path: 'load',
     title: '加载',
+  },
+  list: {
+    screen: ListScreen,
+    path: 'list',
+    title: '列表',
   },
 };

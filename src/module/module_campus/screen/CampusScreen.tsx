@@ -56,6 +56,7 @@ export class CampusScreen extends Component<any, State> {
   loadData() {
     CampusApi.getCampusNav()
       .then(res => {
+        console.log(res);
         this.setState({
           campusList: this.handleData(res),
         });

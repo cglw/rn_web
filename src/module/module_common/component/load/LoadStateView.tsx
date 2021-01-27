@@ -2,7 +2,6 @@
 'use strict';
 import { LoadState } from './LoadState';
 import React from 'react';
-import { View } from 'react-native';
 export type LoadBaseViewProps = {
   loadingView?: React.ComponentType<any> | React.ReactElement;
   errorView?: React.ComponentType<any> | React.ReactElement;
@@ -29,5 +28,4 @@ export const LoadStateView = function (
     case LoadState.Error:
       return props.errorView;
   }
-  return <View />;
 };

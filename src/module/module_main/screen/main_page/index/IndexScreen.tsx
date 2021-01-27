@@ -21,6 +21,10 @@ const PAGE_DEMO = [
     name: '加载数据',
     target: 'load',
   },
+  {
+    name: 'List',
+    target: 'list',
+  },
 ];
 
 class IndexScreen extends React.Component {
