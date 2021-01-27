@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Grid,
   InputItem,
   List,
   Radio,
@@ -12,6 +13,7 @@ import {
   TabBar,
   TextareaItem,
 } from '@ant-design/react-native';
+import { ListView } from 'antd-mobile';
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -27,6 +29,7 @@ type State = {
   value: any;
   part1Value: number;
   checked: boolean;
+  dataSource: any;
 };
 class TabBarScreen extends React.Component<Props, State> {
   bottomList = observable.object(
@@ -50,11 +53,24 @@ class TabBarScreen extends React.Component<Props, State> {
   phone = observable.box('');
   constructor(props: Props) {
     super(props);
+
+    const getSectionData = (dataBlob: any, sectionID: any) =>
+      dataBlob[sectionID];
+    const getRowData = (dataBlob: any, sectionID: any, rowID: any) =>
+      dataBlob[rowID];
+
+    const dataSource = new ListView.DataSource({
+      getRowData,
+      getSectionHeaderData: getSectionData,
+      rowHasChanged: (row1: any, row2: any) => row1 !== row2,
+      sectionHeaderHasChanged: (s1: any, s2: any) => s1 !== s2,
+    });
     this.state = {
       phone: '',
       value: [],
       part1Value: 1,
       checked: false,
+      dataSource,
     };
   }
 
@@ -75,72 +91,27 @@ class TabBarScreen extends React.Component<Props, State> {
             iconStyle={{ width: 20, height: 20 }}
             selected={this.selectedTab.get() === 'myTab'}
             onPress={() => this.selectedTab.set('myTab')}>
-            {/* {this.renderContent(this.bottomList.name)} */}
-            {
-              <View style={styles.container}>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-                <Text>1</Text>
-              </View>
-            }
+            {this.renderContent(this.bottomList.name)}
           </TabBar.Item>
           <TabBar.Item
             title={'tea'}
             icon={globalImages.module_common_ic_error}
             selected={this.selectedTab.get() === 'teaTab'}
             onPress={() => this.selectedTab.set('teaTab')}>
-            {/* {this.renderContent('tea Tab')} */}
+            {
+              <View style={styles.container}>
+                <ListView
+                  style={{ height: 300 }}
+                  dataSource={this.state.dataSource}
+                  renderSectionHeader={(sectionData, sectionID) => (
+                    <Text>
+                      {sectionID}:{sectionData}
+                    </Text>
+                  )}
+                  renderRow={this.row}
+                />
+              </View>
+            }
           </TabBar.Item>
         </TabBar>
       </View>
@@ -151,6 +122,14 @@ class TabBarScreen extends React.Component<Props, State> {
     DemoApi.getNav().then(res => {
       this.bottomList.setIndex(res.index);
     });
+  };
+
+  row = (rowID: any) => {
+    return (
+      <View>
+        <Text>{rowID}</Text>
+      </View>
+    );
   };
 
   renderContent(tab: string) {
@@ -295,6 +274,12 @@ class TabBarScreen extends React.Component<Props, State> {
           </Card.Body>
           <Card.Footer content="footer content" extra="footer extra content" />
         </Card>
+        {/* <Grid
+          data={}
+          columnNum={3}
+          isCarousel
+          onPress={(_el, index) => alert(index)}
+        /> */}
       </View>
     );
   }
