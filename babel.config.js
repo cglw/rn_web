@@ -8,5 +8,6 @@ module.exports = {
     // ['@babel/plugin-proposal-class-properties', { loose: false }],
     'transform-class-properties',
     ['import', { libraryName: '@ant-design/react-native' }],
+    ['import', { libraryName: 'antd-mobile', style: 'css' }, 'antd-mobile'],
   ],
 };

@@ -12,7 +12,7 @@ const config = {
     },
     host: '0.0.0.0',
     port: 9090,
-    contentBase: path.resolve('./web'),
+    contentBase: path.resolve(__dirname),
   },
   stats: 'errors-warnings',
   plugins: [new friendlyPlugin()],
