@@ -15,8 +15,8 @@ import {
 import { RefreshState } from './RefreshState';
 import RefreshFooter from './RefreshFooter';
 import { LoadState } from '../load/LoadState';
-import { getWindowHeight } from '../../../../utils/ScreenUtil';
-import { isWeb } from '../../../../utils/DeviceUtil';
+import { getWindowHeight } from '@utils/ScreenUtil';
+import { isWeb } from '@utils/DeviceUtil';
 import { StateContainerView } from '../StateContainerView';
 import { LoadBaseViewProps } from '../load/LoadStateView';
 //renderSectionHeader 实现这个方法 会切到sectionList

@@ -1,8 +1,4 @@
-import {
-  Chain,
-  HttpResponse,
-  Interceptor,
-} from '../../../../sdk/http/ResponseChain';
+import { Chain, HttpResponse, Interceptor } from '@/sdk/http/ResponseChain';
 
 export class DataHandleInterceptors implements Interceptor {
   intercept(chain: Chain): Promise<HttpResponse<any>> {

@@ -2,9 +2,9 @@ import {
   GLOBAL_COLORS,
   GLOBAL_DIMES,
   GLOBAL_STYLES,
-} from '../../../style/GlobleStyle';
+} from '@/style/GlobleStyle';
 import I18n from 'i18n-js';
-import { RouterManager } from '../../../sdk/router/RouterManager';
+import { RouterManager } from '@/sdk/router/RouterManager';
 import { wrapWithSafeImpl } from '../component/RootContainerView';
 globalStyles = GLOBAL_STYLES;
 globalDimes = GLOBAL_DIMES;

@@ -1,8 +1,4 @@
-import {
-  Chain,
-  HttpResponse,
-  Interceptor,
-} from '../../../../sdk/http/ResponseChain';
+import { Chain, HttpResponse, Interceptor } from '@/sdk/http/ResponseChain';
 import { BaseResponse } from '../../bean/BaseResponse';
 const BASE_URL = 'https://testwx.baijiayun.com/';
 export class CommonInterceptors implements Interceptor {

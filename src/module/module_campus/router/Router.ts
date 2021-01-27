@@ -3,5 +3,6 @@ export default {
   campus: {
     screen: CampusScreen,
     path: 'campus',
+    title: '',
   },
 };

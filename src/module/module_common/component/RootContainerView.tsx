@@ -1,12 +1,8 @@
 import { View, StyleSheet } from 'react-native';
-import {
-  getStatusBarHeight,
-  isAndroid,
-  isWeb,
-} from '../../../utils/DeviceUtil';
+import { getStatusBarHeight, isAndroid, isWeb } from '@utils/DeviceUtil';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react';
-import { getWindowHeight } from '../../../utils/ScreenUtil';
+import { getWindowHeight } from '@utils/ScreenUtil';
 
 export const wrapWithSafeImpl = (
   component: any,

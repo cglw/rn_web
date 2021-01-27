@@ -1,8 +1,4 @@
-import {
-  Chain,
-  HttpResponse,
-  Interceptor,
-} from '../../../../sdk/http/ResponseChain';
+import { Chain, HttpResponse, Interceptor } from '@/sdk/http/ResponseChain';
 import { TimeManager } from '../../helper/TimeManager';
 
 export class TimeCalibrationInterceptor implements Interceptor {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { HeaderView } from '../../../../module_common/component/HeaderView';
+import { HeaderView } from '@/module/module_common/component/HeaderView';
 import { Button, Icon } from '@ant-design/react-native';
-import { RouterManager } from '../../../../../sdk/router/RouterManager';
+import { RouterManager } from '@/sdk/router/RouterManager';
 import { observer } from 'mobx-react';
 const PAGE_DEMO = [
   {
