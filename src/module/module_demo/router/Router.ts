@@ -6,6 +6,7 @@ export default {
   demos: {
     screen: DemoScreen,
     path: 'demos',
+    title: '',
   },
   tabBar: {
     screen: TabBarScreenContainer,

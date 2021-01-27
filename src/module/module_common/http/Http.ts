@@ -1,7 +1,7 @@
-import { HttpClient } from '../../../sdk/http/HttpClient';
+import { HttpClient } from '@/sdk/http/HttpClient';
 import { CommonInterceptors } from './interceptors/CommonInterceptors';
-import { HttpResponse } from '../../../sdk/http/ResponseChain';
-import { HttpUtils } from '../../../sdk/http/HttpUtils';
+import { HttpResponse } from '@/sdk/http/ResponseChain';
+import { HttpUtils } from '@/sdk/http/HttpUtils';
 import { DataHandleInterceptors } from './interceptors/DataHandleInterceptors';
 import { BaseResponse } from '../bean/BaseResponse';
 import { TimeCalibrationInterceptor } from './interceptors/TimeCalibrationInterceptor';

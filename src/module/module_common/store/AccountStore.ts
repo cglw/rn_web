@@ -1,6 +1,6 @@
 import { RootStore } from './RootStore';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { StorageHelper } from '../../../sdk/storage/StorageHelper';
+import { StorageHelper } from '@/sdk/storage/StorageHelper';
 import { AccountConstants } from '../constants/Constants';
 
 export class AccountStore implements IStoreTask {
