@@ -3,6 +3,7 @@ import { LoadBaseViewProps } from './load/LoadStateView';
 import { LoadState } from './load/LoadState';
 import { StateContainerView } from './StateContainerView';
 import { View, ViewStyle } from 'react-native';
+import ErrorView from '@/module/module_common/component/placeholder/ErrorView';
 
 export interface Props<T> {
   onFetch: () => Promise<T>;
@@ -57,8 +58,9 @@ export class LoadDataContainerView<T> extends React.Component<
       <View style={{ flex: 1, ...this.props.style }}>
         <StateContainerView
           finishView={this.props.children}
-          {...this.props}
+          errorView={<ErrorView onPress={this.loadData.bind(this)} />}
           loadState={this.state.loadState}
+          {...this.props}
         />
       </View>
     );

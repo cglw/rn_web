@@ -6,12 +6,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 type Props = {
   isNetError: boolean;
   errorText: string;
+  onPress: () => void;
 };
 
 export default class ErrorView extends React.Component<Props> {
   static defaultProps = {
     isNetError: true,
     errorText: '',
+    onPress: null,
   };
 
   render() {
@@ -29,7 +31,11 @@ export default class ErrorView extends React.Component<Props> {
         {this.props.isNetError ? (
           <Text style={styles.tipText}>{'checkNet'.itn()}</Text>
         ) : null}
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            console.info('press');
+            this.props?.onPress();
+          }}>
           <View style={styles.reloadBtn}>
             <Text style={styles.reloadText}>
               {globalStore.accountStore.isLogin

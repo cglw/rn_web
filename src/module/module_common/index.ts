@@ -3,7 +3,7 @@ import './res/index';
 import './i18n/i18n';
 import './helper/ViewConfig';
 import './component/RootContainerView';
-import { RouterManager } from '../../sdk/router/RouterManager';
+import { RouterManager } from '@/sdk/router/RouterManager';
 import { RootStore } from './store/RootStore';
 import '../../design/index';
 globalService = {};
