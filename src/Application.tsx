@@ -6,7 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import routes from './router/RouterConfig';
 import { isReadyRef, navigationRef } from './sdk/router/RootNavigation';
 import { Provider } from 'mobx-react';
+import { Provider as Pv } from '@design';
 import { StatusBar } from 'react-native';
+import { isWeb } from '@utils/DeviceUtil';
 type RootDrawerParamList = {
   [key: string]: any;
 };
@@ -90,6 +92,10 @@ export class Root extends Component<any, State> {
   }
 
   render() {
+    return isWeb() ? this._renderApp() : <Pv>{this._renderApp()}</Pv>;
+  }
+
+  private _renderApp() {
     return (
       <Provider store={globalStore}>
         <StatusBar

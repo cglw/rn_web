@@ -50,7 +50,7 @@ export class SimpleListDemoScreen extends Component<Props, State> {
             return res;
           }}
           renderItem={this.renderItem}
-          // onFetch={() => Promise.resolve([])}
+          // onFetch={() => Promise.reject([])}
         />
       </View>,
     );

@@ -13,7 +13,7 @@ type State = {
 type Props = {};
 
 export class StateContainerView extends Component<
-  Props & LoadStateProps & LoadBaseViewProps,
+  Props & LoadStateProps & LoadBaseViewProps & any,
   State
 > {
   static defaultProps: {
@@ -23,6 +23,9 @@ export class StateContainerView extends Component<
     finishView?: ReactNode;
     initView?: React.ComponentType<any> | React.ReactElement;
   };
+  constructor(props: any) {
+    super(props);
+  }
   render() {
     let res = (
       <LoadStateView

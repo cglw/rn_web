@@ -19,6 +19,7 @@ import { getWindowHeight } from '@utils/ScreenUtil';
 import { isWeb } from '@utils/DeviceUtil';
 import { StateContainerView } from '../StateContainerView';
 import { LoadBaseViewProps } from '../load/LoadStateView';
+import ErrorView from '@/module/module_common/component/placeholder/ErrorView';
 //renderSectionHeader 实现这个方法 会切到sectionList
 type Props = {
   onFetch: (page: number) => Promise<any>;
@@ -100,12 +101,17 @@ export default class ListView<ItemT> extends Component<
         refreshProps = { ...refreshProps, renderScrollComponent: null };
       }
     }
-    console.info('ScrollViewWrapper');
-    console.info(this.props.errorView);
-    console.info('this.props.errorView');
     return (
       <StateContainerView
         {...this.props}
+        errorView={
+          <ErrorView
+            onPress={() => {
+              console.info('ErrorView');
+              this.retryLoad();
+            }}
+          />
+        }
         ref={(ref: any) => (this.loadContainerViewRef = ref)}
         loadState={this.state._loadState}>
         <ScrollViewWrapper
@@ -298,6 +304,7 @@ export default class ListView<ItemT> extends Component<
     });
   }
   retryLoad() {
+    console.info('retryLoad===>');
     this.props.onRetryCallBack && this.props.onRetryCallBack();
     this.setState(
       {
