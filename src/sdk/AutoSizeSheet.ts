@@ -26,6 +26,14 @@ type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
  */
 // export function create<T extends NamedStyles<T> | NamedStyles<any>>(styles: T | NamedStyles<T>): T;
 
+export function adapterSize(
+  size: number,
+  screenWidth: number = Dimensions.get('window').width,
+  designWidth: number = 375,
+) {
+  return Math.round((size * screenWidth) / designWidth);
+}
+
 export default class AutoSizeSheet {
   static create<S extends NamedStyles<S> | NamedStyles<any>>(
     styles: S | NamedStyles<S>,
@@ -72,7 +80,7 @@ export default class AutoSizeSheet {
       ) {
         const prop = style[name];
         // @ts-ignore
-        style[name] = Math.round((prop * screenWidth) / designWidth);
+        style[name] = adapterSize(prop, screenWidth, designWidth);
       }
     });
 

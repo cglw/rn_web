@@ -22,10 +22,10 @@ const scanDirFunc = function (filePath) {
 };
 exports.scanDir = scanDirFunc;
 exports.getDirNameByPath = function (file) {
-  return file.substring(file.lastIndexOf('/') + 1, file.length);
+  return file.substring(file.lastIndexOf(path.sep) + 1, file.length);
 };
 exports.getParentDirNameByPath = function (file) {
-  return file.substring(0, file.lastIndexOf('/'));
+  return file.substring(0, file.lastIndexOf(path.sep));
 };
 
 exports.scanDirHandle = function (rootPath, dirs, input = []) {

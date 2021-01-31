@@ -1,5 +1,6 @@
 import {
   Constructor,
+  Dimensions,
   NativeMethods,
   RefreshControlComponent,
 } from 'react-native';
@@ -28,6 +29,11 @@ declare global {
     isNeedSafe?: boolean,
     style?: object,
   ): any;
+  function adapterSize(
+    size: number,
+    screenWidth?: number,
+    designWidth?: number,
+  ): number;
 }
 
 declare const RefreshControlBase: Constructor<NativeMethods> &

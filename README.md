@@ -246,7 +246,7 @@ web端：npm run web
 
 ### 开发注意及使用
 1. 禁止修改项
-请勿修改src/index.js 和src/router/RouterConfig.ts
+请勿修改src/BetterBanner.js 和src/router/RouterConfig.ts
 这两个文件为统一模块入口和注册入口，
 2. 模块初始化的东西在对应模块的index文件进行注册
 3. createCode 推荐在启动项目后手动开启，如果不涉及到资源变化也可以不开启，已经在package.json配置

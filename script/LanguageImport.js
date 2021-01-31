@@ -23,7 +23,7 @@ exports.handleLanguageCode = function (filePath, files) {
     languageList += `  ${languageName},\n`;
   }
   fs.writeFile(
-    fPath.join(filePath, 'res/index.js'),
+    fPath.join(filePath, 'res/BetterBanner.js'),
     languageResFmt({ languageImport, languageList }),
     err => {},
   );
