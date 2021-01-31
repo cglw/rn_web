@@ -12,9 +12,13 @@ exports.handleImageCode = function (filePath, files) {
   for (let i = 0; i < files.length; i++) {
     let image = files[i];
     let fileName = getFileName(image);
+    fileName = fileName
+      .replace('@1x', '')
+      .replace('@2x', '')
+      .replace('@3x', '');
     if (!fileName.endsWith('.ts')) {
       content += imageListFmt(
-        getDirNameByPath(filePath) + '_' + getFileName(image),
+        getDirNameByPath(filePath) + '_' + fileName,
         image,
       );
     }
