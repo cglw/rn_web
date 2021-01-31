@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { NumOfPeopleComponent } from './ClassPack/NumOfPeopleComponent';
-import { OtoSignComponent } from './ClassPack/OtoSignComponent';
+import { SignComponent } from './ClassPack/SignComponent';
 import { PriceComponent } from './ClassPack/PriceComponent';
+import { BadgeComponent } from './ClassPack/BadgeComponent';
 
 type Props = {
   img: ImageSourcePropType;
@@ -33,7 +34,7 @@ export class ClassPackComponent extends React.Component<Props> {
         }}>
         <View style={styles.container}>
           <View>
-            <OtoSignComponent />
+            <SignComponent value={'点播课ke'} />
             <Image
               style={{
                 width: 124,
@@ -45,6 +46,7 @@ export class ClassPackComponent extends React.Component<Props> {
           </View>
           <View style={styles.info}>
             <Text numberOfLines={2} style={styles.title}>
+              <BadgeComponent />
               {this.props.title}
             </Text>
             <View>

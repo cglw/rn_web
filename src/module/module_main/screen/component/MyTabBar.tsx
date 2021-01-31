@@ -83,6 +83,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: 'white',
+    height: 49,
+    shadowOffset: { width: 0, height: -2 },
+    shadowColor: '#F5F5F5',
+    shadowRadius: 6,
   },
   touch: {
     flex: 1,

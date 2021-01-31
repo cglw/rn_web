@@ -4,7 +4,7 @@ import { LoadDataContainerView } from '../../module_common/component/LoadDataCon
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import ErrorView from '@/module/module_common/component/placeholder/ErrorView';
-import { Toast, Modal } from '@design';
+import { Toast } from '@design';
 import { Portal } from '@ant-design/react-native';
 
 type Props = {};

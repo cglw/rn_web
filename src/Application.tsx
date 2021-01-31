@@ -27,7 +27,7 @@ function MyStack() {
           component={routes[name].screen}
           options={{
             header: () => HeaderNull(),
-            title: `${routes[name].title}`,
+            title: `${routes[name]}`,
           }}
         />
       ))}
@@ -56,9 +56,7 @@ const MyApp = function () {
       }}
       ref={navigationRef}
       onStateChange={async state => {
-        console.info('onStateChange');
         // window.document.title = '测试';
-        console.info(state);
         try {
           await AsyncStorage.setItem(
             NAVIGATION_PERSISTENCE_KEY,

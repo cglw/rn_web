@@ -20,7 +20,9 @@ export class MainScreen extends Component<any, any> {
       <View style={styles.container}>
         <LoadDataContainerView
           onFetch={() => MainApi.getBottomNav()}
-          onLoadSuccess={res => this.navList.set(res)}>
+          onLoadSuccess={res => {
+            return this.navList.set(res);
+          }}>
           {this._isHasNavList() ? (
             <Tab.Navigator tabBar={props => this._renderTabBar(props)}>
               {this._renderScreen()}

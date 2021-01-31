@@ -1,5 +1,7 @@
+import { Datums } from './../bean/AppIndexBean';
 import { TabWrapperBean } from '../bean/TabWrapperBean';
 import { Http } from '../../module_common/http/Http';
+import { Datum } from '../bean/NavBean';
 export class MainApi {
   static getBottomNav() {
     return Http.get<TabWrapperBean>('api/app/nav/bottom');
@@ -22,5 +24,13 @@ export class MainApi {
         schoolid: 25,
       })
       .get<Array<Object>>();
+  }
+  static getNav() {
+    return Http.get<Array<Datum>>('api/app/nav');
+  }
+  static getAppIndex() {
+    return Http.get<Array<Datums>>(
+      'https://testwx.baijiayun.com/api/app/recommend/appIndex',
+    );
   }
 }

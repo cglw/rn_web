@@ -16,17 +16,18 @@ export class PriceComponent extends Component<Props> {
       case 'original':
         return (
           <Text style={styles.old_price}>
-            <View style={styles.midLine} />
-            {(this.props.price / 100).toFixed(2)}元
+            <View style={styles.midLine} />¥
+            {(this.props.price / 100).toFixed(2)}
           </Text>
         );
       case 'present':
         return (
           <Text style={styles._price}>
+            ¥
             <Text style={{ fontWeight: '700', fontSize: 16 }}>
               {(this.props.price / 100).toFixed(2).split('.')[0] + '.'}
             </Text>
-            {(this.props.price / 100).toFixed(2).split('.')[1]}元
+            {(this.props.price / 100).toFixed(2).split('.')[1]}
           </Text>
         );
       default:

@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 
 type Props = {};
 
-export class OtoSignComponent extends React.Component<Props> {
+export class BadgeComponent extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>一对一</Text>
+        <Text style={styles.text}>券</Text>
       </View>
     );
   }
@@ -18,19 +18,16 @@ export class OtoSignComponent extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: 45,
-    height: 19,
-    backgroundColor: '#000000',
-    opacity: 0.5,
-    borderTopLeftRadius: 4,
-    borderBottomRightRadius: 4,
-    position: 'absolute',
-    zIndex: 3,
+    width: 17.5,
+    height: 16,
+    'background-image':
+      'linear-gradient(to right bottom, #FF8552 50%, #FF526F 50%)',
+    borderRadius: 5,
   },
   text: {
     fontSize: 11,
-    color: 'white',
+    color: '#fff',
     textAlign: 'center',
-    lineHeight: 19,
+    fontWeight: '100',
   },
 });

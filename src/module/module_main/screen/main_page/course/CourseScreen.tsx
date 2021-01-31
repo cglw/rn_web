@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { observer } from 'mobx-react';
 import { ClassPackComponent } from './component/ClassPackComponent';
 // import { autorun } from 'mobx';
@@ -37,6 +37,32 @@ export class CourseScreen extends React.Component {
           classClick={() => {
             // eslint-disable-next-line no-alert
             alert(111);
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            height: 100,
+            padding: 20,
+          }}>
+          <View style={{ backgroundColor: 'blue', flex: 0.3 }} />
+          <View style={{ backgroundColor: 'red', flex: 0.5 }} />
+          <Text>Hello World!</Text>
+        </View>
+        <View
+          style={{
+            height: 100,
+            backgroundImage: 'linear-gradient(to right, #FF8552, #FF526F)',
+          }}
+        />
+        <View
+          style={{
+            width: 0,
+            height: 0,
+            borderTopWidth: 70,
+            borderLeftWidth: 60,
+            borderTopColor: '#fff',
+            borderLeftColor: 'red',
           }}
         />
       </>,
