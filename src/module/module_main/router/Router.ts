@@ -1,14 +1,9 @@
-import { IndexScreenContainer } from '../screen/main_page/index/IndexScreen';
+import { TheMainScreenContainer } from './../screen/main_page/index/TheMainScreen';
 import { MainScreenContainer } from '../screen/MainScreen';
 import { PersonScreen } from '../screen/main_page/my/PersonScreen';
 import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
 import { PractiseScreenContainer } from '../screen/main_page/practise/PractiseScreen';
-// import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
-import { ListDemoScreen } from '../screen/ListDemoScreen';
-import { SectionListDemoScreen } from '../screen/SectionListDemoScreen';
-import { LoadStateDemoScreenContainer } from '../screen/LoadStateDemoScreen';
-import { SimpleListDemoScreen } from '../screen/SimpleListDemoScreen';
-import { ListScreen } from '../screen/ListScreen';
+import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
 
 export default {
   home: {
@@ -18,7 +13,7 @@ export default {
     screens: {
       index: {
         path: 'index',
-        screen: IndexScreenContainer,
+        screen: TheMainScreenContainer,
       },
       person: {
         path: 'person',
@@ -26,8 +21,7 @@ export default {
       },
       course: {
         path: 'course',
-        // screen: CourseScreenContainer,
-        screen: SectionListDemoScreen,
+        screen: CourseScreenContainer,
       },
       oto: {
         path: 'oto',
@@ -38,30 +32,5 @@ export default {
         screen: PractiseScreenContainer,
       },
     },
-  },
-  demo: {
-    screen: ListDemoScreen,
-    path: 'demo',
-    title: 'Demo',
-  },
-  simple: {
-    screen: SimpleListDemoScreen,
-    path: 'simple',
-    title: '简单列表',
-  },
-  section: {
-    screen: SectionListDemoScreen,
-    path: 'section',
-    title: '多样式',
-  },
-  load: {
-    screen: LoadStateDemoScreenContainer,
-    path: 'load',
-    title: '加载',
-  },
-  list: {
-    screen: ListScreen,
-    path: 'list',
-    title: '列表',
   },
 };

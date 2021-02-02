@@ -242,7 +242,7 @@ web端：npm run web
 - string 资源 模块名_逻辑名称 module_login_tips
 - 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
 - 带有boolean结果的变量，用isXxx 去表示如isOpen
-- style样式需要用小写的单词用_隔开
+- style样式需要用小写的单词用_隔开 业务描述_控件描述  cover_img:{ } bottom_container:{}
 
 ### 开发注意及使用
 1. 禁止修改项

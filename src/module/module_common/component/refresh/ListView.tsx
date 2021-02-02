@@ -7,6 +7,7 @@ import {
   FlatListProps,
   LayoutChangeEvent,
   RefreshControl,
+  ScrollView,
   SectionList,
   SectionListProps,
   StyleSheet,
@@ -20,6 +21,7 @@ import { isWeb } from '@utils/DeviceUtil';
 import { StateContainerView } from '../StateContainerView';
 import { LoadBaseViewProps } from '../load/LoadStateView';
 import ErrorView from '@/module/module_common/component/placeholder/ErrorView';
+import CustomRefreshControl from '@/sdk/refresh/RefreshControl.web';
 //renderSectionHeader 实现这个方法 会切到sectionList
 type Props = {
   onFetch: (page: number) => Promise<any>;
@@ -142,10 +144,26 @@ export default class ListView<ItemT> extends Component<
           {...refreshProps}
           data={this._getRenderData()}
           sections={this._getRenderData()}
+          renderScrollComponent={isWeb() ? this._renderScrollComponent : null}
         />
       </StateContainerView>
     );
   }
+
+  _renderScrollComponent(props: any) {
+    return (
+      <ScrollView
+        {...props}
+        refreshControl={
+          <CustomRefreshControl
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh}
+          />
+        }
+      />
+    );
+  }
+
   _getRenderData() {
     return this.state._data;
   }

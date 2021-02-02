@@ -1,4 +1,4 @@
-import { Badge as badge } from 'antd-mobile';
-import { Carousel as cs } from 'antd-mobile';
+import { Badge as badge, Carousel as cs, Grid as grid } from 'antd-mobile';
 export const Badge = badge;
 export const Carousel = cs;
+export const Grid = grid;
