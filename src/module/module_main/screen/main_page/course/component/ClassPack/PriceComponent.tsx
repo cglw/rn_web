@@ -31,7 +31,7 @@ export class PriceComponent extends Component<Props> {
           </Text>
         );
       default:
-        break;
+        return <Text style={styles._price}>免费</Text>;
     }
   }
 }

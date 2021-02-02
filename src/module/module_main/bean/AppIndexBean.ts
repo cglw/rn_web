@@ -1,6 +1,11 @@
+// export class AppListData {
+//   title: string = '';
+//   data: Datums = new Datums();
+// }
+
 export class Datums {
-  channel_info: Channelinfo = new Channelinfo();
-  list: Array<List> = [];
+  title: Channelinfo = new Channelinfo();
+  data: Array<List> = [];
 }
 
 export class List {
@@ -44,6 +49,9 @@ export class List {
   introduction?: string;
   is_oto_teacher?: number;
   level_name?: string;
+  thumb_img: string | undefined;
+  description: string | undefined;
+  created_at: string | undefined;
 }
 
 export class Teacherslist {

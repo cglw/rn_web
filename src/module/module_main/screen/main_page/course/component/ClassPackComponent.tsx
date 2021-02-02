@@ -5,7 +5,6 @@ import {
   Image,
   Text,
   ImageSourcePropType,
-  TouchableOpacity,
 } from 'react-native';
 import { NumOfPeopleComponent } from './ClassPack/NumOfPeopleComponent';
 import { SignComponent } from './ClassPack/SignComponent';
@@ -14,11 +13,11 @@ import { BadgeComponent } from './ClassPack/BadgeComponent';
 
 type Props = {
   img: ImageSourcePropType;
-  title: string;
-  originalPrice: number;
-  presentPrice: number;
-  numOfPeople: number;
-  classClick: any;
+  title?: string;
+  originalPrice?: number;
+  presentPrice?: number;
+  numOfPeople?: number;
+  classClick?: any;
 };
 
 export class ClassPackComponent extends React.Component<Props> {
@@ -27,67 +26,73 @@ export class ClassPackComponent extends React.Component<Props> {
   }
   render() {
     return (
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={() => {
-          this.props.classClick();
-        }}>
-        <View style={styles.container}>
+      // <TouchableOpacity
+      //   activeOpacity={0.5}
+      //   onPress={() => {
+      //     this.props.classClick();
+      //   }}>
+      <View style={styles.container}>
+        <View>
+          <SignComponent value={'点播课ke'} />
+          <Image
+            style={{
+              width: 109,
+              height: 64,
+              borderRadius: 4,
+            }}
+            source={this.props.img}
+          />
+        </View>
+        <View style={styles.info}>
+          <Text numberOfLines={2} style={styles.title}>
+            <BadgeComponent />
+            {this.props.title}
+          </Text>
           <View>
-            <SignComponent value={'点播课ke'} />
-            <Image
-              style={{
-                width: 124,
-                height: 83,
-                borderRadius: 4,
-              }}
-              source={this.props.img}
-            />
-          </View>
-          <View style={styles.info}>
-            <Text numberOfLines={2} style={styles.title}>
-              <BadgeComponent />
-              {this.props.title}
-            </Text>
-            <View>
+            {this.props.originalPrice === undefined ? (
+              <Text />
+            ) : (
               <PriceComponent
                 price={this.props.originalPrice}
                 priceType={'original'}
               />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between',
-                }}>
+            )}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+              }}>
+              {this.props.numOfPeople === undefined ? (
+                <NumOfPeopleComponent numOfPeople={0} />
+              ) : (
                 <NumOfPeopleComponent numOfPeople={this.props.numOfPeople} />
+              )}
+              {this.props.presentPrice === undefined ? null : (
                 <PriceComponent
                   price={this.props.presentPrice}
                   priceType={'present'}
                 />
-              </View>
+              )}
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
+      // </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    // height: 115,
     backgroundColor: 'white',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 16,
-    paddingTop: 16,
     flexDirection: 'row',
   },
   info: {
     flex: 1,
-    height: 83,
-    marginLeft: 17,
+    height: 73,
+    marginLeft: 18,
+    justifyContent: 'space-between',
   },
   title: {
     height: 44,

@@ -1,33 +1,45 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-type Props = {};
+type Props = {
+  text?: string;
+  type: string;
+};
 
 export class BadgeComponent extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>券</Text>
-      </View>
-    );
+    switch (this.props.type) {
+      case 'number':
+        return (
+          <View style={styles.badge_container}>
+            <Text style={styles.badge_text_number}>{this.props.text}</Text>
+          </View>
+        );
+      case 'str':
+        return <View />;
+      default:
+        return <View />;
+    }
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: 17.5,
-    height: 16,
-    'background-image':
-      'linear-gradient(to right bottom, #FF8552 50%, #FF526F 50%)',
-    borderRadius: 5,
+  badge_container: {
+    width: 20,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#FF2B4E',
+    position: 'absolute',
+    left: 16.5,
+    top: -3,
   },
-  text: {
-    fontSize: 11,
-    color: '#fff',
+  badge_text_number: {
+    fontSize: 10,
+    color: 'white',
     textAlign: 'center',
-    fontWeight: '100',
+    lineHeight: 12,
   },
 });
