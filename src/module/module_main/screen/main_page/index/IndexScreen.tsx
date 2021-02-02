@@ -17,7 +17,6 @@ type State = {
   navData: Array<navDataBean>;
   appIndexData: Array<Datums>;
 };
-const width: number = 251;
 // 宫格数据Bean
 class navDataBean {
   icon: string = '';
@@ -67,7 +66,7 @@ class IndexScreen extends React.Component<Props, State> {
             return res;
           }}
           renderItem={this.renderItem}
-          ListHeaderComponent={this.listHeader}
+          ListHeaderComponent={this.renderListHeader}
           renderSectionHeader={({ section: { title } }) => (
             <View style={styles.sectionHeader}>
               <SectionTitleComponent
@@ -76,11 +75,9 @@ class IndexScreen extends React.Component<Props, State> {
               />
             </View>
           )}
-          ItemSeparatorComponent={() => (
-            <View style={styles.list_separator}>
-              <View style={styles.list_separator_line} />
-            </View>
-          )}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          renderSectionFooter={() => <View style={styles.section_footor} />}
+          enableLoadMore={false}
         />
       </View>
     );
@@ -123,7 +120,7 @@ class IndexScreen extends React.Component<Props, State> {
   };
 
   // 渲染listHeader
-  listHeader = () => {
+  renderListHeader = () => {
     return (
       <View>
         <View style={styles.nav}>
@@ -158,71 +155,10 @@ class IndexScreen extends React.Component<Props, State> {
   renderItem = (item: any) => {
     console.log('renderItem=======================================>>>>');
     console.log(item);
-    let appData: List = item.item;
+    let itemData: List = item.item;
+    let type: number = item.section.title.type;
     if (this.isAppIndexData()) {
-      switch (item.section.title.id) {
-        case 50:
-          return (
-            <View style={styles.listItem}>
-              <ClassPackComponent
-                img={{
-                  uri: appData.cover_img,
-                }}
-                title={appData.name}
-                originalPrice={appData.original_price}
-                presentPrice={appData.sale_price}
-                numOfPeople={appData.sales_num}
-              />
-            </View>
-          );
-        case 22:
-          return (
-            <View style={styles.listItem}>
-              <BookComponent
-                bookImg={appData.cover_img}
-                bookName={appData.title}
-                author={appData.name}
-                introduction={
-                  'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd111111111111111111111111111111111'
-                }
-                originalPrice={19888}
-                presentPrice={198}
-              />
-            </View>
-          );
-
-        case 12:
-          return (
-            <View style={styles.listItem}>
-              <TeacherComponent
-                teacherName={appData.teacher_name}
-                levelName={appData.level_name}
-                photo={appData.photo}
-                introduction={appData.introduction}
-              />
-              <TeacherComponent
-                teacherName={appData.teacher_name}
-                levelName={appData.level_name}
-                photo={appData.photo}
-                introduction={appData.introduction}
-              />
-            </View>
-          );
-
-        case 67:
-          return (
-            <View style={styles.listItem}>
-              <InfomationComponent
-                img={appData.thumb_img}
-                title={appData.description}
-                time={appData.created_at}
-                numOfPeople={123124}
-              />
-            </View>
-          );
-        default:
-          return <View />;
-      }
+      return getItem(itemData, type);
     } else {
       return <View />;
     }
@@ -242,7 +178,130 @@ class IndexScreen extends React.Component<Props, State> {
       </View>
     );
   };
+
+  // item分隔组件
+  renderItemSeparator = (item: any) => {
+    let type: number = item.section.title.type;
+    return getItemSeparator(type);
+  };
 }
+
+const TYPE_INFORMATION = 6;
+const TYPE_CLASSPACK = 8;
+const TYPE_COURSE = 1;
+const TYPE_TEACHER = 3;
+
+// 对不同类型的item渲染相应组件
+function getItem(itemData: List, type: number) {
+  switch (type) {
+    case TYPE_INFORMATION:
+      return (
+        <View style={styles.listItem}>
+          <InfomationComponent
+            img={itemData.thumb_img}
+            title={itemData.description}
+            time={itemData.created_at}
+            numOfPeople={123124}
+          />
+        </View>
+      );
+    case TYPE_CLASSPACK:
+      return (
+        <View style={styles.listItem}>
+          <ClassPackComponent
+            img={{
+              uri: itemData.cover_img,
+            }}
+            title={itemData.name}
+            originalPrice={itemData.original_price}
+            presentPrice={itemData.sale_price}
+            numOfPeople={itemData.sales_num}
+          />
+        </View>
+      );
+    case TYPE_COURSE:
+      return (
+        <View style={styles.listItem}>
+          <BookComponent
+            bookImg={itemData.cover_img}
+            bookName={itemData.title}
+            author={itemData.name}
+            introduction={
+              'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd111111111111111111111111111111111'
+            }
+            originalPrice={19888}
+            presentPrice={198}
+          />
+        </View>
+      );
+    case TYPE_TEACHER:
+      return (
+        <View style={styles.listItem}>
+          <TeacherComponent
+            teacherName={itemData.teacher_name}
+            levelName={itemData.level_name}
+            photo={itemData.photo}
+            introduction={itemData.introduction}
+          />
+        </View>
+      );
+    default:
+      return <View />;
+  }
+}
+
+// item分隔组件的样式分类
+function getItemSeparator(type: number) {
+  switch (type) {
+    case TYPE_COURSE:
+      return (
+        <View style={[styles.list_separator, { height: 36.5 }]}>
+          <View style={[styles.list_separator_line, { width: 211.5 }]} />
+        </View>
+      );
+    case TYPE_TEACHER:
+      return (
+        <View style={[styles.list_separator, { height: 20.5 }]}>
+          <View style={[styles.list_separator_line, { width: 251 }]} />
+        </View>
+      );
+    case TYPE_INFORMATION:
+      return (
+        <View style={[styles.list_separator, { height: 30.5 }]}>
+          <View
+            style={[styles.list_separator_line, { width: 212, left: 18 }]}
+          />
+        </View>
+      );
+    case TYPE_CLASSPACK:
+      return (
+        <View style={[styles.list_separator, { height: 36.5 }]}>
+          <View style={[styles.list_separator_line, { width: 211.5 }]} />
+        </View>
+      );
+    default:
+      return <View />;
+  }
+}
+
+// item分隔组件样式
+// const itemSeparatorStyle = {
+//   height: 36.5,
+//   backgroundColor: 'white',
+//   justifyContent: 'center',
+// };
+// const itemSeparatorLineStyle = (width: number) => {
+//   const itemSeparatorLineStyles = StyleSheet.create({
+//     list_separator_line: {
+//       width: width,
+//       height: 0.5,
+//       backgroundColor: '#EDEDED',
+//       position: 'absolute',
+//       right: 18,
+//     },
+//   });
+//   return itemSeparatorLineStyles.list_separator_line;
+// };
 
 const styles = StyleSheet.create({
   container: {
@@ -296,15 +355,12 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     paddingRight: 18,
     backgroundColor: 'white',
-    paddingBottom: 20,
   },
   list_separator: {
-    height: 36,
     backgroundColor: 'white',
     justifyContent: 'center',
   },
   list_separator_line: {
-    width: width,
     height: 0.5,
     backgroundColor: '#EDEDED',
     position: 'absolute',
@@ -312,6 +368,10 @@ const styles = StyleSheet.create({
   },
   openclass_flatlist: {
     paddingLeft: 18,
+  },
+  section_footor: {
+    height: 20,
+    backgroundColor: 'white',
   },
 });
 
