@@ -1,9 +1,9 @@
-import { TheMainScreenContainer } from './../screen/main_page/index/TheMainScreen';
 import { MainScreenContainer } from '../screen/MainScreen';
 import { PersonScreen } from '../screen/main_page/my/PersonScreen';
 import { OneToOneScreen } from '../screen/main_page/onetoone/OneToOneScreen';
 import { PractiseScreenContainer } from '../screen/main_page/practise/PractiseScreen';
 import { CourseScreenContainer } from '../screen/main_page/course/CourseScreen';
+import { IndexScreenContainer } from '@/module/module_main/screen/main_page/index/IndexScreen';
 
 export default {
   home: {
@@ -13,7 +13,7 @@ export default {
     screens: {
       index: {
         path: 'index',
-        screen: TheMainScreenContainer,
+        screen: IndexScreenContainer,
       },
       person: {
         path: 'person',

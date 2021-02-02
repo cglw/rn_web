@@ -58,6 +58,7 @@ class IndexScreen extends React.Component<Props, State> {
         </View>
         {/* ListView */}
         <ListView
+          enableLoadMore={false}
           onFetch={() => {
             return new Promise(resolve => {
               setTimeout(() => {
@@ -147,7 +148,6 @@ class IndexScreen extends React.Component<Props, State> {
             hasMore={false}
           />
           <FlatList
-            renderScrollComponent={null}
             data={[{ id: '0' }, { id: '1' }]}
             renderItem={this.openClassRenderItem}
             keyExtractor={item => item.id}
