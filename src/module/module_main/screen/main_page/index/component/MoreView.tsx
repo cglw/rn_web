@@ -1,9 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-type Props = {};
-
-export const MoreComponent: React.FC<Props> = () => {
+export const MoreView: React.FC = () => {
   return (
     <View style={styles.more_container}>
       <Text style={styles.more_text}>更多</Text>

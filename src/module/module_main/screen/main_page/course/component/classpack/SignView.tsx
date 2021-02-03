@@ -5,23 +5,17 @@ type Props = {
   value: string;
 };
 
-export class SignComponent extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>{this.props.value}</Text>
-        <View style={styles.triangle} />
-      </View>
-    );
-  }
-}
+export const SignView: React.FC<Props> = (props: Props) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{props.value}</Text>
+      <View style={styles.triangle} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    // width: 45,
     height: 18,
     backgroundColor: '#000000',
     borderTopLeftRadius: 2.5,
@@ -32,7 +26,6 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     paddingRight: 4,
     'background-image': 'linear-gradient(to right, #FF8552, #FF526F)',
-    // 'background-image': 'linear-gradient(to right, black, white)',
   },
   triangle: {
     position: 'absolute',

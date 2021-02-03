@@ -1,17 +1,18 @@
 import ListView from '@/module/module_common/component/refresh/ListView';
 import { MainApi } from '@/module/module_main/api/MainApi';
 import { Datums, List } from '@/module/module_main/bean/AppIndexBean';
-import { Grid } from '@design';
+// import { BookBean } from '@/module/module_main/bean/BookBean';
+import { Grid, Badge } from '@design';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { Image, StyleSheet, View, FlatList } from 'react-native';
-import { BadgeComponent } from '../course/component/ClassPack/BadgeComponent';
+// import { BadgeComponent } from '../../component/BadgeComponent';
 import { ClassPackComponent } from '../course/component/ClassPackComponent';
-import { BookComponent } from './component/BookComponent';
-import { InfomationComponent } from './component/InfomationComponent';
-import { OpenClassComponent } from './component/OpenClassComponent';
-import { SectionTitleComponent } from './component/SectionTitleComponent';
-import { TeacherComponent } from './component/TeacherComponent';
+import { BookView } from './component/BookView';
+import { InfomationView } from './component/InfomationView';
+import { OpenClassView } from './component/OpenClassView';
+import { SectionTitleView } from './component/SectionTitleView';
+import { TeacherView } from './component/TeacherView';
 type Props = {};
 type State = {
   navData: Array<navDataBean>;
@@ -39,7 +40,7 @@ class IndexScreen extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         {/* 搜索栏 */}
-        <View style={styles.searchContainer}>
+        <View style={styles.search_container}>
           <View style={styles.searchView} />
           <Image
             source={globalImages.module_main_task}
@@ -50,7 +51,9 @@ class IndexScreen extends React.Component<Props, State> {
               source={globalImages.module_main_mail}
               style={styles.search_images}
             />
-            <BadgeComponent type={'number'} text={'23'} />
+            <View style={styles.search_badge}>
+              <Badge text={12} />
+            </View>
           </View>
         </View>
         {/* ListView */}
@@ -69,9 +72,10 @@ class IndexScreen extends React.Component<Props, State> {
           ListHeaderComponent={this.renderListHeader}
           renderSectionHeader={({ section: { title } }) => (
             <View style={styles.sectionHeader}>
-              <SectionTitleComponent
+              <SectionTitleView
                 title={title.name}
                 backgroundColor={'white'}
+                hasMore={true}
               />
             </View>
           )}
@@ -123,10 +127,10 @@ class IndexScreen extends React.Component<Props, State> {
   renderListHeader = () => {
     return (
       <View>
-        <View style={styles.nav}>
+        <View>
           {this.isNavData() ? (
             <Grid
-              itemStyle={{ height: 74 }}
+              // itemStyle={{ height: 74 }}
               data={this.state.navData}
               columnNum={4}
               isCarousel={true}
@@ -137,7 +141,11 @@ class IndexScreen extends React.Component<Props, State> {
           )}
         </View>
         <View style={styles.openClass}>
-          <SectionTitleComponent title="公开课" backgroundColor={'#F7F7F7'} />
+          <SectionTitleView
+            title="公开课"
+            backgroundColor={'#F7F7F7'}
+            hasMore={false}
+          />
           <FlatList
             renderScrollComponent={null}
             data={[{ id: '0' }, { id: '1' }]}
@@ -168,11 +176,11 @@ class IndexScreen extends React.Component<Props, State> {
   openClassRenderItem = () => {
     return (
       <View style={styles.openClassContainer}>
-        <OpenClassComponent
+        <OpenClassView
           title={'关于ZUK的数学猜想'}
-          name={'顾未易'}
-          time={'3月25日 10:00'}
-          img={globalImages.module_main_bjy}
+          anchorName={'顾未易'}
+          startTime={'3月25日 10:00'}
+          headPortrait={globalImages.module_main_bjy}
           state={true}
         />
       </View>
@@ -193,15 +201,18 @@ const TYPE_TEACHER = 3;
 
 // 对不同类型的item渲染相应组件
 function getItem(itemData: List, type: number) {
+  // console.log('getItem===========================>>>>>>>>>>>>>>>>>>>');
+  // let bookData: BookBean = itemData
+  // console.log(itemData);
   switch (type) {
     case TYPE_INFORMATION:
       return (
         <View style={styles.listItem}>
-          <InfomationComponent
-            img={itemData.thumb_img}
+          <InfomationView
+            picture={itemData.thumb_img}
             title={itemData.description}
             time={itemData.created_at}
-            numOfPeople={123124}
+            numOfVisitors={123124}
           />
         </View>
       );
@@ -215,29 +226,30 @@ function getItem(itemData: List, type: number) {
             title={itemData.name}
             originalPrice={itemData.original_price}
             presentPrice={itemData.sale_price}
-            numOfPeople={itemData.sales_num}
+            numOfEnrolment={itemData.sales_num}
           />
         </View>
       );
     case TYPE_COURSE:
       return (
         <View style={styles.listItem}>
-          <BookComponent
-            bookImg={itemData.cover_img}
-            bookName={itemData.title}
+          {/* <BookView
+            // {...itemData}
+            coverPhoto={itemData.cover_img}
+            title={itemData.title}
             author={itemData.name}
             introduction={
               'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd111111111111111111111111111111111'
             }
             originalPrice={19888}
             presentPrice={198}
-          />
+          /> */}
         </View>
       );
     case TYPE_TEACHER:
       return (
         <View style={styles.listItem}>
-          <TeacherComponent
+          <TeacherView
             teacherName={itemData.teacher_name}
             levelName={itemData.level_name}
             photo={itemData.photo}
@@ -254,54 +266,27 @@ function getItem(itemData: List, type: number) {
 function getItemSeparator(type: number) {
   switch (type) {
     case TYPE_COURSE:
-      return (
-        <View style={[styles.list_separator, { height: 36.5 }]}>
-          <View style={[styles.list_separator_line, { width: 211.5 }]} />
-        </View>
-      );
+      return renderItemSeparator(36.5, 211.5);
     case TYPE_TEACHER:
-      return (
-        <View style={[styles.list_separator, { height: 20.5 }]}>
-          <View style={[styles.list_separator_line, { width: 251 }]} />
-        </View>
-      );
+      return renderItemSeparator(20.5, 251);
     case TYPE_INFORMATION:
-      return (
-        <View style={[styles.list_separator, { height: 30.5 }]}>
-          <View
-            style={[styles.list_separator_line, { width: 212, left: 18 }]}
-          />
-        </View>
-      );
+      return renderItemSeparator(30.5, 212, 18);
     case TYPE_CLASSPACK:
-      return (
-        <View style={[styles.list_separator, { height: 36.5 }]}>
-          <View style={[styles.list_separator_line, { width: 211.5 }]} />
-        </View>
-      );
+      return renderItemSeparator(36.5, 211.5);
     default:
       return <View />;
   }
 }
 
-// item分隔组件样式
-// const itemSeparatorStyle = {
-//   height: 36.5,
-//   backgroundColor: 'white',
-//   justifyContent: 'center',
-// };
-// const itemSeparatorLineStyle = (width: number) => {
-//   const itemSeparatorLineStyles = StyleSheet.create({
-//     list_separator_line: {
-//       width: width,
-//       height: 0.5,
-//       backgroundColor: '#EDEDED',
-//       position: 'absolute',
-//       right: 18,
-//     },
-//   });
-//   return itemSeparatorLineStyles.list_separator_line;
-// };
+function renderItemSeparator(_height: number, _width: number, _left?: number) {
+  return (
+    <View style={[styles.list_separator, { height: _height }]}>
+      <View
+        style={[styles.list_separator_line, { width: _width, left: _left }]}
+      />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -315,13 +300,13 @@ const styles = StyleSheet.create({
   },
   searchView: {
     marginTop: 4.5,
-    width: 262,
+    width: '80%',
     height: 35,
     backgroundColor: '#F0F0F0',
     borderRadius: 17.5,
     marginBottom: 4.5,
   },
-  searchContainer: {
+  search_container: {
     paddingLeft: 18,
     paddingRight: 18,
     flexDirection: 'row',
@@ -332,9 +317,6 @@ const styles = StyleSheet.create({
   search_images: {
     width: 23,
     height: 23,
-  },
-  nav: {
-    height: 149,
   },
   openClass: {
     height: 181.5,
@@ -372,6 +354,13 @@ const styles = StyleSheet.create({
   section_footor: {
     height: 20,
     backgroundColor: 'white',
+  },
+  search_badge: {
+    // width: 20,
+    // height: 12,
+    position: 'absolute',
+    // left: 16.5,
+    // bottom: 14,
   },
 });
 

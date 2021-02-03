@@ -1,102 +1,67 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  ImageSourcePropType,
-} from 'react-native';
-import { NumOfPeopleComponent } from './ClassPack/NumOfPeopleComponent';
-import { SignComponent } from './ClassPack/SignComponent';
-import { PriceComponent } from './ClassPack/PriceComponent';
-import { BadgeComponent } from './ClassPack/BadgeComponent';
+import { StyleSheet, View, Image, Text } from 'react-native';
+import { NumOfEnrolmentView } from './classpack/NumOfEnrolmentView';
+import { SignView } from './classpack/SignView';
+import { PriceView } from './classpack/PriceView';
+import { ClassPackBean } from '@/module/module_main/bean/ClassPackBean';
+// import { BadgeComponent } from '../../../component/BadgeComponent';
 
-type Props = {
-  img: ImageSourcePropType;
-  title?: string;
-  originalPrice?: number;
-  presentPrice?: number;
-  numOfPeople?: number;
-  classClick?: any;
-};
-
-export class ClassPackComponent extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-  render() {
-    return (
-      // <TouchableOpacity
-      //   activeOpacity={0.5}
-      //   onPress={() => {
-      //     this.props.classClick();
-      //   }}>
-      <View style={styles.container}>
+export const ClassPackComponent: React.FC<ClassPackBean> = (
+  props: ClassPackBean,
+) => {
+  return (
+    <View style={styles.container}>
+      <View>
+        <SignView value={'点播课ke'} />
+        <Image
+          style={{
+            width: 109,
+            height: 64,
+            borderRadius: 4,
+          }}
+          source={props.img}
+        />
+      </View>
+      <View style={styles.info_view}>
+        <Text numberOfLines={2} style={styles.info_title}>
+          {/* <BadgeComponent /> */}
+          {props.title}
+        </Text>
         <View>
-          <SignComponent value={'点播课ke'} />
-          <Image
-            style={{
-              width: 109,
-              height: 64,
-              borderRadius: 4,
-            }}
-            source={this.props.img}
-          />
-        </View>
-        <View style={styles.info}>
-          <Text numberOfLines={2} style={styles.title}>
-            <BadgeComponent />
-            {this.props.title}
-          </Text>
-          <View>
-            {this.props.originalPrice === undefined ? (
-              <Text />
+          <PriceView originalPrice={props.originalPrice} />
+          <View style={styles.info_bottom}>
+            {props.numOfEnrolment === undefined ? (
+              <NumOfEnrolmentView numOfPeople={0} />
             ) : (
-              <PriceComponent
-                price={this.props.originalPrice}
-                priceType={'original'}
-              />
+              <NumOfEnrolmentView numOfPeople={props.numOfEnrolment} />
             )}
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-              }}>
-              {this.props.numOfPeople === undefined ? (
-                <NumOfPeopleComponent numOfPeople={0} />
-              ) : (
-                <NumOfPeopleComponent numOfPeople={this.props.numOfPeople} />
-              )}
-              {this.props.presentPrice === undefined ? null : (
-                <PriceComponent
-                  price={this.props.presentPrice}
-                  priceType={'present'}
-                />
-              )}
-            </View>
+            <PriceView presentPrice={props.presentPrice} />
           </View>
         </View>
       </View>
-      // </TouchableOpacity>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
   },
-  info: {
+  info_view: {
     flex: 1,
     height: 73,
     marginLeft: 18,
     justifyContent: 'space-between',
   },
-  title: {
+  info_title: {
     height: 44,
     fontSize: 16,
     fontWeight: '700',
+  },
+  info_bottom: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
   },
 });
