@@ -8,7 +8,13 @@ import {
   ViewProps,
   StyleProp,
   Easing,
+  Image,
 } from 'react-native';
+enum SORT_STATUS {
+  INIT,
+  DOWN,
+  UP,
+}
 
 type Props = {
   isChecked: boolean;
@@ -16,6 +22,9 @@ type Props = {
   unCheckColor?: string;
   text: string;
   style?: StyleProp<ViewStyle>;
+  selectedValue?: string;
+  isSort?: boolean;
+  sortStatus?: SORT_STATUS;
 };
 
 export const MenuTabView: React.FC<ViewProps & Props> = props => {
@@ -29,26 +38,53 @@ export const MenuTabView: React.FC<ViewProps & Props> = props => {
       useNativeDriver: false,
     }).start();
   }, [props.isChecked]);
+
+  let color =
+    props.isChecked || !checkEmpty(props.selectedValue)
+      ? props.checkColor
+      : props.unCheckColor;
+  const imageStyle = {
+    tintColor: color,
+    transform: [
+      {
+        rotateZ: animationRef.current.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['0deg', '360deg'],
+        }),
+      },
+    ],
+  };
+
+  const topArrowImageStyle = {
+    ...styles.image,
+    tintColor: globalColors.mainColor,
+    transform: [{ rotateZ: '180deg' }],
+  };
+  const bottomArrowImageStyle = createStyle({
+    tintColor: globalColors.mainColor,
+    ...styles.image,
+    marginTop: 2,
+  });
   return (
     <View style={[styles.container, props.style]}>
-      <Text style={styles.text}>{props.text}</Text>
-      <Animated.Image
-        source={globalImages.module_common_dropdown_arrow}
-        style={[
-          styles.image,
-          {
-            tintColor: props.isChecked ? props.checkColor : props.unCheckColor,
-            transform: [
-              {
-                rotateZ: animationRef.current.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['0deg', '360deg'],
-                }),
-              },
-            ],
-          },
-        ]}
-      />
+      <Text style={[styles.text, { color }]}>{props.text}</Text>
+      {props.isSort ? (
+        <View style={styles.double_arrow_container}>
+          <Image
+            style={topArrowImageStyle}
+            source={globalImages.module_common_dropdown_arrow}
+          />
+          <Image
+            style={bottomArrowImageStyle}
+            source={globalImages.module_common_dropdown_arrow}
+          />
+        </View>
+      ) : (
+        <Animated.Image
+          source={globalImages.module_common_dropdown_arrow}
+          style={[styles.image, imageStyle]}
+        />
+      )}
     </View>
   );
 };
@@ -65,12 +101,15 @@ const styles = StyleSheet.create({
     ...globalStyles.center,
   },
   text: {
+    marginEnd: 8,
     fontSize: 12,
     color: globalColors.titleColor,
   },
   image: {
     width: 6,
     height: 4,
-    marginStart: 8,
+  },
+  double_arrow_container: {
+    ...globalStyles.center,
   },
 });

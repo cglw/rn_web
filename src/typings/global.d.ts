@@ -1,8 +1,11 @@
 import {
   Constructor,
   Dimensions,
+  ImageStyle,
   NativeMethods,
   RefreshControlComponent,
+  TextStyle,
+  ViewStyle,
 } from 'react-native';
 
 declare global {
@@ -34,6 +37,7 @@ declare global {
     screenWidth?: number,
     designWidth?: number,
   ): number;
+  function createStyle(style: ViewStyle | ImageStyle | TextStyle): any;
 }
 
 declare const RefreshControlBase: Constructor<NativeMethods> &

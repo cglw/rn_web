@@ -7,7 +7,13 @@ import I18n from 'i18n-js';
 import { RouterManager } from '@/sdk/router/RouterManager';
 import { wrapWithSafeImpl } from '../component/RootContainerView';
 import { adapterSize } from '@/sdk/AutoSizeSheet';
-import { Dimensions } from 'react-native';
+import {
+  Dimensions,
+  ImageStyle,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { CommonConstants } from '@/module/module_common/constants/Constants';
 globalStyles = GLOBAL_STYLES;
 globalDimes = GLOBAL_DIMES;
@@ -56,5 +62,12 @@ window.adapterSize = (
   designWidth: number = CommonConstants.DESIGN_WIDTH,
 ) => {
   return adapterSize(size, screenWidth, designWidth);
+};
+window.createStyle = (style: ViewStyle | ImageStyle | TextStyle) => {
+  return StyleSheet.create({
+    tmp: {
+      ...style,
+    },
+  }).tmp;
 };
 export {};

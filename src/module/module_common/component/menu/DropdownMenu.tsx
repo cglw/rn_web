@@ -6,8 +6,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import React, { Component } from 'react';
-import { MenuTabView } from '@/module/module_common/component/menu/MenuTab';
-import { getWindowHeight } from '@utils/ScreenUtil';
+import { getWindowHeight, getWindowWidth } from '@utils/ScreenUtil';
 
 type Props = {
   tabs: Array<any>;
@@ -22,24 +21,26 @@ type Props = {
     index: number,
     data: any,
   ) => React.ComponentType<any> | React.ReactElement;
+  contentPositions?: Array<'top' | 'left' | 'right' | 'bottom' | ''>;
 };
 type State = {
   activityIndex: number;
-  fadeAnim: any;
+  commonAnim: any;
   tabHeight: number;
 };
 
 export class DropdownMenu extends Component<Props, State> {
   contentViewRef: any;
-  contentViewHeight: number;
+  contentViewHeight: number = 0;
+  contentViewWidth: number = 0;
   constructor(props: Props) {
     super(props);
     this.state = {
       activityIndex: -1,
-      fadeAnim: new Animated.Value(0),
+      commonAnim: new Animated.Value(0),
       tabHeight: props.tabHeight,
     };
-    this.contentViewHeight = getWindowHeight();
+    this._initContentViewSize();
   }
   static defaultProps = {
     tabHeight: 40,
@@ -68,18 +69,13 @@ export class DropdownMenu extends Component<Props, State> {
             key={index}
             style={{ flex: 1, ...this.props.tabTouchStyle }}
             activeOpacity={1}>
-            {this.props.renderTab ? (
-              this.props.renderTab(
-                index,
-                index === this.state.activityIndex,
-                this.props.tabs[index],
-              )
-            ) : (
-              <MenuTabView
-                isChecked={index === this.state.activityIndex}
-                text={this.props.tabs[index].toString()}
-              />
-            )}
+            {this.props.renderTab
+              ? this.props.renderTab(
+                  index,
+                  index === this.state.activityIndex,
+                  this.props.tabs[index],
+                )
+              : null}
           </TouchableOpacity>
         ))}
       </View>
@@ -97,23 +93,63 @@ export class DropdownMenu extends Component<Props, State> {
       </View>
     );
   }
-
+  _getContentPropOutput() {
+    let contentPosition = this.props.contentPositions?.[
+      this.state.activityIndex
+    ];
+    contentPosition = checkEmpty(contentPosition) ? 'top' : contentPosition;
+    console.info('contentPosition===>' + contentPosition);
+    let output;
+    switch (contentPosition) {
+      case 'bottom':
+        output = {
+          isX: false,
+          isY: true,
+          style: styles.bottom_position,
+          outputRange: [this.contentViewHeight, 0],
+        };
+        break;
+      case 'left':
+        output = {
+          isX: true,
+          isY: false,
+          style: styles.left_position,
+          outputRange: [-this.contentViewWidth, 0],
+        };
+        break;
+      case 'right':
+        output = {
+          isX: true,
+          isY: false,
+          style: styles.right_position,
+          outputRange: [this.contentViewHeight, 0],
+        };
+        break;
+      case 'top':
+      default:
+        output = {
+          isX: false,
+          isY: true,
+          style: styles.top_position,
+          outputRange: [-this.contentViewHeight, 0],
+        };
+        break;
+    }
+    return output;
+  }
   private renderContentView() {
+    const output = this._getContentPropOutput();
+    const transform = this.state.commonAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: output.outputRange,
+    });
+    const transformStyle = output.isX
+      ? { translateX: transform }
+      : { translateY: transform };
+    const viewStyle = output.isX ? { height: '100%' } : { width: '100%' };
     return (
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateY: this.state.fadeAnim.interpolate({
-                inputRange: [0, 0.4],
-                outputRange: [-this.contentViewHeight, 0],
-              }),
-            },
-          ],
-        }}>
-        <View
-          ref={ref => (this.contentViewRef = ref)}
-          style={styles.top_position}>
+      <Animated.View style={[output.style, { transform: [transformStyle] }]}>
+        <View style={viewStyle} ref={ref => (this.contentViewRef = ref)}>
           {this.props.renderContent &&
             this.props.renderContent(
               this.state.activityIndex,
@@ -132,7 +168,10 @@ export class DropdownMenu extends Component<Props, State> {
         style={StyleSheet.absoluteFill}>
         <Animated.View
           style={{
-            opacity: this.state.fadeAnim, // Bind opacity to animated value
+            opacity: this.state.commonAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 0.4],
+            }),
             backgroundColor: 'black',
             flex: 1,
           }}
@@ -141,12 +180,12 @@ export class DropdownMenu extends Component<Props, State> {
     );
   }
 
-  measureContentHeight(callback: (height: number) => void) {
+  measureContentHeight(callback: (width: number, height: number) => void) {
     this.contentViewRef &&
       this.contentViewRef.measure(
         (x: number, y: number, width: number, height: number) => {
-          console.log('measure:::' + height);
-          callback(height);
+          console.log('measure:::' + width + '====>' + height);
+          callback(width, height);
         },
       );
   }
@@ -158,7 +197,7 @@ export class DropdownMenu extends Component<Props, State> {
           activityIndex: -1,
         });
       });
-      this.contentViewHeight = getWindowHeight();
+      this._initContentViewSize();
     } else {
       //先显示出来再做动画
       this.setState(
@@ -166,7 +205,8 @@ export class DropdownMenu extends Component<Props, State> {
           activityIndex: index,
         },
         () => {
-          this.measureContentHeight(height => {
+          this.measureContentHeight((width, height) => {
+            this.contentViewWidth = width;
             this.contentViewHeight = height;
             this.openPanel(index);
           });
@@ -183,15 +223,15 @@ export class DropdownMenu extends Component<Props, State> {
     this.fadeOut(callback);
   }
   fadeIn = (callback?: Animated.EndCallback) => {
-    Animated.timing(this.state.fadeAnim, {
-      toValue: 0.4,
+    Animated.timing(this.state.commonAnim, {
+      toValue: 1,
       duration: 300,
       useNativeDriver: false,
     }).start(callback);
   };
 
   fadeOut = (callback?: Animated.EndCallback) => {
-    Animated.timing(this.state.fadeAnim, {
+    Animated.timing(this.state.commonAnim, {
       toValue: 0,
       duration: 300,
       useNativeDriver: false,
@@ -200,6 +240,10 @@ export class DropdownMenu extends Component<Props, State> {
 
   getTabHeight() {
     return adapterSize(this.state.tabHeight);
+  }
+  _initContentViewSize() {
+    this.contentViewHeight = getWindowHeight();
+    this.contentViewHeight = getWindowWidth();
   }
 }
 
@@ -215,6 +259,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
+    right: 0,
+  },
+  bottom_position: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  left_position: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+  },
+  right_position: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
     right: 0,
   },
 });
