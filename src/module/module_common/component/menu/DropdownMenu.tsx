@@ -21,7 +21,8 @@ type Props = {
     index: number,
     data: any,
   ) => React.ComponentType<any> | React.ReactElement;
-  contentPositions?: Array<'top' | 'left' | 'right' | 'bottom' | ''>;
+  contentPositions?: Array<'top' | 'left' | 'right' | 'bottom' | 'center' | ''>;
+  onTabPressCallBack?: (index: number) => void;
 };
 type State = {
   activityIndex: number;
@@ -31,8 +32,8 @@ type State = {
 
 export class DropdownMenu extends Component<Props, State> {
   contentViewRef: any;
-  contentViewHeight: number = 0;
-  contentViewWidth: number = 0;
+  contentHeight: number = 0;
+  contentWidth: number = 0;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -49,6 +50,7 @@ export class DropdownMenu extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{}} />
         {this.renderTabs()}
         {this.props.children}
         {this.renderActivityPanel()}
@@ -59,13 +61,17 @@ export class DropdownMenu extends Component<Props, State> {
   private renderTabs() {
     return (
       <View
-        style={{
+        style={createStyle({
           ...styles.tab_container,
           height: this.getTabHeight(),
-        }}>
+        })}>
         {this.props.tabs.map((item, index) => (
           <TouchableOpacity
-            onPress={() => this.openOrClosePanel(index)}
+            onPress={() => {
+              this.openOrClosePanel(index);
+              this.props.onTabPressCallBack &&
+                this.props.onTabPressCallBack(index);
+            }}
             key={index}
             style={{ flex: 1, ...this.props.tabTouchStyle }}
             activeOpacity={1}>
@@ -87,57 +93,30 @@ export class DropdownMenu extends Component<Props, State> {
       return null;
     }
     return (
-      <View style={[StyleSheet.absoluteFill, { top: this.getTabHeight() }]}>
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          styles.center,
+          createStyle({ top: this.getTabHeight() }),
+        ]}>
         {this.renderMaskView()}
         {this.renderContentView()}
       </View>
     );
   }
-  _getContentPropOutput() {
-    let contentPosition = this.props.contentPositions?.[
-      this.state.activityIndex
-    ];
-    contentPosition = checkEmpty(contentPosition) ? 'top' : contentPosition;
-    console.info('contentPosition===>' + contentPosition);
-    let output;
-    switch (contentPosition) {
-      case 'bottom':
-        output = {
-          isX: false,
-          isY: true,
-          style: styles.bottom_position,
-          outputRange: [this.contentViewHeight, 0],
-        };
-        break;
-      case 'left':
-        output = {
-          isX: true,
-          isY: false,
-          style: styles.left_position,
-          outputRange: [-this.contentViewWidth, 0],
-        };
-        break;
-      case 'right':
-        output = {
-          isX: true,
-          isY: false,
-          style: styles.right_position,
-          outputRange: [this.contentViewHeight, 0],
-        };
-        break;
-      case 'top':
-      default:
-        output = {
-          isX: false,
-          isY: true,
-          style: styles.top_position,
-          outputRange: [-this.contentViewHeight, 0],
-        };
-        break;
-    }
-    return output;
-  }
   private renderContentView() {
+    const children =
+      this.props.renderContent &&
+      this.props.renderContent(
+        this.state.activityIndex,
+        this.props.tabs[this.state.activityIndex],
+      );
+    console.info('children===>');
+    console.info(children);
+    if (checkEmpty(children)) {
+      console.info('empty');
+      return <View />;
+    }
     const output = this._getContentPropOutput();
     const transform = this.state.commonAnim.interpolate({
       inputRange: [0, 1],
@@ -145,21 +124,22 @@ export class DropdownMenu extends Component<Props, State> {
     });
     const transformStyle = output.isX
       ? { translateX: transform }
-      : { translateY: transform };
-    const viewStyle = output.isX ? { height: '100%' } : { width: '100%' };
+      : output.isY
+      ? { translateY: transform }
+      : { translateX: 0, translateY: 0 };
+    const viewStyle = output.isX
+      ? { height: '100%' }
+      : output.isY
+      ? { width: '100%' }
+      : { width: '100%', height: '100%' };
     return (
       <Animated.View style={[output.style, { transform: [transformStyle] }]}>
         <View style={viewStyle} ref={ref => (this.contentViewRef = ref)}>
-          {this.props.renderContent &&
-            this.props.renderContent(
-              this.state.activityIndex,
-              this.props.tabs[this.state.activityIndex],
-            )}
+          {children}
         </View>
       </Animated.View>
     );
   }
-
   private renderMaskView() {
     return (
       <TouchableOpacity
@@ -179,40 +159,79 @@ export class DropdownMenu extends Component<Props, State> {
       </TouchableOpacity>
     );
   }
-
+  _getContentPropOutput() {
+    let contentPosition = this.props.contentPositions?.[
+      this.state.activityIndex
+    ];
+    contentPosition = checkEmpty(contentPosition) ? 'top' : contentPosition;
+    let output;
+    switch (contentPosition) {
+      case 'center':
+        output = { style: {}, outputRange: [0, 0] };
+        break;
+      case 'bottom':
+        output = {
+          isY: true,
+          style: styles.bottom_position,
+          outputRange: [this.contentHeight, 0],
+        };
+        break;
+      case 'left':
+        output = {
+          isX: true,
+          style: styles.left_position,
+          outputRange: [-this.contentWidth, 0],
+        };
+        break;
+      case 'right':
+        output = {
+          isX: true,
+          style: styles.right_position,
+          outputRange: [this.contentHeight, 0],
+        };
+        break;
+      case 'top':
+      default:
+        output = {
+          isY: true,
+          style: styles.top_position,
+          outputRange: [-this.contentHeight, 0],
+        };
+        break;
+    }
+    return output;
+  }
   measureContentHeight(callback: (width: number, height: number) => void) {
     this.contentViewRef &&
       this.contentViewRef.measure(
         (x: number, y: number, width: number, height: number) => {
-          console.log('measure:::' + width + '====>' + height);
           callback(width, height);
         },
       );
   }
-
   openOrClosePanel(index: number) {
     if (this.state.activityIndex === index) {
       this.closePanel(this.state.activityIndex, () => {
-        this.setState({
-          activityIndex: -1,
-        });
+        this.setState({ activityIndex: -1 });
       });
       this._initContentViewSize();
     } else {
-      //先显示出来再做动画
-      this.setState(
-        {
-          activityIndex: index,
-        },
-        () => {
-          this.measureContentHeight((width, height) => {
-            this.contentViewWidth = width;
-            this.contentViewHeight = height;
-            this.openPanel(index);
-          });
-        },
-      );
+      if (this.state.activityIndex !== -1) {
+        this.setState({ activityIndex: -1 }, () => this._open(index));
+      } else {
+        this._open(index);
+      }
     }
+  }
+  _open(index: number) {
+    //先显示出来再做动画
+    this.setState({ activityIndex: index }, () => {
+      this.measureContentHeight((width, height) => {
+        this.contentWidth = width;
+        this.contentHeight = height;
+        this.openPanel(index);
+      });
+    });
   }
 
   openPanel(index: number, callback?: () => void) {
@@ -239,11 +258,11 @@ export class DropdownMenu extends Component<Props, State> {
   };
 
   getTabHeight() {
-    return adapterSize(this.state.tabHeight);
+    return this.state.tabHeight;
   }
   _initContentViewSize() {
-    this.contentViewHeight = getWindowHeight();
-    this.contentViewHeight = getWindowWidth();
+    this.contentHeight = getWindowHeight();
+    this.contentHeight = getWindowWidth();
   }
 }
 
@@ -251,9 +270,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   tab_container: {
     flexDirection: 'row',
-    zIndex: 99999,
+    zIndex: 1,
   },
   top_position: {
     position: 'absolute',

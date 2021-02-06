@@ -1,6 +1,7 @@
 export default {
   module_common_back: require('./images/back.png'),
   module_common_dropdown_arrow: require('./images/dropdown_arrow.png'),
+  module_common_dropup_arrow: require('./images/dropup_arrow.png'),
   module_common_ic_error: require('./images/ic_error.png'),
   module_common_ic_error_copy: require('./images/ic_error_copy.png'),
   module_common_ic_filter_select: require('./images/ic_filter_select.png'),

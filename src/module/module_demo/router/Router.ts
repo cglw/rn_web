@@ -7,6 +7,7 @@ import { SectionListDemoScreen } from '@/module/module_demo/screen/SectionListDe
 import { LoadStateDemoScreenContainer } from '@/module/module_demo/screen/LoadStateDemoScreen';
 import { ListScreen } from '@/module/module_demo/screen/ListScreen';
 import { observer } from 'mobx-react';
+import { DropdownMenuWrapperDemo } from '@/module/module_demo/DropdownMenuWrapperDemo';
 export default {
   demos: {
     screen: DemoScreen,
@@ -18,8 +19,12 @@ export default {
     path: 'datePicker',
   },
   dropdown: {
-    screen: observer(DropdownMenuDemo),
+    screen: observer(DropdownMenuWrapperDemo),
     path: 'dropdown',
+  },
+  dropdown_demo: {
+    screen: observer(DropdownMenuDemo),
+    path: 'dropdown_demo',
   },
   demo: {
     screen: ListDemoScreen,

@@ -88,7 +88,13 @@ export class DropdownMenuDemo extends Component<Props, any> {
           ref={ref => (this.meunView = ref)}
           tabs={['test', 'test2', 'test3']}
           renderTab={(index, isChecked, data) => (
-            <MenuTabView isChecked={isChecked} text={data} />
+            <MenuTabView
+              selectedValue={
+                index === 0 ? (this.singleCheck.get() > 0 ? 'test' : '') : ''
+              }
+              isChecked={isChecked}
+              text={data}
+            />
           )}
           renderContent={(index: number) => {
             console.info(index);
@@ -97,10 +103,13 @@ export class DropdownMenuDemo extends Component<Props, any> {
                 <MultiAttrSelectList
                   data={this.multiAttrData}
                   contentWidth={300}
-                  onResetCallBack={() => this.multiCheck.set([])}
-                  onConfirmCallBack={selects => {
+                  onResetCallBack={() => {
+                    this.multiCheck.set([]);
                     this.meunView.openOrClosePanel(2);
+                  }}
+                  onConfirmCallBack={selects => {
                     this.multiCheck.set(selects);
+                    this.meunView.openOrClosePanel(2);
                   }}
                   selectIndex={this.multiCheck.get()}
                 />
@@ -136,9 +145,6 @@ export class DropdownMenuDemo extends Component<Props, any> {
             leftIndex: checkedInfo.leftIndex,
             rightIndex: checkedInfo.rightIndex,
           });
-        }}
-        onClickLeftItem={index => {
-          console.info(index);
         }}
         checkLeftIndex={this.doubleCheck.get().leftIndex}
         checkRightIndex={this.doubleCheck.get().rightIndex}

@@ -10,7 +10,7 @@ import React, { useRef, useState } from 'react';
 const ITEM_HEIGHT = 44;
 const MAX_HEIGHT = 425;
 
-class CheckedInfo {
+export class CheckedInfo {
   leftIndex: number;
   rightIndex: number;
 
@@ -27,7 +27,7 @@ class CheckedInfo {
 type Props = {
   listData: any;
   onClickRightItem: (checkedInfo: CheckedInfo) => void;
-  onClickLeftItem: (index: number) => void;
+  onClickLeftItem?: (index: number) => void;
   checkLeftIndex: number;
   checkRightIndex: number;
 };
@@ -74,7 +74,7 @@ export const DoubleSelectList: React.FC<Props> = props => {
             return;
           }
           setLeftIndex(index);
-          props.onClickLeftItem(index);
+          props.onClickLeftItem && props.onClickLeftItem(index);
         }}>
         <View style={[styles.left_item_container, viewContainerStyle]}>
           <Text style={{ ...styles.text, color }}>{item.text}</Text>

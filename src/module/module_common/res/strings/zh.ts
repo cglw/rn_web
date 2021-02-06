@@ -6,4 +6,5 @@ export default {
   mobileNetError: '你的手机网络出问题啦~',
   reset: '重置',
   confirm: '确定',
+  filter: '筛选',
 };

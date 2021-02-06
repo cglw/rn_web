@@ -10,7 +10,7 @@ import {
   Easing,
   Image,
 } from 'react-native';
-enum SORT_STATUS {
+export enum SORT_STATUS {
   INIT,
   DOWN,
   UP,
@@ -55,24 +55,28 @@ export const MenuTabView: React.FC<ViewProps & Props> = props => {
     ],
   };
 
+  function sortColor(isChecked: boolean) {
+    return isChecked ? globalColors.mainColor : globalColors.contentColor;
+  }
   const topArrowImageStyle = {
     ...styles.image,
-    tintColor: globalColors.mainColor,
-    transform: [{ rotateZ: '180deg' }],
+    tintColor: sortColor(props.sortStatus === SORT_STATUS.UP),
   };
-  const bottomArrowImageStyle = createStyle({
-    tintColor: globalColors.mainColor,
+  const bottomArrowImageStyle = {
+    tintColor: sortColor(props.sortStatus === SORT_STATUS.DOWN),
     ...styles.image,
     marginTop: 2,
-  });
+  };
   return (
     <View style={[styles.container, props.style]}>
-      <Text style={[styles.text, { color }]}>{props.text}</Text>
+      <Text style={[styles.text, { color }]}>
+        {checkEmpty(props.selectedValue) ? props.text : props.selectedValue}
+      </Text>
       {props.isSort ? (
         <View style={styles.double_arrow_container}>
           <Image
             style={topArrowImageStyle}
-            source={globalImages.module_common_dropdown_arrow}
+            source={globalImages.module_common_dropup_arrow}
           />
           <Image
             style={bottomArrowImageStyle}
