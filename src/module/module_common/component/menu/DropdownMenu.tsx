@@ -92,6 +92,12 @@ export class DropdownMenu extends Component<Props, State> {
     if (this.state.activityIndex < 0) {
       return null;
     }
+    const children =
+      this.props.renderContent &&
+      this.props.renderContent(
+        this.state.activityIndex,
+        this.props.tabs[this.state.activityIndex],
+      );
     return (
       <View
         style={[
@@ -99,18 +105,12 @@ export class DropdownMenu extends Component<Props, State> {
           styles.center,
           createStyle({ top: this.getTabHeight() }),
         ]}>
-        {this.renderMaskView()}
-        {this.renderContentView()}
+        {checkEmpty(children) ? null : this.renderMaskView()}
+        {this.renderContentView(children)}
       </View>
     );
   }
-  private renderContentView() {
-    const children =
-      this.props.renderContent &&
-      this.props.renderContent(
-        this.state.activityIndex,
-        this.props.tabs[this.state.activityIndex],
-      );
+  private renderContentView(children: any) {
     console.info('children===>');
     console.info(children);
     if (checkEmpty(children)) {
